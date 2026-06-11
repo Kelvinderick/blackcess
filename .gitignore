@@ -1,0 +1,12 @@
+# images
+*.jpg
+*.jpeg
+*.png
+
+# folders
+node_modules/
+dist/
+build/
+
+# system files
+.DS_Store
