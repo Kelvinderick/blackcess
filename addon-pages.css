@@ -1,0 +1,480 @@
+/* =========================================
+   TRAVEL ADD-ON PAGES
+========================================= */
+
+.addon-page {
+    background: var(--bg-light);
+}
+
+.addon-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(20, 145, 147, 0.9);
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+}
+
+.addon-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem;
+}
+
+.addon-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.addon-intro-img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+}
+
+.addon-intro-text h2 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.addon-intro-text p {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    line-height: 1.75;
+}
+
+.addon-intro-text ul {
+    margin: 1rem 0 1.5rem 1.25rem;
+    color: var(--text-dark);
+}
+
+.addon-intro-text li {
+    margin-bottom: 0.5rem;
+}
+
+.addon-benefits {
+    background: var(--white);
+    padding: 3.5rem 2rem;
+}
+
+.addon-benefits-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.addon-benefits h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.addon-benefits > .addon-benefits-inner > p {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 2.5rem;
+}
+
+.addon-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.addon-benefit-card {
+    background: var(--bg-light);
+    border-radius: 10px;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.addon-benefit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.addon-benefit-card i {
+    font-size: 2rem;
+    color: rgba(20, 145, 147, 0.971);
+    margin-bottom: 1rem;
+}
+
+.addon-benefit-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.addon-benefit-card p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.addon-action {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
+.addon-action-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-lg);
+    border-top: 4px solid rgba(20, 145, 147, 0.971);
+}
+
+.addon-action-card h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.addon-action-card > p {
+    color: var(--text-light);
+    margin-bottom: 1.75rem;
+}
+
+.addon-coming-soon {
+    background: var(--bg-light);
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.addon-coming-soon i {
+    font-size: 1.5rem;
+    color: rgba(20, 145, 147, 0.971);
+    margin-top: 0.15rem;
+}
+
+.addon-coming-soon p {
+    margin: 0;
+    color: var(--text-dark);
+    line-height: 1.65;
+    font-size: 0.95rem;
+}
+
+.addon-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.25rem;
+}
+
+.addon-form .full-width {
+    grid-column: 1 / -1;
+}
+
+.addon-field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: var(--text-dark);
+}
+
+.addon-field input,
+.addon-field select,
+.addon-field textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.addon-field textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.addon-submit {
+    grid-column: 1 / -1;
+    margin-top: 0.5rem;
+}
+
+.addon-submit .btn-primary {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.addon-note {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 1rem;
+}
+
+/* Policy / list pages */
+.addon-policy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.addon-policy-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.addon-policy-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.addon-policy-card h3 i {
+    color: rgba(20, 145, 147, 0.971);
+}
+
+.addon-policy-card ul {
+    margin-left: 1.1rem;
+    color: var(--text-light);
+    font-size: 0.92rem;
+}
+
+.addon-policy-card li {
+    margin-bottom: 0.4rem;
+}
+
+.addon-table-wrap {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.addon-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.addon-table th,
+.addon-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.addon-table th {
+    background: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.addon-table tr:nth-child(even) td {
+    background: var(--bg-light);
+}
+
+.addon-related {
+    background: var(--white);
+    padding: 2.5rem 2rem 3.5rem;
+    border-top: 1px solid #e8e8e8;
+}
+
+.addon-related-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.addon-related h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+}
+
+.addon-related-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.addon-related-links a {
+    padding: 0.5rem 1rem;
+    background: var(--bg-light);
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.addon-related-links a:hover {
+    background: rgba(20, 145, 147, 0.15);
+}
+
+/* Unique layout blocks */
+.addon-section--alt {
+    background: var(--white);
+}
+
+.addon-section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 1.25rem;
+}
+
+.addon-lead {
+    font-size: 1.05rem;
+    color: var(--text-dark);
+    line-height: 1.7;
+    max-width: 720px;
+}
+
+.addon-callout {
+    background: #f0f7f7;
+    border-left: 4px solid rgba(20, 145, 147, 0.971);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.addon-callout strong {
+    color: var(--primary-color);
+}
+
+.addon-faq {
+    max-width: 800px;
+    margin-bottom: 70px;
+}
+
+.addon-faq details {
+    background: var(--bg-light);
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    margin-bottom: 0.65rem;
+    padding: 0;
+}
+
+.addon-faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 1rem 1.15rem;
+    color: var(--primary-color);
+    list-style-position: outside;
+}
+
+.addon-faq details[open] summary {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.addon-faq details p {
+    padding: 1rem 1.15rem;
+    margin: 0;
+    color: var(--text-light);
+    line-height: 1.65;
+    font-size: 0.92rem;
+}
+
+.addon-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 640px;
+}
+
+.addon-timeline li {
+    position: relative;
+    padding: 0 0 1.75rem 2.5rem;
+    /* border-left: 2px solid rgba(20, 145, 147, 0.4); */
+    margin-left: 0.75rem;
+}
+
+.addon-timeline li:last-child {
+    border-left-color: transparent;
+    padding-bottom: 0;
+}
+
+.addon-timeline li::before {
+    content: attr(data-step);
+    position: absolute;
+    left: -0.85rem;
+    top: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: var(--primary-color);
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 50%;
+    line-height: 1.6rem;
+    text-align: center;
+}
+
+.addon-timeline h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.addon-timeline p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin: 0;
+    line-height: 1.55;
+}
+
+.addon-partners {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.addon-partner-card {
+    background: var(--bg-light);
+    border-radius: 10px;
+    padding: 1.25rem;
+    border: 1px solid #e8e8e8;
+}
+
+.addon-partner-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.addon-partner-card .addon-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(20, 145, 147, 0.971);
+    margin-bottom: 0.5rem;
+}
+
+.addon-partner-card p {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    margin: 0;
+    line-height: 1.5;
+}
+

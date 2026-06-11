@@ -1,0 +1,81 @@
+@media (max-width: 1024px) {
+    .addon-benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .destinations-hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .destinations-hero-content p {
+        font-size: 1rem;
+    }
+
+    .addon-section {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .addon-intro {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .addon-intro-img {
+        height: 220px;
+        order: -1;
+    }
+
+    .addon-benefits {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .addon-benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .addon-action {
+        padding: 0 1.25rem 3rem;
+    }
+
+    .addon-action-card {
+        padding: 1.5rem;
+    }
+
+    .addon-form {
+        grid-template-columns: 1fr;
+    }
+
+    .addon-policy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .addon-submit .btn-primary {
+        max-width: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .destinations-hero {
+        height: 32vh;
+        min-height: 220px;
+    }
+
+    .addon-related-links {
+        flex-direction: column;
+    }
+
+    .addon-related-links a {
+        text-align: center;
+    }
+
+    .addon-partners {
+        grid-template-columns: 1fr;
+    }
+
+    .addon-timeline li {
+        padding-left: 2.25rem;
+    }
+}

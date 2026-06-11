@@ -1,0 +1,743 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Blackcess Airlines</title>
+    <!-- 👑 EMBEDDED CROWN FAVICON (No external file needed) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%23BA8B02'/><stop offset='50%25' stop-color='%23F3E5AB'/><stop offset='100%25' stop-color='%23A37A00'/></linearGradient><linearGradient id='m' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%231E293B'/><stop offset='100%25' stop-color='%230F172A'/></linearGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23m)'/><circle cx='50' cy='50' r='44' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='4 3'/><path d='M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z' fill='url(%23g)'/><path d='M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z' fill='url(%23g)'/><path d='M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z' fill='url(%23g)'/><path d='M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z' fill='url(%23g)'/><path d='M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z' fill='url(%23g)' opacity='0.8'/></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.responsiveness.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- Logo -->
+            <a href="index.html" class="navbar-logo">
+                <div class="logo-design">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 120" width="100%" height="100%" class="blackcess-royal-logo">
+    <defs>
+        <!-- Ultra-Premium Rich Metallic Gold Gradient -->
+        <linearGradient id="premiumGold" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#BA8B02" />
+            <stop offset="30%" stop-color="#D4AF37" />
+            <stop offset="50%" stop-color="#F3E5AB" />
+            <stop offset="70%" stop-color="#D4AF37" />
+            <stop offset="100%" stop-color="#A37A00" />
+        </linearGradient>
+        
+        <!-- Royal Midnight Shadow Gradient -->
+        <linearGradient id="royalMidnight" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1E293B" />
+            <stop offset="100%" stop-color="#0F172A" />
+        </linearGradient>
+    </defs>
+
+    <!-- LOGO ICON (The King's Crown & Flight Wing Fusion) -->
+    <g transform="translate(15, 10)">
+        <!-- Background Shield / Premium Coin Backdrop -->
+        <circle cx="50" cy="50" r="48" fill="url(#royalMidnight)" />
+        <circle cx="50" cy="50" r="44" fill="none" stroke="url(#premiumGold)" stroke-width="1.5" stroke-dasharray="4 3" />
+
+        <!-- THE ROYAL CROWN STRUCTURE -->
+        <!-- Crown Base / Headband -->
+        <path d="M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z" fill="url(#premiumGold)" />
+        <!-- Crown Jewels / Base Dots -->
+        <circle cx="38" cy="70.5" r="1.5" fill="#0F172A" />
+        <circle cx="50" cy="70.5" r="1.5" fill="#0F172A" />
+        <circle cx="62" cy="70.5" r="1.5" fill="#0F172A" />
+
+        <!-- The 3 Premium Majestic Crown Spikes -->
+        <path d="M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z" fill="url(#premiumGold)" />
+        
+        <!-- Royal Diamond Jewels atop the Spikes -->
+        <polygon points="30,37 32,39 30,41 28,39" fill="#ffffff" />
+        <polygon points="50,23 52,26 50,29 48,26" fill="#ffffff" />
+        <polygon points="70,37 72,39 70,41 68,39" fill="#ffffff" />
+
+        <!-- DYNAMIC SWEEPING JET WINGS (Cradling the Crown) -->
+        <path d="M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z" fill="url(#premiumGold)" />
+        <path d="M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z" fill="url(#premiumGold)" />
+        
+        <!-- Lower Supersonic Flight Ascent Arc -->
+        <path d="M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z" fill="url(#premiumGold)" opacity="0.8" />
+    </g>
+
+    <!-- BRAND TYPOGRAPHY (Bold, High-End Corporate Layout) -->
+    <g transform="translate(140, 0)">
+        <!-- Main Brand Name -->
+        <text x="0" y="62" font-family="-apple-system, BlinkMacSystemFont, 'Montserrat', 'Segoe UI', sans-serif" font-size="46" font-weight="900" fill="#111111" letter-spacing="2">
+            BLACK<tspan fill="url(#premiumGold)">CESS</tspan>
+        </text>
+        
+        <!-- Premium Sub-Indicator Line -->
+        <text x="3" y="88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12.5" font-weight="800" fill="#64748b" letter-spacing="10.5">
+            ROYAL AVIATION
+        </text>
+        
+        <!-- Clean Luxury Accent Line under text -->
+        <line x1="3" y1="102" x2="160" y2="102" stroke="url(#premiumGold)" stroke-width="3.5" stroke-linecap="round" />
+    </g>
+</svg>
+
+                    </div>
+
+            <input type="checkbox" id="menu-toggle">
+
+            <label for="menu-toggle" class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <!-- Navigation Menu -->
+            <ul class="nav-menu" id="navMenu">
+                <!-- Home -->
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">HOME</a>
+                </li>
+
+                <!-- Discover with Dropdown -->
+                <li class="nav-item dropdown">
+                    <a href="#discover" class="nav-link">
+                            DISCOVER<i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu discover-grid">
+                        <div class="destination-card">
+                            <div class="card-image" style="background: url('4603382592139667072.png') center/cover;">
+                            </div>
+                            <a href="discover-all-original.html">All Destinations</a>
+                        </div>
+                        <div class="destination-card">
+                            <div class="card-image" style="background: url('Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;">
+                            </div>
+                            <a href="discover-domestic-original.html">Domestic Destinations</a>
+                        </div>
+                        <div class="destination-card">
+                            <div class="card-image" style="background: url('1548181186041623.png') center/cover;">
+                            </div>
+                            <a href="discover-regional-original.html">Regional Destinations</a>
+                        </div>
+                        <div class="destination-card">
+                            <div class="card-image" style="background: url('kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;">
+                            </div>
+                            <a href="discover-international-original.html">International Destinations</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Book -->
+                <li class="nav-item">
+                    <a href="book.html" class="nav-link">BOOK</a>
+                </li>
+
+                <!-- Travel with Dropdown -->
+                <li class="nav-item dropdown">
+                    <a href="#travel" class="nav-link">
+                        TRAVEL <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu travel-menu">
+                        <div class="travel-menu-grid">
+                            <div class="travel-menu-group">
+                                <span class="travel-menu-label">Book &amp; Manage</span>
+                                <a href="book.html" class="dropdown-item">
+                                    <i class="fas fa-plane"></i> Book a Flight
+                                </a>
+                                <a href="book.html" class="dropdown-item">
+                                    <i class="fas fa-calendar-check"></i> My Bookings
+                                </a>
+                                <a href="book.html" class="dropdown-item">
+                                    <i class="fas fa-clipboard-check"></i> Check-in
+                                </a>
+                                <a href="select-seat.html" class="dropdown-item">
+                                    <i class="fas fa-chair"></i> Select Seat
+                                </a>
+                            </div>
+                            <div class="travel-menu-group">
+                                <span class="travel-menu-label">Add-ons &amp; Services</span>
+                                <a href="book-car.html" class="dropdown-item">
+                                    <i class="fas fa-car"></i> Book a Car
+                                </a>
+                                <a href="book-hotel.html" class="dropdown-item">
+                                    <i class="fas fa-hotel"></i> Book a Hotel
+                                </a>
+                                <a href="travel-insurance.html" class="dropdown-item">
+                                    <i class="fas fa-shield-heart"></i> Travel Insurance
+                                </a>
+                                <a href="pay-small-small.html" class="dropdown-item">
+                                    <i class="fas fa-credit-card"></i> Pay Small Small
+                                </a>
+                                <a href="cabin-upgrade.html" class="dropdown-item">
+                                    <i class="fas fa-door-open"></i> Cabin Upgrade
+                                </a>
+                                <a href="extra-baggage.html" class="dropdown-item">
+                                    <i class="fas fa-suitcase"></i> Extra Baggage
+                                </a>
+                            </div>
+                        </div>
+                        <div class="travel-menu-footer">
+                            <a href="prohibited-articles.html" class="dropdown-item">
+                                <i class="fas fa-ban"></i> Prohibited Articles
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Routes -->
+                <li class="nav-item">
+                    <a href="Routes.html" class="nav-link">ROUTES</a>
+                </li>
+
+                <!-- Media with Dropdown -->
+                <li class="nav-item dropdown">
+                    <a href="#media" class="nav-link">
+                        MEDIA <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu media-menu">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-photo-film"></i> Media Center
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-blog"></i> Blogs
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Careers -->
+                <li class="nav-item">
+                    <a href="#careers" class="nav-link">CAREERS</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<section class="hero">
+<div class="hero-slider">
+
+  <!-- Radio inputs for dot control -->
+  <input type="radio" name="slide" id="slide1" checked>
+  <input type="radio" name="slide" id="slide2">
+  <input type="radio" name="slide" id="slide3">
+
+  <div class="slides">
+
+    <!-- Slide 1 -->
+    <div class="slide slide1">
+      <div class="content">
+        <p>ABV ↔ LHR · Daily service</p>
+        <h1>ABUJA TO LONDON FROM ₦1,200,000 ECONOMY</h1>
+        <button>Book Now</button>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide slide2">
+      <div class="content">
+        <p>Regional expansion</p>
+        <h1>ACC &amp; DSS — MORE WEST AFRICA FREQUENCIES</h1>
+        <button>Book Now</button>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide slide3">
+      <div class="content">
+        <p>Domestic Economy</p>
+        <h1>20KG CHECKED BAG INCLUDED — ALL NG SECTORS</h1>
+        <button>Book Now</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Slide Indicators -->
+  <div class="slider-dots">
+    <label for="slide1" class="dot dot1"></label>
+    <label for="slide2" class="dot dot2"></label>
+    <label for="slide3" class="dot dot3"></label>
+  </div>
+
+</div>
+
+</section>
+
+<section class="booking-section">
+    <!-- Booking Tabs -->
+    <div class="booking-tabs">
+        <button class="tab-button active">
+            <i class="fas fa-plane"></i> Book Flights
+        </button>
+        <button class="tab-button">
+            <i class="fas fa-calendar-check"></i> My Bookings
+        </button>
+        <button class="tab-button">
+            <i class="fas fa-clipboard-check"></i> Check-in
+        </button>
+        <button class="tab-button">
+            <i class="fas fa-crown"></i> Loyalty
+        </button>
+    </div>
+
+    <!-- Booking Form -->
+    <div class="booking-container">
+        <div class="booking-form">
+            <!-- Trip Type Selection -->
+            <div class="trip-type">
+                <label class="radio-group">
+                    <input type="radio" name="trip" value="oneway" checked>
+                    <span class="radio-label">One Way</span>
+                </label>
+                <label class="radio-group">
+                    <input type="radio" name="trip" value="roundtrip">
+                    <span class="radio-label">Round Trip</span>
+                </label>
+            </div>
+
+            <!-- Search Fields -->
+            <div class="form-row">
+                <!-- Departure Airport -->
+                <div class="form-group">
+                    <label for="departure">
+                        <i class="fas fa-plane-departure"></i>
+                    </label>
+                    <select id="departure" class="form-input">
+                        <option value="">Departure airport</option>
+                        <option value="los">Lagos (LOS)</option>
+                        <option value="abv">Abuja (ABV)</option>
+                        <option value="phc">Port Harcourt (PHC)</option>
+                        <option value="kan">Kano (KAN)</option>
+                        <option value="acc">Accra (ACC)</option>
+                        <option value="dss">Dakar (DSS)</option>
+                        <option value="bni">Benin City (BNI)</option>
+                    </select>
+                </div>
+
+                <!-- Arrival Airport -->
+                <div class="form-group">
+                    <label for="arrival">
+                        <i class="fas fa-plane-arrival"></i>
+                    </label>
+                    <select id="arrival" class="form-input">
+                        <option value="">To</option>
+                        <option value="lhr">London (LHR)</option>
+                        <option value="lgw">London Gatwick (LGW)</option>
+                        <option value="dxb">Dubai (DXB)</option>
+                        <option value="jfk">New York (JFK)</option>
+                        <option value="cdg">Paris (CDG)</option>
+                        <option value="ams">Amsterdam (AMS)</option>
+                    </select>
+                </div>
+
+                <!-- Departure Date -->
+                <div class="form-group">
+                    <label for="departure-date">
+                        <i class="fas fa-calendar"></i>
+                    </label>
+                    <input type="date" id="departure-date" class="form-input" placeholder="mm/dd/yyyy">
+                </div>
+
+                <!-- Return Date (Hidden for One Way) -->
+                <div class="form-group hidden-return">
+                    <label for="return-date">
+                        <i class="fas fa-calendar"></i>
+                    </label>
+                    <input type="date" id="return-date" class="form-input" placeholder="mm/dd/yyyy">
+                </div>
+            </div>
+
+            <!-- Passengers Selection -->
+            <div class="form-row passengers-row">
+                <div class="form-group">
+                    <label for="adults">
+                        <i class="fas fa-user-group"></i>
+                    </label>
+                    <select id="adults" class="form-input">
+                        <option value="1">1 Adult (12yrs+)</option>
+                        <option value="2">2 Adults</option>
+                        <option value="3">3 Adults</option>
+                        <option value="4">4 Adults</option>
+                        <option value="5">5 Adults</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="children">
+                        <i class="fas fa-child"></i>
+                    </label>
+                    <select id="children" class="form-input">
+                        <option value="0">0 Child</option>
+                        <option value="1">1 Child</option>
+                        <option value="2">2 Children</option>
+                        <option value="3">3 Children</option>
+                        <option value="4">4 Children</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="infants">
+                        <i class="fas fa-baby"></i>
+                    </label>
+                    <select id="infants" class="form-input">
+                        <option value="0">0 Infant ( 2yrs)</option>
+                        <option value="1">1 Infant</option>
+                        <option value="2">2 Infants</option>
+                        <option value="3">3 Infants</option>
+                    </select>
+                </div>
+
+                <button class="search-btn">Search Flights</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="travel-advisory">
+    <div class="advisory-container">
+        <h2 class="advisory-title">TRAVEL ADVISORY: TRANSIT PROCEDURES FOR LONDON-BOUND PASSENGERS VIA ABUJA (ABV)</h2>
+        
+        <div class="advisory-content">
+            <p>Passengers travelling through Abuja (ABV) and connecting to Blackcess's London flights (Heathrow or Gatwick) are hereby advised to collect their checked baggage upon arrival in Abuja and re-check in for their onward international flight. This procedure is mandatory for all transiting passengers.</p>
+
+            <p>Please note that failure to retrieve and re-check in your baggage may result in delays or missed connections.</p>
+
+            <p>To ensure a smooth travel experience, passengers are strongly encouraged to allow adequate connection time in Abuja for:</p>
+            
+            <ul class="advisory-list">
+                <li>Baggage collection</li>
+                <li>Security screening</li>
+                <li>International check-in formalities</li>
+            </ul>
+
+            <p>We kindly request all passengers, travel agencies, and corporate partners to take note of this important travel information.</p>
+
+            <p class="advisory-closing">Thank you for choosing Blackcess.</p>
+        </div>
+    </div>
+</section>
+
+<section class="promo-section">
+    <div class="promo-container">
+        <div class="promo-card">
+            <div class="promo-content">
+                <h3>15% off student fares — LOS &amp; ABV to London</h3>
+                <p>Full-time students aged 25 or under save 15% on Economy to LHR and LGW. Valid on selected travel dates — book via Blackcess sales or call <strong>020-1343-8133</strong>.</p>
+                <a href="book.html" class="promo-btn">Book Now</a>
+            </div>
+        </div>
+
+        <div class="promo-card2">
+            <div class="promo-content">
+                <h3>One ticket: your city → Abuja → London</h3>
+                <p>Connect domestic sectors to ABV and through-check to Heathrow or Gatwick on a single Blackcess booking.</p>
+                <a href="book.html" class="promo-btn">Book Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="disclaimer-section">
+    <div class="disclaimer-container">
+        <h2 class="disclaimer-title">DISCLAIMER</h2>
+        
+        <div class="disclaimer-content">
+            <p>Our attention has been drawn to reports of persons running Google ads in the name of Blackcess to defraud innocent customers. We want to state that Blackcess did not commission any of these Google ads. These are merely the work of unscrupulous individuals whose stock in trade is to scam unsuspecting customers. Passengers are advised to only use authorized contact information displayed below, and which are also available on our website to avoid potential scams or fraudulent activities. Blackcess Call Center Phone number: 070-4066-8343. Blackcess will not be held liable for any transactions or ticket purchases made using contact details not listed on our official website or any of our social media handles. At Blackcess, we are committed to providing safe, comfortable, and reliable air travel for all our passengers.</p>
+
+            <p>Thank you.</p>
+        </div>
+    </div>
+</section>
+
+<section class="services-section">
+    <div class="services-container">
+        <a href="select-seat.html" class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-wheelchair"></i>
+            </div>
+            <p class="service-label">Select seat</p>
+        </a>
+
+        <a href="book-car.html" class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-car"></i>
+            </div>
+            <p class="service-label">Book a ride</p>
+        </a>
+
+        <a href="book-hotel.html" class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-bed"></i>
+            </div>
+            <p class="service-label">Book a hotel</p>
+        </a>
+
+        <a href="cabin-upgrade.html" class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <p class="service-label">Cabin Upgrade</p>
+        </a>
+
+        <a href="travel-insurance.html" class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-shield-heart"></i>
+            </div>
+            <p class="service-label">Travel Insurance</p>
+        </a>
+
+        <a href="pay-small-small.html" class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-money-bill"></i>
+            </div>
+            <p class="service-label">Pay small small</p>
+        </a>
+    </div>
+</section>
+    <!-- Additional benefits -->
+  <h1 class="title">
+    Get additional benefits with our other services
+</h1>
+   <div class="services-content">
+  <div class="card-container">
+          
+    <div class="card">
+      <img src="african-american-business-man-car.jpg" alt="Ride service">
+
+      <div class="card-content">
+        <h3>Ride services</h3>
+
+        <p>
+          Airport rides from ₦200,000 at LOS and ABV when you add transport to your Blackcess booking.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="happy-relaxed-african-american-woman-relaxing-hotel-lobby-using-smartphone-watching-online-video-browsing-internet-female-tourist-resting-with-phone-lounge-area-luxury-resort.jpg" alt="Hotel">
+
+      <div class="card-content">
+        <h3>Booking a hotel</h3>
+
+        <p>
+          Take advantage of discounted room offers as you book your hotel accommodation at our partner hotels across all our destinations.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="travel-navigation-journey-vacation-trip-paper-concept.jpg" alt="Insurance">
+
+      <div class="card-content">
+        <h3>Travel insurance</h3>
+
+        <p>
+          Medical, baggage, and trip cancellation cover from ₦3,500 on domestic and international Blackcess itineraries.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <img src="blake-wisz-Xn5FbEM9564-unsplash.jpg" alt="Pay small small">
+
+      <div class="card-content">
+        <h3>Pay small small</h3>
+
+        <p>
+          Save as much as 150% by taking advantage of the early bird fares, and spread your payment over a convenient period of time.
+        </p>
+      </div>
+    </div>
+
+ <div class="card2">
+  <img src="" alt="Luggage and travel documents">
+    <div class="card-content">
+      <h3>Extra 10kg from ₦15,000 online</h3>
+      <p>Add weight before you reach the airport — pay less than counter rates on LOS–LHR and domestic sectors.</p>
+      <a href="extra-baggage.html" class="btn-primary">Buy Now</a>
+    </div>
+  </div>
+
+  <div class="card2">
+    <img src="" alt="Airport terminal">
+    <div class="card-content">
+      <h3>Buggy at ABV &amp; LOS terminals</h3>
+      <p>Meet-and-greet buggies from ₦5,000 at MMIA and Nnamdi Azikiwe — ideal for connections and reduced mobility.</p>
+      <span class="btn-primary" style="display:block;text-align:center;opacity:0.85;">Available at airport desk</span>
+    </div>
+  </div>
+  </div>
+  <!-- destinations section -->
+   <section class="destinations">
+  <h2>Our Destinations</h2>
+  
+  <div class="dest-grid">
+    <a href="#" class="card-1">
+      <img src="" alt="London skyline">
+      <div class="dest-overlay">
+        <span class="dest-tag">Top Selling</span>
+        <h3>International Routes</h3>
+      </div>
+    </a>
+
+    <a href="#" class="card-2">
+      <img src="" alt="domestic-destination">
+      <div class="dest-overlay">
+        <span class="dest-tag">Top Locations</span>
+        <h3>Domestic Routes</h3>
+      </div>
+    </a>
+
+    <a href="#" class="card-3">
+      <img src="mche-lee-AXtZnUJTmGM-unsplash.jpg" alt="">
+      <div class="dest-overlay">
+        <h3>Regional Routes</h3>
+      </div>
+    </a>
+
+    <a href="#" class="card-4">
+      <img src="" alt="">
+      <div class="dest-overlay">
+        <h3>Regional Connections</h3>
+      </div>
+    </a>
+  </div>
+</section>
+
+      <!--promo section  -->
+      <section class="promo-section">
+  <div class="promo-grid">
+    
+    
+    <a href="/about" class=" promo-card story-card">
+      <img src="" alt="Blackcess crew and aircraft">
+      <div class="story-overlay">
+        <h2>Get To Know Our Story</h2>
+        <span class="btn-learn">Learn More</span>
+      </div>
+    </a>
+
+    <div class="promo-card app-card">
+      <div class="app-content">
+        <h2><span class="red">Our</span> Mobile App!</h2>
+        <p>Search and book flights faster and more efficiently with our mobile app.</p>
+        <div class="store-buttons">
+          <a href="https://www.apple.com/app-store/" class="store-btn">
+            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
+          </a>
+          <a href="https://play.google.com/store/apps" class="store-btn">
+            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play">
+          </a>
+        </div>
+      </div>
+      <div class="app-phones">
+        <img src="https://play-lh.googleusercontent.com/N44bh3WcXA_k9wM_0xFTJNvIh01foNbV7JK-VxU74_6MRBEQ_YQvqbEof4l4rBYNsA=w526-h296"
+     alt="Blackcess Mobile App"
+     style="width:200px;border-radius:12px;flex-shrink:0;">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    <!-- News section -->
+ <section class="newsletter-wrap">
+  <img src="karl-kohler--GX84v2l4lw-unsplash.jpg" alt="Lekki Bridge" class="newsletter-bg-img">
+  
+  <div class="newsletter-card">
+    <h2>Subscribe to our newsletter</h2>
+    <p>Sign up to receive exclusive deals, travel tips, and the latest updates straight to your inbox..</p>
+    <button class="btn-subscribe">Subscribe</button>
+  </div>
+</section>
+<!-- Blackcess footer -->
+ <footer class="site-footer">
+  <div class="footer-container">
+    
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Information</h4>
+        <a href="#">FAQs</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#" class="active">Departure & Arrivals</a>
+        <a href="#">Baggage Policy</a>
+        <a href="#">Routes</a>
+        <a href="#">ADM Policy</a>
+        <a href="#">Travel Advisory</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Help and Contact</a>
+        <a href="#">Special Assistance</a>
+        <a href="#">Lost Property</a>
+        <a href="#">Blackcess Advantage</a>
+        <a href="#">Airport Charges</a>
+        <a href="#">Sales Outlets</a>
+        <a href="#">Safety Reporting</a>
+        <a href="#">Refunds</a>
+        <a href="#">Reversal</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Deals</h4>
+        <a href="#">Student Discount</a>
+        <a href="#">Partnerships</a>
+        <a href="#">Graduate Trainee Program</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Corporate</h4>
+        <a href="#">Trade Partners</a>
+        <a href="#">Corporate Accounts</a>
+        <a href="#">Charter & Group Booking</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Blackcess</h4>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Media Centre</a>
+        <a href="#">Blog</a>
+        <a href="#">Newsletter</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="socials">
+        <a href="https://www.facebook.com/" ><img src="facebook-f-brands-solid.png" alt="Facebook"></a>
+        <a href="https://twitter.com/"><img src="x-twitter-brands-solid.png" alt="X"></a>
+        <a href="https://youtube.com/"><img src="youtube-brands-solid.png" alt="YouTube"></a>
+        <a href="https://linkedin.com/"><img src="square-linkedin-brands-solid.png" alt="LinkedIn"></a>
+        <a href="https://instagram.com/"><img src="instagram-brands-solid.png" alt="Instagram"></a>
+      </div>
+
+      <div class="cert-logos">
+        <img src="image.png" alt="IOSA IATA" class="ios">
+        <img src="Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
+        <img src="image.png" alt="IATA" class="iata">
+      </div>
+
+      <div class="app-badges">
+        <a href="https://play.google.com/store/apps"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
+        <a href="https://www.apple.com/app-store/"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+<div class="copyright-bar">
+  <div class="copyright-container">
+    <span>Copyright © 2026 Blackcess Limited. All Rights Reserved.</span>
+    <div class="legal-links">
+      <a href="#">Site Map</a>
+      <span class="divider">|</span>
+      <a href="#">Privacy & Cookie Policy</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

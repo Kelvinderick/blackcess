@@ -1,0 +1,437 @@
+/* =========================================
+TABLETS
+========================================= */
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+@media (max-width: 1024px){
+
+    .navbar-container{
+        padding: 1rem;
+    }
+
+    .nav-menu{
+        gap: 0;
+    }
+
+    .nav-link{
+        padding: 0.7rem;
+        font-size: 0.85rem;
+    }
+
+    .content{
+        padding-right: 40px;
+    }
+
+    .content p{
+        font-size: 26px;
+    }
+
+    .content h1{
+        font-size: 38px;
+        max-width: 500px;
+    }
+
+    .booking-tabs{
+        flex-wrap: wrap;
+    }
+
+    .form-row{
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .promo-container{
+        grid-template-columns: 1fr;
+    }
+
+    .card-container{
+        grid-template-columns: repeat(2,1fr);
+        gap: 20px;
+    }
+
+    .dest-grid{
+        grid-template-areas:
+        "wide wide"
+        "tall small1"
+        "tall small2";
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .promo-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid{
+        grid-template-columns: repeat(3,1fr);
+    }
+
+    .newsletter-bg-img{
+        width: 100%;
+        height: 350px;
+    }
+
+}
+
+
+
+/* =========================================
+LARGE PHONES
+========================================= */
+
+@media (max-width: 768px){
+
+    .navbar-container{
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-menu{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero-slider{
+        height: 80vh;
+    }
+
+    .slide{
+        padding-left: 30px;
+        padding-right: 20px;
+    }
+
+    .content p{
+        font-size: 20px;
+    }
+
+    .content h1{
+        font-size: 30px;
+        line-height: 1.2;
+    }
+
+    button{
+        padding: 12px 28px;
+        font-size: 0.9rem;
+    }
+
+    .booking-section{
+        padding: 2rem 1rem;
+    }
+
+    .booking-container{
+        padding: 1.5rem;
+    }
+
+    .form-row{
+        grid-template-columns: 1fr;
+    }
+
+    .trip-type{
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .services-container{
+        grid-template-columns: repeat(2,1fr);
+        gap: 1rem;
+    }
+
+    .card-container{
+        grid-template-columns: 1fr;
+    }
+
+    .dest-grid{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dest-grid a{
+        height: 250px;
+    }
+
+    .app-card{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .store-buttons{
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .newsletter-card{
+        padding: 30px 20px;
+    }
+
+    .newsletter-card h2{
+        font-size: 24px;
+    }
+
+    .footer-grid{
+        grid-template-columns: repeat(2,1fr);
+        gap: 30px;
+    }
+
+    .footer-bottom{
+        flex-direction: column;
+        text-align: center;
+    }
+
+}
+
+
+
+/* =========================================
+SMALL PHONES
+========================================= */
+
+@media (max-width: 480px){
+
+    .logo-text{
+        font-size: 1.1rem;
+    }
+
+    .nav-menu{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nav-link{
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero-slider{
+        height: 70vh;
+    }
+
+    .slide{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .content p{
+        font-size: 16px;
+    }
+
+    .content h1{
+        font-size: 22px;
+        max-width: 100%;
+    }
+
+    .slider-dots{
+        top: 92%;
+    }
+
+    .booking-tabs{
+        flex-direction: column;
+    }
+
+    .tab-button{
+        width: 100%;
+        justify-content: center;
+    }
+
+    .booking-container{
+        padding: 1rem;
+    }
+
+    .travel-advisory,
+    .promo-section,
+    .services-section,
+    .disclaimer-section{
+        padding: 2rem 1rem;
+    }
+
+    .advisory-container,
+    .disclaimer-container{
+        padding: 1.2rem;
+    }
+
+    .title{
+        margin-left: 20px;
+        font-size: 20px;
+    }
+
+    .services-container{
+        grid-template-columns: 1fr;
+    }
+
+    .service-card{
+        padding: 1.5rem;
+    }
+
+    .newsletter-bg-img{
+        height: 300px;
+    }
+
+    .newsletter-card{
+        width: 95%;
+    }
+
+    .newsletter-card h2{
+        font-size: 20px;
+    }
+
+    .newsletter-card p{
+        font-size: 14px;
+    }
+
+    .footer-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .copyright-container{
+        flex-direction: column;
+    }
+
+    .legal-links{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+}
+
+/* =========================================
+HAMBURGER MENU
+========================================= */
+
+#menu-toggle{
+    display: none;
+}
+
+.hamburger{
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.hamburger span{
+    width: 28px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+
+/* =========================================
+TABLET & MOBILE NAVBAR
+========================================= */
+
+@media(max-width: 768px){
+
+    .navbar-container{
+        position: relative;
+        flex-direction: row;
+    }
+
+    .hamburger{
+        display: flex;
+    }
+
+    .nav-menu{
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        background: white;
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        max-height: 0;
+        overflow: hidden;
+
+        transition: max-height 0.4s ease;
+
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        padding: 0;
+    }
+
+    .nav-item{
+        width: 100%;
+    }
+
+    .nav-link{
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* OPEN MENU */
+
+    #menu-toggle:checked ~ .nav-menu{
+        max-height: 700px;
+        padding: 1rem 0;
+    }
+
+
+    /* HAMBURGER ANIMATION */
+
+    #menu-toggle:checked + .hamburger span:nth-child(1){
+        transform: rotate(45deg) translate(5px, 6px);
+    }
+
+    #menu-toggle:checked + .hamburger span:nth-child(2){
+        opacity: 0;
+    }
+
+    #menu-toggle:checked + .hamburger span:nth-child(3){
+        transform: rotate(-45deg) translate(5px, -6px);
+    }
+
+
+    /* MOBILE DROPDOWN FIX */
+
+    .dropdown-menu{
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+        width: 100%;
+        box-shadow: none;
+        border-top: none;
+        padding: 0;
+    }
+
+    .dropdown:hover .dropdown-menu{
+        display: block;
+    }
+
+    .discover-grid{
+        grid-template-columns: 1fr;
+        width: 100%;
+        left: 0;
+    }
+
+    .travel-menu,
+    .media-menu{
+        width: 100%;
+        left: 0;
+        transform: none;
+    }
+
+    .dropdown > .nav-link:hover ~ .travel-menu,
+    .travel-menu:hover,
+    .dropdown > .nav-link:hover ~ .media-menu,
+    .media-menu:hover{
+        transform: none;
+    }
+
+    .travel-menu-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .travel-menu-group + .travel-menu-group{
+        border-left: none;
+        border-top: 1px solid #e8e8e8;
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+}
