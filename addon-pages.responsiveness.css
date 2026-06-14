@@ -79,3 +79,73 @@
         padding-left: 2.25rem;
     }
 }
+
+@media (max-width: 768px) {
+    .addon-section-title,
+    .addon-benefits h2,
+    .addon-action-card h2 {
+        line-height: 1.25;
+    }
+
+    .addon-intro-text h2 {
+        font-size: 1.45rem;
+        line-height: 1.25;
+    }
+
+    .addon-lead {
+        font-size: 0.98rem;
+    }
+
+    .addon-table {
+        min-width: 560px;
+    }
+
+    .addon-coming-soon {
+        flex-direction: column;
+    }
+
+    .addon-policy-card,
+    .addon-benefit-card {
+        padding: 1.25rem;
+    }
+
+    .addon-related {
+        padding: 2rem 1.25rem 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .addon-section,
+    .addon-benefits {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .addon-action {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .addon-action-card {
+        padding: 1.25rem;
+    }
+
+    .addon-intro-img {
+        height: 200px;
+        border-radius: 8px;
+    }
+
+    .addon-table {
+        min-width: 520px;
+        font-size: 0.88rem;
+    }
+
+    .addon-table th,
+    .addon-table td {
+        padding: 0.7rem 0.75rem;
+    }
+
+    .addon-callout {
+        padding: 1rem;
+    }
+}

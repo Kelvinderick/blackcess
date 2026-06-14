@@ -82,6 +82,8 @@
     </g>
 </svg>
                 </div>
+            </a>
+
 
             <input type="checkbox" id="menu-toggle">
 
@@ -655,45 +657,5 @@
     </div>
   </div>
 </div>
-
-<script>
-// Mobile dropdown toggle for touch devices
-if (window.innerWidth <= 768) {
-    document.addEventListener('DOMContentLoaded', function() {
-        const dropdowns = document.querySelectorAll('.dropdown');
-        
-        dropdowns.forEach(dropdown => {
-            const link = dropdown.querySelector('.nav-link');
-            const menu = dropdown.querySelector('.dropdown-menu');
-            
-            if (link && menu) {
-                link.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        // Close other dropdowns
-                        dropdowns.forEach(other => {
-                            if (other !== dropdown) {
-                                other.querySelector('.dropdown-menu').classList.remove('active');
-                            }
-                        });
-                        
-                        // Toggle current
-                        menu.classList.toggle('active');
-                    }
-                });
-            }
-        });
-        
-        // Close on outside click
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown')) {
-                dropdowns.forEach(d => d.querySelector('.dropdown-menu').classList.remove('active'));
-            }
-        });
-    });
-}
-</script>
 </body>
 </html>

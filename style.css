@@ -370,21 +370,21 @@ input[type="radio"]{
 .slide1{
     background:
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url("bao-menglong--FhoJYnw-cg-unsplash.jpg")
+    url("./images/bao-menglong--FhoJYnw-cg-unsplash.jpg")
     center/cover;
 }
 
 .slide2{
     background:
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url("anna-gru-EzTGFKfEdmM-unsplash.jpg")
+    url("./images/anna-gru-EzTGFKfEdmM-unsplash.jpg")
     center/cover;
 }
 
 .slide3{
     background:
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url("dennis-gecaj-jVvtCCycgcQ-unsplash.jpg")
+    url("./images/dennis-gecaj-jVvtCCycgcQ-unsplash.jpg")
     center/cover;
 }
 

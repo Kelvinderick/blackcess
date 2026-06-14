@@ -629,3 +629,415 @@ TABLET & MOBILE NAVBAR
         max-width: fit-content;
     }
 }
+
+/* ==========================================================================
+   SHARED PHONE LAYOUT POLISH
+   ========================================================================== */
+
+img,
+svg {
+    max-width: 100%;
+}
+
+.navbar-logo {
+    min-width: 0;
+    flex-shrink: 1;
+}
+
+.blackcess-royal-logo {
+    display: block;
+    width: clamp(170px, 42vw, 240px);
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .navbar-container {
+        position: relative;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .blackcess-royal-logo {
+        width: min(210px, 68vw);
+    }
+
+    .logo-text {
+        font-size: 1.05rem;
+    }
+
+    .hamburger {
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        width: 44px;
+        height: 44px;
+        margin-left: auto;
+        padding: 0.35rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        position: relative;
+        z-index: 1003;
+    }
+
+    .nav-menu {
+        left: 0;
+        right: 0;
+        align-items: stretch;
+        max-height: 0;
+        z-index: 1002;
+    }
+
+    #menu-toggle:checked ~ .nav-menu {
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .dropdown-menu,
+    .dropdown-menu.active,
+    .dropdown:hover .dropdown-menu {
+        position: static;
+        left: auto;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+        width: 100%;
+        max-width: none;
+        max-height: none;
+        overflow: visible;
+        padding: 0.4rem 0;
+        margin: 0;
+        border-top: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: #f7f9fb;
+    }
+
+    .discover-grid,
+    .dropdown:hover .discover-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        width: 100%;
+        left: auto;
+        padding: 1rem;
+        transform: none;
+    }
+
+    .travel-menu,
+    .dropdown:hover .travel-menu,
+    .media-menu,
+    .dropdown:hover .media-menu {
+        left: auto;
+        width: 100%;
+        padding: 0;
+        transform: none;
+    }
+
+    .dropdown-item:hover {
+        padding-left: 1.25rem;
+    }
+
+    .card-image {
+        height: 86px;
+    }
+
+    .destinations-hero {
+        height: 34vh;
+        min-height: 240px;
+        padding: 0 1rem;
+    }
+
+    .destinations-hero-content h1 {
+        font-size: clamp(2rem, 8vw, 2.6rem);
+    }
+
+    .destinations-hero-content p,
+    .addon-hero-route {
+        font-size: 0.95rem;
+    }
+
+    .hero-slider {
+        min-height: 480px;
+    }
+
+    .slide {
+        padding: 0 1.25rem;
+    }
+
+    .content {
+        max-width: 100%;
+        padding-right: 0;
+    }
+
+    .booking-section {
+        margin-top: 0 !important;
+        padding: 2.5rem 1rem !important;
+    }
+
+    .booking-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .tab-button {
+        width: 100%;
+        justify-content: center;
+        border-radius: 8px;
+        min-height: 48px;
+        padding: 0.85rem 0.75rem;
+        white-space: normal;
+        text-align: center;
+    }
+
+    .booking-container {
+        border-radius: 8px;
+        padding: 1.25rem;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+
+    .manage-travel-section {
+        padding: 3rem 1rem;
+    }
+
+    .section-title {
+        font-size: 1.55rem;
+        line-height: 1.25;
+    }
+
+    .section-subtitle {
+        margin-bottom: 2rem;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .tool-card {
+        padding: 1.25rem;
+    }
+
+    .tool-header {
+        align-items: flex-start;
+    }
+
+    .dest-list-section {
+        margin: 2.5rem auto;
+        padding: 0 1rem;
+    }
+
+    .dest-list-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .dest-item-action {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .dest-item-action .btn-primary {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .promo-card,
+    .promo-card2 {
+        min-height: 240px;
+        padding: 1.5rem;
+    }
+
+    .promo-grid {
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .story-card {
+        min-height: 260px;
+    }
+
+    .story-overlay {
+        padding: 1.5rem;
+    }
+
+    .app-card {
+        padding: 1.25rem;
+        gap: 1.5rem;
+    }
+
+    .app-phones img,
+    .app-phones img[style] {
+        width: min(180px, 80vw) !important;
+    }
+
+    .newsletter-wrap {
+        margin: 2rem 1rem;
+    }
+
+    .newsletter-bg-img {
+        width: 100%;
+        min-height: 320px;
+    }
+
+    .newsletter-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .schedule-section {
+        padding: 3rem 0;
+    }
+
+    .schedule-container {
+        padding: 0 1rem;
+    }
+
+    .schedule-intro h2 {
+        font-size: 1.6rem;
+    }
+
+    .routes-hero {
+        padding: 3.5rem 1rem;
+    }
+
+    .routes-hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .matrix-row > div {
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .matrix-row > div::before {
+        flex: 0 0 6.5rem;
+    }
+
+    .week-calendar {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        max-width: 190px;
+    }
+
+    .time-block {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .cert-logos {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .ndp {
+        width: 90px;
+        height: 90px;
+    }
+
+    .ios,
+    .iata {
+        width: 80px;
+    }
+
+    .app-badges {
+        align-items: center;
+    }
+
+    .app-badges img {
+        max-width: 160px;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-container {
+        padding: 0.65rem 0.85rem;
+    }
+
+    .blackcess-royal-logo {
+        width: min(178px, 62vw);
+    }
+
+    #menu-toggle:checked ~ .nav-menu {
+        max-height: calc(100vh - 62px);
+    }
+
+    .booking-tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .content h1 {
+        font-size: clamp(1.35rem, 6vw, 1.8rem);
+    }
+
+    .content p {
+        letter-spacing: 0;
+    }
+
+    .content button,
+    .search-btn,
+    .promo-btn,
+    .btn-primary,
+    .btn-subscribe,
+    .tool-btn {
+        width: 100%;
+        padding: 0.85rem 1rem;
+    }
+
+    .destinations-hero {
+        min-height: 220px;
+    }
+
+    .destinations-hero-content h1 {
+        font-size: 1.75rem;
+    }
+
+    .dest-item-img {
+        height: 170px;
+    }
+
+    .site-footer {
+        padding: 2.5rem 1rem 2rem;
+    }
+
+    .footer-grid {
+        gap: 1.5rem;
+    }
+
+    .matrix-row {
+        padding: 1rem;
+    }
+
+    .matrix-row > div {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: left;
+    }
+
+    .matrix-row > div::before {
+        flex: none;
+    }
+
+    .airport-pair,
+    .time-block,
+    .week-calendar {
+        justify-content: flex-start;
+    }
+}

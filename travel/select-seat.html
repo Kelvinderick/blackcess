@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domestic Destinations | Blackcess Airlines</title>
-    <!-- 👑 EMBEDDED CROWN FAVICON (No external file needed) -->
+    <title>Select Seat | Blackcess Airlines</title>
+    <!-- ?? EMBEDDED CROWN FAVICON (No external file needed) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%23BA8B02'/><stop offset='50%25' stop-color='%23F3E5AB'/><stop offset='100%25' stop-color='%23A37A00'/></linearGradient><linearGradient id='m' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%231E293B'/><stop offset='100%25' stop-color='%230F172A'/></linearGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23m)'/><circle cx='50' cy='50' r='44' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='4 3'/><path d='M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z' fill='url(%23g)'/><path d='M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z' fill='url(%23g)'/><path d='M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z' fill='url(%23g)'/><path d='M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z' fill='url(%23g)'/><path d='M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z' fill='url(%23g)' opacity='0.8'/></svg>">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style2.css">
-    <link rel="stylesheet" href="style2.responsiveness.css">
+    <link rel="stylesheet" href="/style2.css">
+    <link rel="stylesheet" href="/style2.responsiveness.css">
+    <link rel="stylesheet" href="/addon-pages.css">
+    <link rel="stylesheet" href="/addon-pages.responsiveness.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar-container">
-            <!-- Logo -->
-            <a href="index.html" class="navbar-logo">
+        <a href="index.html" class="navbar-logo">
                 <div class="logo-design">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 120" width="100%" height="100%" class="blackcess-royal-logo">
     <defs>
@@ -84,63 +83,31 @@
     </g>
 </svg>
                 </div>
+            </a>
+
             <input type="checkbox" id="menu-toggle">
-
-            <label for="menu-toggle" class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
-
-            <!-- Navigation Menu -->
+            <label for="menu-toggle" class="hamburger"><span></span><span></span><span></span></label>
             <ul class="nav-menu" id="navMenu">
-                <!-- Home -->
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">HOME</a>
-                </li>
-
-                <!-- Discover with Dropdown -->
+                <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
                 <li class="nav-item dropdown">
-                    <a href="#discover" class="nav-link">
-                        DISCOVER <i class="fas fa-chevron-down"></i>
-                    </a>
+                    <a href="#discover" class="nav-link">DISCOVER <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-menu discover-grid">
-                        <div class="destination-card">
-                            <div class="card-image" style="background: url('4603382592139667072.png') center/cover;"></div>
-                            <a href="discover-all-original.html">All Destinations</a>
-                        </div>
-                        <div class="destination-card">
-                            <div class="card-image" style="background: url('Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;"></div>
-                            <a href="discover-domestic-original.html">Domestic Destinations</a>
-                        </div>
-                        <div class="destination-card">
-                            <div class="card-image" style="background: url('1548181186041623.png') center/cover;"></div>
-                            <a href="discover-regional-original.html">Regional Destinations</a>
-                        </div>
-                        <div class="destination-card">
-                            <div class="card-image" style="background: url('kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;"></div>
-                            <a href="discover-international-original.html">International Destinations</a>
-                        </div>
+                        <div class="destination-card"><div class="card-image" style="background: url('./book-car.html') center/cover;"></div><a href="./discover/discover-all-original.html">All Destinations</a></div>
+                        <div class="destination-card"><div class="card-image" style="background: url('./images/Curacaos\ colorful\ Dutch-inspired\ architecture\ and.png') center/cover;"></div><a href="./discover/discover-domestic-original.html">Domestic Destinations</a></div>
+                        <div class="destination-card"><div class="card-image" style="background: url('./images/1548181186041623.png') center/cover;"></div><a href="./discover/discover-regional-original.html">Regional Destinations</a></div>
+                        <div class="destination-card"><div class="card-image" style="background: url('./images/kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;"></div><a href="./discover/discover-international-original.html">International Destinations</a></div>
                     </div>
                 </li>
-
-                <!-- Book -->
-                <li class="nav-item">
-                    <a href="book.html" class="nav-link">BOOK</a>
-                </li>
-
-                <!-- Travel with Dropdown -->
+                <li class="nav-item"><a href="/book.html" class="nav-link">BOOK</a></li>
                 <li class="nav-item dropdown">
-                    <a href="#travel" class="nav-link">
-                        TRAVEL <i class="fas fa-chevron-down"></i>
-                    </a>
+                    <a href="#travel" class="nav-link">TRAVEL <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-menu travel-menu">
                         <div class="travel-menu-grid">
                             <div class="travel-menu-group">
                                 <span class="travel-menu-label">Book &amp; Manage</span>
-                                <a href="book.html" class="dropdown-item"><i class="fas fa-plane"></i> Book a Flight</a>
-                                <a href="book.html" class="dropdown-item"><i class="fas fa-calendar-check"></i> My Bookings</a>
-                                <a href="book.html" class="dropdown-item"><i class="fas fa-clipboard-check"></i> Check-in</a>
+                                <a href="/book.html" class="dropdown-item"><i class="fas fa-plane"></i> Book a Flight</a>
+                                <a href="/book.html" class="dropdown-item"><i class="fas fa-calendar-check"></i> My Bookings</a>
+                                <a href="/book.html" class="dropdown-item"><i class="fas fa-clipboard-check"></i> Check-in</a>
                                 <a href="select-seat.html" class="dropdown-item"><i class="fas fa-chair"></i> Select Seat</a>
                             </div>
                             <div class="travel-menu-group">
@@ -158,210 +125,157 @@
                         </div>
                     </div>
                 </li>
-
-                <!-- Routes -->
-                <li class="nav-item">
-                    <a href="Routes.html" class="nav-link">ROUTES</a>
-                </li>
-
-                <!-- Media with Dropdown -->
+                <li class="nav-item"><a href="/Routes.html" class="nav-link">ROUTES</a></li>
                 <li class="nav-item dropdown">
-                    <a href="#media" class="nav-link">
-                        MEDIA <i class="fas fa-chevron-down"></i>
-                    </a>
+                    <a href="#media" class="nav-link">MEDIA <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-menu media-menu">
                         <a href="#" class="dropdown-item"><i class="fas fa-photo-film"></i> Media Center</a>
                         <a href="#" class="dropdown-item"><i class="fas fa-blog"></i> Blogs</a>
                     </div>
                 </li>
-
-                <!-- Careers -->
-                <li class="nav-item">
-                    <a href="#careers" class="nav-link">CAREERS</a>
-                </li>
+                <li class="nav-item"><a href="#careers" class="nav-link">CAREERS</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- HERO HEADER -->
-    <header class="destinations-hero" style="background-image: url('');">
+    <header class="destinations-hero" style="background-image: url('./images/dennis-gecaj-jVvtCCycgcQ-unsplash.jpg');">
         <div class="destinations-hero-content">
-            <h1>Domestic Destinations</h1>
-            <p>Connecting Nigeria's Major Hubs and Cultural Cities</p>
+            <span class="addon-badge">Seat selection</span>
+            <h1>Pick your seat before ABV check-in closes</h1>
+            <p class="addon-hero-route">LOS-ABV ,LHR-LGW</p>
         </div>
     </header>
 
-    <!-- DESTINATIONS LIST -->
-    <section class="dest-list-section">
-        <h2 class="dest-category-title">Popular Domestic Routes</h2>
-        
-        <div class="dest-list-grid">
-            <!-- Lagos -->
-            <div class="dest-item-card">
-                <img src="tunde-buremo-kF0-RhpHhRA-unsplash.jpg" alt="Lagos" class="dest-item-img">
-                <div class="dest-item-details">
-                    <h3>Lagos (LOS)</h3>
-                    <p>The heartbeat of Nigeria—experience the vibrant energy, rich nightlife, beautiful beaches, and bustling commercial centers of West Africa's economic powerhouse.</p>
-                    <div class="dest-item-action">
-                        <div class="dest-price">
-                            One Way
-                            <span>₦85,000</span>
-                        </div>
-                        <a href="index.html" class="btn-primary">Book Now</a>
-                    </div>
+    <main class="addon-page">
+        <section class="addon-section">
+            <p class="addon-lead">Standard Economy on Blackcess includes a seat assigned at check-in. Pay to lock window, aisle, or extra legroom rows earlier especially on busy ABV-London departures.</p>
+            <div class="addon-intro">
+                <div class="addon-intro-text">
+                    <h2>Indicative seat fees</h2>
+                    <p>Fees vary by aircraft and load. Sales agents can quote your flight at <strong>070-4066-8343</strong>.</p>
+                </div>
+                <img class="addon-intro-img" src="./images/travel-navigation-journey-vacation-trip-paper-concept.jpg" alt="Boarding pass and seat assignment">
+            </div>
+            <div class="addon-table-wrap">
+                <table class="addon-table">
+                    <caption>Sample fees (per passenger, one way)</caption>
+                    <thead>
+                        <tr><th>Seat type</th><th>Route example</th><th>From</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Window or aisle</td><td>LOS-ABV, LOS-PHC</td><td>?8,500</td></tr>
+                        <tr><td>Extra legroom (rows 14-16)</td><td>ABV-LHR</td><td>35 / ?45,000</td></tr>
+                        <tr><td>Family block (4+ seats)</td><td>Domestic</td><td>Ask sales desk</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="addon-callout">
+                <strong>Tip:</strong> On ABV transit to London, select seats for both sectors when online booking opens. aircraft types may differ between domestic and international legs.
+            </div>
+        </section>
+
+        <section class="addon-section addon-section--alt">
+            <div class="addon-split-narrow">
+                <h2 class="addon-section-title">Seat selection FAQ</h2>
+                <div class="addon-faq">
+                    <details>
+                        <summary>Is seat selection free on any fare?</summary>
+                        <p>Some promo fares include free standard seats within 48 hours of departure. Business and First include preferred seating.</p>
+                    </details>
+                    <details>
+                        <summary>Can families sit together?</summary>
+                        <p>Request adjacent seats at booking or purchase seat assignments for all passengers on the same PNR.</p>
+                    </details>
+                    <details>
+                        <summary>What if I do not select a seat?</summary>
+                        <p>You receive an assigned seat at check-in. Aisle and window availability is not guaranteed.</p>
+                    </details>
                 </div>
             </div>
+        </section>
 
-            <!-- Abuja -->
-            <div class="dest-item-card">
-                <img src="sadiq-ali-UwoCLYgejB0-unsplash.jpg" alt="Abuja" class="dest-item-img">
-                <div class="dest-item-details">
-                    <h3>Abuja (ABV)</h3>
-                    <p>Nigeria's purpose-built capital city. Discover the scenic Zuma Rock, beautifully laid out public parks, modern architecture, and quiet suburban roads.</p>
-                    <div class="dest-item-action">
-                        <div class="dest-price">
-                            One Way
-                            <span>₦90,000</span>
-                        </div>
-                        <a href="index.html" class="btn-primary">Book Now</a>
-                    </div>
+        <section class="addon-action">
+            <div class="addon-action-card">
+                <h2>Online seat map</h2>
+                <div class="addon-coming-soon">
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    <p><strong>Coming soon</strong> Use booking reference + surname to open the map. Until then, call <strong>070-4066-8343</strong> or visit a Blackcess sales outlet.</p>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <!-- Port Harcourt -->
-            <div class="dest-item-card">
-                <img src="favour-otunji-TWiIS62FDFM-unsplash.jpg" alt="Port Harcourt" class="dest-item-img">
-                <div class="dest-item-details">
-                    <h3>Port Harcourt (PHC)</h3>
-                    <p>Nicknamed the "Garden City," Port Harcourt offers a unique mix of rich cultural heritage, beautiful waterways, and a thriving commercial economy centered around energy.</p>
-                    <div class="dest-item-action">
-                        <div class="dest-price">
-                            One Way
-                            <span>₦95,000</span>
-                        </div>
-                        <a href="index.html" class="btn-primary">Book Now</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Kano -->
-            <div class="dest-item-card">
-                <img src="ajigah-harrison-NIz2MxjnkY8-unsplash.jpg" alt="Kano" class="dest-item-img">
-                <div class="dest-item-details">
-                    <h3>Kano (KAN)</h3>
-                    <p>An ancient trading post steeped in rich Hausa-Fulani history. Explore the thousand-year-old Kurmi Market, famous dye pits, and the Emir's Palace.</p>
-                    <div class="dest-item-action">
-                        <div class="dest-price">
-                            One Way
-                            <span>₦100,000</span>
-                        </div>
-                        <a href="index.html" class="btn-primary">Book Now</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Enugu -->
-            <div class="dest-item-card">
-                <img src="ovinuchi-ejiohuo-OxesnxkySD0-unsplash.jpg" alt="Enugu" class="dest-item-img">
-                <div class="dest-item-details">
-                    <h3>Enugu (ENU)</h3>
-                    <p>The "Coal City"—a serene city built amidst dramatic rolling hills. Known for its clean environment, friendly atmosphere, and peaceful avenues.</p>
-                    <div class="dest-item-action">
-                        <div class="dest-price">
-                            One Way
-                            <span>₦90,000</span>
-                        </div>
-                        <a href="index.html" class="btn-primary">Book Now</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Benin City -->
-            <div class="dest-item-card">
-                <img src="yanick-folly-kWPNxQyAT6M-unsplash.jpg" alt="Benin City" class="dest-item-img">
-                <div class="dest-item-details">
-                    <h3>Benin City (BNI)</h3>
-                    <p>Steeped in royal history. Discover the legendary Benin bronze castings, rich museum artifacts, and the ancient historical palace of the Oba of Benin.</p>
-                    <div class="dest-item-action">
-                        <div class="dest-price">
-                            One Way
-                            <span>₦88,000</span>
-                        </div>
-                        <a href="index.html" class="btn-primary">Book Now</a>
-                    </div>
-                </div>
+    <section class="addon-related">
+        <div class="addon-related-inner">
+            <h2>Other travel add-ons</h2>
+            <div class="addon-related-links">
+                <a href="cabin-upgrade.html">Cabin Upgrade</a>
+                <a href="extra-baggage.html">Extra Baggage</a>
+                <a href="book-car.html">Book a Car</a>
+                <a href="travel-insurance.html">Travel Insurance</a>
             </div>
         </div>
     </section>
 
-    <!-- SITE FOOTER -->
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>Information</h4>
                     <a href="#">FAQs</a>
-                    <a href="#">Terms & Conditions</a>
-                    <a href="#" class="active">Departure & Arrivals</a>
-                    <a href="#">Baggage Policy</a>
+                    <a href="#">Terms &amp; Conditions</a>
+                    <a href="#">Departure &amp; Arrivals</a>
+                    <a href="extra-baggage.html">Baggage Policy</a>
                     <a href="#">Routes</a>
                     <a href="#">ADM Policy</a>
                     <a href="#">Travel Advisory</a>
                 </div>
-
                 <div class="footer-col">
                     <h4>Support</h4>
                     <a href="#">Help and Contact</a>
                     <a href="#">Special Assistance</a>
                     <a href="#">Lost Property</a>
-                    <a href="#">Advantage Club</a>
+                    <a href="#">Blackcess Advantage</a>
                     <a href="#">Airport Charges</a>
                     <a href="#">Sales Outlets</a>
                     <a href="#">Safety Reporting</a>
                     <a href="#">Refunds</a>
                     <a href="#">Reversal</a>
                 </div>
-
                 <div class="footer-col">
                     <h4>Deals</h4>
                     <a href="#">Student Discount</a>
                     <a href="#">Partnerships</a>
-                    <a href="#">Graduate Program</a>
+                    <a href="#">Graduate Trainee Program</a>
                 </div>
-
                 <div class="footer-col">
                     <h4>Corporate</h4>
                     <a href="#">Trade Partners</a>
                     <a href="#">Corporate Accounts</a>
-                    <a href="#">Charter Booking</a>
+                    <a href="#">Charter &amp; Group Booking</a>
                 </div>
-
                 <div class="footer-col">
                     <h4>Blackcess</h4>
-                    <a href="#">About Us</a>
+                    <a href="#">About</a>
                     <a href="#">Careers</a>
                     <a href="#">Media Centre</a>
                     <a href="#">Blog</a>
                     <a href="#">Newsletter</a>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <div class="socials">
-        <a href="https://www.facebook.com/" ><img src="facebook-f-brands-solid.png" alt="Facebook"></a>
-        <a href="https://twitter.com/"><img src="x-twitter-brands-solid.png" alt="X"></a>
-        <a href="https://youtube.com/"><img src="youtube-brands-solid.png" alt="YouTube"></a>
-        <a href="https://linkedin.com/"><img src="square-linkedin-brands-solid.png" alt="LinkedIn"></a>
-        <a href="https://instagram.com/"><img src="instagram-brands-solid.png" alt="Instagram"></a>
-      </div>
-
+                    <a href="https://www.facebook.com/"><img src="./images/facebook-f-brands-solid.png" alt="Facebook"></a>
+                    <a href="https://twitter.com/"><img src="./images/x-twitter-brands-solid.png" alt="X"></a>
+                    <a href="https://youtube.com/"><img src="./images/youtube-brands-solid.png" alt="YouTube"></a>
+                    <a href="https://linkedin.com/"><img src="./images/square-linkedin-brands-solid.png" alt="LinkedIn"></a>
+                    <a href="https://instagram.com/"><img src="./images/instagram-brands-solid.png" alt="Instagram"></a>
+                </div>
                 <div class="cert-logos">
-        <img src="image.png" alt="IOSA IATA" class="ios">
-        <img src="Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
-        <img src="image.png" alt="IATA" class="iata">
-      </div>
-
-
+                    <img src="./images/image.png" alt="IOSA IATA" class="ios">
+                    <img src="./images/Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
+                    <img src="./images/image.png" alt="IATA" class="iata">
+                </div>
                 <div class="app-badges">
                     <a href="https://play.google.com/store/apps"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
                     <a href="https://www.apple.com/app-store/"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
@@ -369,15 +283,13 @@
             </div>
         </div>
     </footer>
-
-    <!-- COPYRIGHT BAR -->
     <div class="copyright-bar">
         <div class="copyright-container">
-            <span>Copyright © 2026 Blackcess Airlines. All Rights Reserved.</span>
+            <span>Copyright &copy; 2026 Blackcess Limited. All Rights Reserved.</span>
             <div class="legal-links">
                 <a href="#">Site Map</a>
                 <span class="divider">|</span>
-                <a href="#">Privacy & Cookie Policy</a>
+                <a href="#">Privacy &amp; Cookie Policy</a>
             </div>
         </div>
     </div>
