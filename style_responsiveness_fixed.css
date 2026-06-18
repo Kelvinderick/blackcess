@@ -13,23 +13,41 @@ img, svg {
 /* =========================================
    HAMBURGER — hidden by default (desktop)
 ========================================= */
-#menu-toggle {
-    display: none;
-}
-
 .hamburger {
     display: none;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     gap: 5px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.35rem;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    flex-shrink: 0;
 }
 
 .hamburger span {
-    width: 28px;
-    height: 3px;
+    display: block;
+    width: 22px;
+    height: 2px;
     background: var(--primary-color);
     border-radius: 5px;
-    transition: 0.3s;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* X animation when active */
+.hamburger.is-active span:nth-child(1) {
+    transform: rotate(45deg) translate(3px, 3px);
+}
+.hamburger.is-active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.is-active span:nth-child(3) {
+    transform: rotate(-45deg) translate(3px, -3px);
 }
 
 /* =========================================
@@ -132,9 +150,12 @@ img, svg {
         flex-wrap: nowrap;
     }
 
-    .blackcess-royal-logo {
-        width: min(210px, 68vw);
+
+    .blackcess-royal-logo{
+        width:160px;
     }
+
+
 
     .logo-text {
         font-size: 1.05rem;
@@ -159,43 +180,32 @@ img, svg {
         cursor: pointer;
     }
 
-    /* Hamburger → X animation */
-    #menu-toggle:checked + .hamburger span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 6px);
-    }
-
-    #menu-toggle:checked + .hamburger span:nth-child(2) {
-        opacity: 0;
-    }
-
-    #menu-toggle:checked + .hamburger span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -6px);
-    }
-
     /* --- Slide-down nav menu --- */
-    .nav-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        width: 100%;
-        background: var(--white);
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        max-height: 0;
-        overflow: hidden;
-        padding: 0;
-        box-shadow: 0 14px 24px rgba(0, 0, 0, 0.12);
-        transition: max-height 0.35s ease;
-        z-index: 1002;
-    }
+   .nav-menu{
+    position:absolute;
+    top:100%;
+    left:0;
+    width:100%;
+    background:#fff;
 
-    #menu-toggle:checked ~ .nav-menu {
-        max-height: calc(100vh - 70px);
-        overflow-y: auto;
-        padding: 0.35rem 0;
-    }
+    display:flex;
+    flex-direction:column;
+
+    max-height:0;
+    overflow:hidden;
+
+    transition:max-height .4s ease;
+
+    z-index:9999;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.nav-menu.menu-open{
+    max-height:calc(100vh - 70px);
+    overflow-y:auto;
+}
+    
 
     /* --- Nav items --- */
     .nav-item {
@@ -214,40 +224,29 @@ img, svg {
         display: none;
     }
 
-    /* --- Dropdowns become inline/static --- */
-    .dropdown-menu,
-    .dropdown:hover .dropdown-menu {
-        position: static;
-        left: auto;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        pointer-events: auto;
-        width: 100%;
-        max-width: none;
-        max-height: none;
-        overflow: visible;
-        padding: 0.4rem 0;
-        margin: 0;
-        border-top: 0;
-        border-radius: 0;
-        box-shadow: none;
-        background: #f7f9fb;
+
+    .dropdown-menu{
+        display:none;
     }
 
-    /* Dropdowns are hidden by default on mobile;
-       shown when parent .dropdown is "open" via JS class */
-    .dropdown-menu {
-        display: none;
+    .dropdown.open .dropdown-menu{
+        display:block;
     }
 
-    .dropdown.open .dropdown-menu {
-        display: block;
+    .dropdown-menu{
+        position:static;
+        opacity:1;
+        visibility:visible;
+        transform:none;
+        box-shadow:none;
+        border:none;
+        background:#f8f9fa;
     }
 
-    .discover-grid,
-    .dropdown:hover .discover-grid,
-    .dropdown.open .discover-grid {
+
+   
+
+  .dropdown.open .discover-grid {
         display: grid;
         grid-template-columns: 1fr;
         gap: 0.75rem;
@@ -257,12 +256,8 @@ img, svg {
         transform: none;
     }
 
-    .travel-menu,
-    .dropdown:hover .travel-menu,
     .dropdown.open .travel-menu,
-    .media-menu,
-    .dropdown:hover .media-menu,
-    .dropdown.open .media-menu {
+.dropdown.open .media-menu {
         left: auto;
         width: 100%;
         padding: 0;
@@ -517,7 +512,7 @@ img, svg {
         width: min(178px, 62vw);
     }
 
-    #menu-toggle:checked ~ .nav-menu {
+    .nav-menu.menu-open {
         max-height: calc(100vh - 62px);
     }
 

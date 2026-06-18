@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Blackcess Airlines</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%23BA8B02'/><stop offset='50%25' stop-color='%23F3E5AB'/><stop offset='100%25' stop-color='%23A37A00'/></linearGradient><linearGradient id='m' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%231E293B'/><stop offset='100%25' stop-color='%230F172A'/></linearGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23m)'/><circle cx='50' cy='50' r='44' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='4 3'/><path d='M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z' fill='url(%23g)'/><path d='M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z' fill='url(%23g)'/><path d='M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z' fill='url(%23g)'/><path d='M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z' fill='url(%23g)'/><path d='M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z' fill='url(%23g)' opacity='0.8'/></svg>">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style_responsiveness_fixed.css">
+ <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_responsiveness_fixed.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -87,11 +87,11 @@
 
           
 
-            <label for="menu-toggle" class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
+         <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
 
             <!-- Navigation Menu -->
             <ul class="nav-menu" id="navMenu">
@@ -112,7 +112,7 @@
                             <a href="./discover/discover-all-original.html">All Destinations</a>
                         </div>
                         <div class="destination-card">
-                            <div class="card-image" style="background: url('./images/Curacao�s\ colorful\ Dutch-inspired\ architecture\ and�.png') center/cover;">
+                            <div class="card-image" style="background: url('./images/Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;">
                             </div>
                             <a href="./discover/domestic.html">Domestic Destinations</a>
                         </div>
@@ -191,20 +191,7 @@
                     <a href="Routes.html" class="nav-link">ROUTES</a>
                 </li>
 
-                <!-- Media with Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#media" class="nav-link">
-                        MEDIA <i class="fas fa-chevron-down"></i>
-                    </a>
-                    <div class="dropdown-menu media-menu">
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-photo-film"></i> Media Center
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-blog"></i> Blogs
-                        </a>
-                    </div>
-                </li>
+           
 
                 <!-- Careers -->
                 <li class="nav-item">
@@ -227,7 +214,7 @@
     <!-- Slide 1 -->
     <div class="slide slide1">
       <div class="content">
-        <p>ABV ? LHR  Daily service</p>
+        <p>ABV-LHR  Daily service</p>
         <h1>ABUJA TO LONDON FROM ?1,200,000 ECONOMY</h1>
         <button>Book Now</button>
       </div>
@@ -717,9 +704,9 @@
       </div>
 
       <div class="cert-logos">
-        <img src="./images/iosa-iata.png" alt="IOSA IATA" class="ios">
-        <img src="./images/ndp-audit-2025.png" alt="NDP Audit 2025" class="ndp">
-        <img src="./images/iata.png" alt="IATA" class="iata">
+        <img src="./images/image.png" alt="IOSA IATA" class="ios">
+        <img src="./images/Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
+        <img src="./images/image.png" alt="IATA" class="iata">
       </div>
 
       <div class="app-badges">
@@ -740,31 +727,39 @@
     </div>
   </div>
 </div>
+
+
 <script>
-    // Close menu when a non-dropdown nav link is clicked
-document.querySelectorAll(".nav-link").forEach(function(link) {
-  link.addEventListener("click", function() {
-    var toggle = document.getElementById("menu-toggle");
-    if (toggle && window.innerWidth <= 768) {
-      toggle.checked = false;
-    }
-  });
+const hamburger =
+document.getElementById("hamburger-btn");
+
+const navMenu =
+document.getElementById("navMenu");
+
+hamburger.addEventListener("click", () => {
+
+    hamburger.classList.toggle("is-active");
+
+    navMenu.classList.toggle("menu-open");
 });
 
-// Toggle dropdowns on mobile
-document.querySelectorAll(".dropdown > .nav-link").forEach(function(link) {
-  link.addEventListener("click", function(e) {
-    if (window.innerWidth <= 768) {
-      e.preventDefault();
-      var parent = this.closest(".dropdown");
-      var isOpen = parent.classList.contains("open");
-      // Close all other dropdowns
-      document.querySelectorAll(".dropdown.open").forEach(function(d) {
-        d.classList.remove("open");
-      });
-      if (!isOpen) { parent.classList.add("open"); }
-    }
-  });
+
+document.querySelectorAll(".dropdown > .nav-link")
+.forEach(link => {
+
+    link.addEventListener("click", function(e){
+
+        if(window.innerWidth <= 768){
+
+            e.preventDefault();
+
+            const parent =
+            this.parentElement;
+
+            parent.classList.toggle("open");
+        }
+    });
+
 });
 </script>
 </body>

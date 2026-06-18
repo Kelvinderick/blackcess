@@ -88,10 +88,6 @@ LARGE PHONES
         gap: 1rem;
     }
 
-    .nav-menu{
-        flex-wrap: wrap;
-        justify-content: center;
-    }
 
     .hero-slider{
         height: 80vh;
@@ -302,7 +298,7 @@ HAMBURGER MENU
     display: none;
 }
 
-.hamburger{
+ .hamburger{
     display: none;
     flex-direction: column;
     cursor: pointer;
@@ -315,172 +311,22 @@ HAMBURGER MENU
     background: var(--primary-color);
     border-radius: 5px;
     transition: 0.3s;
-}
+} 
 
 
-/* =========================================
-TABLET & MOBILE NAVBAR
-========================================= */
-
-@media(max-width: 768px){
-
-    .navbar-container{
-        position: relative;
-        flex-direction: row;
-    }
-
-    .hamburger{
-        display: flex;
-    }
-
-    .nav-menu{
-        position: absolute;
-        top: 100%;
-        right: 0;
-        width: 100%;
-        background: white;
-
-        flex-direction: column;
-        align-items: flex-start;
-
-        max-height: 0;
-        overflow: hidden;
-
-        transition: max-height 0.4s ease;
-
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        padding: 0;
-        z-index: 999;
-    }
-
-    .nav-item{
-        width: 100%;
-    }
-
-    .nav-link{
-        width: 100%;
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    /* OPEN MENU */
-
-    #menu-toggle:checked ~ .nav-menu{
-        max-height: 1200px;
-        padding: 1rem 0;
-        overflow-y: auto;
-    }
 
 
-    /* HAMBURGER ANIMATION */
-
-    #menu-toggle:checked + .hamburger span:nth-child(1){
-        transform: rotate(45deg) translate(5px, 6px);
-    }
-
-    #menu-toggle:checked + .hamburger span:nth-child(2){
-        opacity: 0;
-    }
-
-    #menu-toggle:checked + .hamburger span:nth-child(3){
-        transform: rotate(-45deg) translate(5px, -6px);
-    }
 
 
-    /* MOBILE DROPDOWN FIX */
 
-    .dropdown {
-        position: relative;
-    }
+   
 
-    .dropdown-menu{
-        position: static;
-        opacity: 0;
-        visibility: hidden;
-        transform: none;
-        display: block;
-        width: 100%;
-        max-height: 0;
-        overflow: hidden;
-        box-shadow: none;
-        border-top: none;
-        background: #f5f5f5;
-        transition: max-height 0.4s ease, opacity 0.4s ease;
-        padding: 0;
-        margin: 0;
-    }
 
-    .dropdown-menu.active {
-        opacity: 1;
-        visibility: visible;
-        max-height: 1000px;
-        overflow-y: auto;
-        padding: 0.5rem 0;
-    }
+ 
 
-    .discover-grid{
-        grid-template-columns: 1fr;
-        width: 100%;
-        left: 0;
-        padding: 1rem 1.5rem;
-        gap: 1rem;
-    }
 
-    .travel-menu,
-    .media-menu{
-        width: 100%;
-        left: 0;
-        transform: none;
-        padding: 0;
-    }
+   
 
-    .travel-menu-grid{
-        grid-template-columns: 1fr;
-        padding: 0;
-    }
-
-    .travel-menu-label {
-        padding: 0.75rem 1.5rem 0.5rem !important;
-    }
-
-    .travel-menu .dropdown-item {
-        padding: 0.75rem 1.5rem !important;
-    }
-
-    .travel-menu-footer {
-        padding: 0 !important;
-        border-top: none;
-        background: transparent;
-    }
-
-    .travel-menu-footer .dropdown-item {
-        padding: 0.75rem 1.5rem !important;
-    }
-
-    .travel-menu-group + .travel-menu-group{
-        border-left: none;
-        border-top: 1px solid #e8e8e8;
-        padding-top: 0.75rem;
-        margin-top: 0.5rem;
-    }
-
-    .destination-card {
-        padding: 0;
-        margin: 0;
-    }
-
-    .media-menu {
-        padding: 0 !important;
-    }
-
-    .media-menu .dropdown-item {
-        padding: 0.75rem 1.5rem !important;
-    }
-
-}
 /* ==========================================================================
    TABLET RESPONSIVENESS (Screens below 1024px)
    ========================================================================== */
@@ -630,45 +476,33 @@ TABLET & MOBILE NAVBAR
     }
 }
 
-/* ==========================================================================
-   SHARED PHONE LAYOUT POLISH
-   ========================================================================== */
-
-img,
-svg {
-    max-width: 100%;
-}
-
-.navbar-logo {
-    min-width: 0;
-    flex-shrink: 1;
-}
-
-.blackcess-royal-logo {
-    display: block;
-    width: clamp(170px, 42vw, 240px);
-    height: auto;
-}
-
 @media (max-width: 768px) {
+
+    /* --- Navbar layout --- */
     .navbar-container {
         position: relative;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        gap: 1rem;
+        gap: 0;
         padding: 0.75rem 1rem;
+        flex-wrap: nowrap;
     }
 
-    .blackcess-royal-logo {
-        width: min(210px, 68vw);
+
+    .blackcess-royal-logo{
+        width:160px;
     }
+
+
 
     .logo-text {
         font-size: 1.05rem;
     }
 
+    /* --- Hamburger button --- */
     .hamburger {
+        display: flex;
         align-items: center;
         justify-content: center;
         flex: 0 0 auto;
@@ -682,48 +516,76 @@ svg {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         position: relative;
         z-index: 1003;
+        cursor: pointer;
     }
 
-    .nav-menu {
-        left: 0;
-        right: 0;
-        align-items: stretch;
-        max-height: 0;
-        z-index: 1002;
+    /* --- Slide-down nav menu --- */
+   .nav-menu{
+    position:absolute;
+    top:100%;
+    left:0;
+    width:100%;
+    background:#fff;
+
+    display:flex;
+    flex-direction:column;
+
+    max-height:0;
+    overflow:hidden;
+
+    transition:max-height .4s ease;
+
+    z-index:9999;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.nav-menu.menu-open{
+    max-height:calc(100vh - 70px);
+    overflow-y:auto;
+}
+    
+
+    /* --- Nav items --- */
+    .nav-item {
+        width: 100%;
     }
 
-    #menu-toggle:checked ~ .nav-menu {
-        max-height: calc(100vh - 70px);
-        overflow-y: auto;
+    .nav-link {
+        width: 100%;
+        justify-content: space-between;
+        padding: 0.95rem 1.25rem;
+        border-bottom: 1px solid #edf2f7;
+        font-size: 0.92rem;
     }
 
     .nav-link::after {
         display: none;
     }
 
-    .dropdown-menu,
-    .dropdown-menu.active,
-    .dropdown:hover .dropdown-menu {
-        position: static;
-        left: auto;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        pointer-events: auto;
-        width: 100%;
-        max-width: none;
-        max-height: none;
-        overflow: visible;
-        padding: 0.4rem 0;
-        margin: 0;
-        border-top: 0;
-        border-radius: 0;
-        box-shadow: none;
-        background: #f7f9fb;
+
+    .dropdown-menu{
+        display:none;
     }
 
-    .discover-grid,
-    .dropdown:hover .discover-grid {
+    .dropdown.open .dropdown-menu{
+        display:block;
+    }
+
+    .dropdown-menu{
+        position:static;
+        opacity:1;
+        visibility:visible;
+        transform:none;
+        box-shadow:none;
+        border:none;
+        background:#f8f9fa;
+    }
+
+
+   
+
+  .dropdown.open .discover-grid {
         display: grid;
         grid-template-columns: 1fr;
         gap: 0.75rem;
@@ -733,20 +595,51 @@ svg {
         transform: none;
     }
 
-    .travel-menu,
-    .dropdown:hover .travel-menu,
-    .media-menu,
-    .dropdown:hover .media-menu {
+    .dropdown.open .travel-menu,
+.dropdown.open .media-menu {
         left: auto;
         width: 100%;
         padding: 0;
         transform: none;
     }
 
+    .travel-menu-grid {
+        grid-template-columns: 1fr;
+        padding: 0.25rem 0;
+    }
+
+    .travel-menu-group + .travel-menu-group {
+        border-left: 0;
+        border-top: 1px solid #e8e8e8;
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+    }
+
+    .travel-menu-label {
+        padding: 0.7rem 1.25rem 0.35rem;
+    }
+
+    .dropdown-item,
+    .travel-menu .dropdown-item,
+    .travel-menu-footer .dropdown-item,
+    .media-menu .dropdown-item {
+        padding: 0.7rem 1.25rem;
+    }
+
     .dropdown-item:hover {
         padding-left: 1.25rem;
     }
 
+    .travel-menu-footer {
+        padding: 0;
+        border-top: 0;
+        background: transparent;
+    }
+
+
+    .card-image {
+        height: 86px;
+    }
     .card-image {
         height: 86px;
     }
@@ -975,9 +868,7 @@ svg {
         width: min(178px, 62vw);
     }
 
-    #menu-toggle:checked ~ .nav-menu {
-        max-height: calc(100vh - 62px);
-    }
+  
 
     .booking-tabs {
         grid-template-columns: 1fr;

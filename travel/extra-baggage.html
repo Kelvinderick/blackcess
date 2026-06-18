@@ -7,10 +7,10 @@
     <!-- ?? EMBEDDED CROWN FAVICON (No external file needed) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%23BA8B02'/><stop offset='50%25' stop-color='%23F3E5AB'/><stop offset='100%25' stop-color='%23A37A00'/></linearGradient><linearGradient id='m' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%231E293B'/><stop offset='100%25' stop-color='%230F172A'/></linearGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23m)'/><circle cx='50' cy='50' r='44' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='4 3'/><path d='M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z' fill='url(%23g)'/><path d='M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z' fill='url(%23g)'/><path d='M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z' fill='url(%23g)'/><path d='M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z' fill='url(%23g)'/><path d='M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z' fill='url(%23g)' opacity='0.8'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style2.css">
-    <link rel="stylesheet" href="style2.responsiveness.css">
-    <link rel="stylesheet" href="addon-pages.css">
-    <link rel="stylesheet" href="addon-pages.responsiveness.css">
+    <link rel="stylesheet" href="/style2.css">
+    <link rel="stylesheet" href="/style2.responsiveness.css">
+    <link rel="stylesheet" href="/addon-pages.css">
+    <link rel="stylesheet" href="/addon-pages.responsiveness.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -86,19 +86,19 @@
             </a>
 
             <input type="checkbox" id="menu-toggle">
-            <label for="menu-toggle" class="hamburger"><span></span><span></span><span></span></label>
+            <label for="menu-toggle" class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></label>
             <ul class="nav-menu" id="navMenu">
-                <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+                <li class="nav-item"><a href="/index.html" class="nav-link">HOME</a></li>
                 <li class="nav-item dropdown">
                     <a href="#discover" class="nav-link">DISCOVER <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-menu discover-grid">
-                        <div class="destination-card"><div class="card-image" style="background: url('./images/4603382592139667072.png') center/cover;"></div><a href="./discover/discover-all-original.html">All Destinations</a></div>
-                        <div class="destination-card"><div class="card-image" style="background: url('./images/Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;"></div><a href="./discover/discover-domestic-original.html">Domestic Destinations</a></div>
-                        <div class="destination-card"><div class="card-image" style="background: url('./images/1548181186041623.png') center/cover;"></div><a href="./discover/discover-regional-original.html">Regional Destinations</a></div>
-                        <div class="destination-card"><div class="card-image" style="background: url('./images/kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;"></div><a href="./discover/discover-international-original.html">International Destinations</a></div>
+                        <div class="destination-card"><div class="card-image" style="background: url('../images/4603382592139667072.png') center/cover;"></div><a href="../discover/discover-all-original.html">All Destinations</a></div>
+                        <div class="destination-card"><div class="card-image" style="background: url('../images/Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;"></div><a href="../discover/discover-domestic-original.html">Domestic Destinations</a></div>
+                        <div class="destination-card"><div class="card-image" style="background: url('../images/1548181186041623.png') center/cover;"></div><a href="../discover/discover-regional-original.html">Regional Destinations</a></div>
+                        <div class="destination-card"><div class="card-image" style="background: url('../images/kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;"></div><a href="../discover/discover-international-original.html">International Destinations</a></div>
                     </div>
                 </li>
-                <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+                <li class="nav-item"><a href="/book.html" class="nav-link">BOOK</a></li>
                 <li class="nav-item dropdown">
                     <a href="#travel" class="nav-link">TRAVEL <i class="fas fa-chevron-down"></i></a>
                     <div class="dropdown-menu travel-menu">
@@ -125,20 +125,13 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item"><a href="Routes.html" class="nav-link">ROUTES</a></li>
-                <li class="nav-item dropdown">
-                    <a href="#media" class="nav-link">MEDIA <i class="fas fa-chevron-down"></i></a>
-                    <div class="dropdown-menu media-menu">
-                        <a href="#" class="dropdown-item"><i class="fas fa-photo-film"></i> Media Center</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-blog"></i> Blogs</a>
-                    </div>
-                </li>
+                <li class="nav-item"><a href="/Routes.html" class="nav-link">ROUTES</a></li>
                 <li class="nav-item"><a href="#careers" class="nav-link">CAREERS</a></li>
             </ul>
         </div>
     </nav>
 
-    <header class="destinations-hero" style="background-image: url('/images/travel-navigation-journey-vacation-trip-paper-concept.jpg');">
+    <header class="destinations-hero" style="background-image: url('../images/travel-navigation-journey-vacation-trip-paper-concept.jpg');">
         <div class="destinations-hero-content">
             <span class="addon-badge">Baggage</span>
             <h1>Extra 10kg from ?15,000 buy before the airport</h1>
@@ -252,16 +245,16 @@
             </div>
             <div class="footer-bottom">
                 <div class="socials">
-                    <a href="https://www.facebook.com/"><img src="./images/facebook-f-brands-solid.png" alt="Facebook"></a>
-                    <a href="https://twitter.com/"><img src="./images/x-twitter-brands-solid.png" alt="X"></a>
-                    <a href="https://youtube.com/"><img src="./images/youtube-brands-solid.png" alt="YouTube"></a>
-                    <a href="https://linkedin.com/"><img src="./images/square-linkedin-brands-solid.png" alt="LinkedIn"></a>
-                    <a href="https://instagram.com/"><img src="./images/instagram-brands-solid.png" alt="Instagram"></a>
+                    <a href="https://www.facebook.com/"><img src="../images/facebook-f-brands-solid.png" alt="Facebook"></a>
+                    <a href="https://twitter.com/"><img src="../images/x-twitter-brands-solid.png" alt="X"></a>
+                    <a href="https://youtube.com/"><img src="../images/youtube-brands-solid.png" alt="YouTube"></a>
+                    <a href="https://linkedin.com/"><img src="../images/square-linkedin-brands-solid.png" alt="LinkedIn"></a>
+                    <a href="https://instagram.com/"><img src="../images/instagram-brands-solid.png" alt="Instagram"></a>
                 </div>
                 <div class="cert-logos">
-                    <img src="./images/image.png" alt="IOSA IATA" class="ios">
-                    <img src="./images/Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
-                    <img src="./images/image.png" alt="IATA" class="iata">
+                    <img src="../images/image.png" alt="IOSA IATA" class="ios">
+                    <img src="../images/Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
+                    <img src="../images/image.png" alt="IATA" class="iata">
                 </div>
                 <div class="app-badges">
                     <a href="https://play.google.com/store/apps"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
@@ -280,5 +273,39 @@
             </div>
         </div>
     </div>
+    <script>
+const hamburger =
+document.getElementById("hamburger-btn");
+
+const navMenu =
+document.getElementById("navMenu");
+
+hamburger.addEventListener("click", () => {
+
+    hamburger.classList.toggle("is-active");
+
+    navMenu.classList.toggle("menu-open");
+});
+
+
+document.querySelectorAll(".dropdown > .nav-link")
+.forEach(link => {
+
+    link.addEventListener("click", function(e){
+
+        if(window.innerWidth <= 768){
+
+            e.preventDefault();
+
+            const parent =
+            this.parentElement;
+
+            parent.classList.toggle("open");
+        }
+    });
+
+});
+</script>
+
 </body>
 </html>
