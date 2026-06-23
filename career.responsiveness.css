@@ -1,0 +1,160 @@
+
+@media (max-width: 768px) {
+    /* career */
+    .career-section{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .career-content p{
+        font-size:16px;
+        line-height:1.8;
+    }
+
+    .quick-links{
+        width:100%;
+    }
+    .job-card{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:30px;
+        padding:25px;
+    }
+
+    .job-info h3{
+        font-size:1.8rem;
+    }
+
+    .job-info p{
+        font-size:1rem;
+    }
+
+    .view-btn{
+        width:100%;
+        height:60px;
+    }
+
+    .jobs-section h2{
+        font-size:2rem;
+    }
+}
+
+
+
+/* =========================================
+   SMALL PHONES  ≤ 480px
+========================================= */
+@media (max-width: 480px) {
+
+    .navbar-container {
+        padding: 0.65rem 0.85rem;
+    }
+
+    .blackcess-royal-logo {
+        width: min(178px, 62vw);
+    }
+
+    .nav-menu.menu-open {
+        max-height: calc(100vh - 62px);
+    }
+
+    .logo-text {
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    .career-section{
+        grid-template-columns: 1.5fr 1fr;
+        gap:30px;
+        padding:0 30px;
+    }
+
+    .career-content p{
+        font-size:16px;
+        line-height:1.8;
+    }
+
+    .quick-header{
+        font-size:18px;
+        padding:18px 25px;
+    }
+
+    .quick-links a{
+        padding:22px 20px;
+        font-size:16px;
+    }
+
+    .jobs-section{
+        max-width:100%;
+        margin:60px auto;
+        padding:0 30px;
+    }
+
+    .jobs-section h2{
+        font-size:1.8rem;
+    }
+
+    .job-card{
+        min-height:170px;
+        padding:25px 30px;
+    }
+
+    .job-info h3{
+        font-size:1.8rem;
+    }
+
+    .job-info p{
+        font-size:1rem;
+    }
+
+    .view-btn{
+        width:220px;
+        height:60px;
+        font-size:1.1rem;
+    }
+     /* Fix dropdown positioning */
+    .dropdown-menu{
+        left:50%;
+        transform:translateX(-50%);
+        max-width:95vw;
+    }
+
+    .discover-grid{
+        width:90vw;
+        max-width:900px;
+    }
+
+    .travel-menu{
+        width:90vw;
+        max-width:900px;
+    }
+
+    .media-menu{
+        width:300px;
+    }
+
+    .dropdown-menu{
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+    }
+
+    .dropdown.open .dropdown-menu{
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
+    }
+    .dropdown:hover .dropdown-menu{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.dropdown.open .dropdown-menu{
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+}
+}

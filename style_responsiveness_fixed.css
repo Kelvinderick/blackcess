@@ -497,7 +497,47 @@ img, svg {
         margin: 2rem auto;
         padding: 0 1rem;
     }
+    /* career */
+    .career-section{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .career-content p{
+        font-size:16px;
+        line-height:1.8;
+    }
+
+    .quick-links{
+        width:100%;
+    }
+        .job-card{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:30px;
+        padding:25px;
+    }
+
+    .job-info h3{
+        font-size:1.8rem;
+    }
+
+    .job-info p{
+        font-size:1rem;
+    }
+
+    .view-btn{
+        width:100%;
+        height:60px;
+    }
+
+    .jobs-section h2{
+        font-size:2rem;
+    }
+
 }
+
+
 
 /* =========================================
    SMALL PHONES  ≤ 480px
