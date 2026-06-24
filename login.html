@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Blackcess Royal Aviation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        /* Premium fixed image prevents scrolling distortion */
+        background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(10, 15, 30, 0.7)), 
+                    url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1920&auto=format&fit=crop') no-repeat center center;
+        background-size: cover;
+        /* background-attachment: fixed; Background stays frozen */
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        position: relative;
+        overflow-y: auto;
+    }
+
+    /* Soft ambient gold pulse that breathes deep behind the glass card */
+    body::before {
+        content: '';
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(186, 139, 2, 0.15) 0%, transparent 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+        animation: ambientGlow 8s ease-in-out infinite alternate;
+    }
+
+    .login-container {
+        /* THIS IS IT: Deep smoky transparent glass layout */
+        background: rgba(15, 23, 42, 0.45); 
+        backdrop-filter: blur(25px); /* Blurs the background image through the card */
+        -webkit-backdrop-filter: blur(25px);
+        
+        width: 100%;
+        max-width: 480px;
+        border-radius: 24px;
+        
+        /* Thin luxury glass border outline */
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        
+        padding: 3.5rem 2.5rem;
+        position: relative;
+        z-index: 10;
+        
+        /* Animations */
+        animation: premiumEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+
+    /* Elegant lift when hovering over the glass */
+    .login-container:hover {
+        transform: translateY(-5px);
+        border-color: rgba(186, 139, 2, 0.3); /* Border subtly glows gold */
+        box-shadow: 0 50px 100px rgba(0, 0, 0, 0.7), 
+                    0 0 30px rgba(186, 139, 2, 0.1);
+    }
+
+    .login-logo-wrap {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto 1.5rem auto;
+        display: flex;
+        justify-content: center;
+        animation: logoPop 1.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        animation-delay: 0.2s;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    }
+
+    /* Inverting text to crisp premium white to read perfectly on dark glass */
+    .login-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .login-header h2 {
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        font-size: 1.7rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .login-header p {
+        color: #94a3b8;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.6rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #cbd5e1;
+        margin-bottom: 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+        z-index: 2;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.95rem 1rem 0.95rem 3.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        font-size: 0.95rem;
+        color: #ffffff;
+        /* Clear frosted inputs inside the glass card */
+        background-color: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(5px);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Change input highlights to premium gold when clicked */
+    .form-input:focus {
+        outline: none;
+        border-color: #BA8B02;
+        background-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 4px rgba(186, 139, 2, 0.2);
+    }
+
+    /* Icon turns gold on focus */
+    .form-input:focus + i {
+        color: #BA8B02;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        font-size: 0.88rem;
+    }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: #cbd5e1;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .remember-me input {
+        accent-color: #BA8B02;
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+    }
+
+    .forgot-link {
+        color: #ff5722;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+
+    .forgot-link:hover {
+        color: #BA8B02;
+        text-decoration: underline;
+    }
+
+    .login-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #BA8B02 0%, #A37A00 100%);
+        color: #ffffff;
+        border: none;
+        padding: 1rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 4px 20px rgba(186, 139, 2, 0.3);
+    }
+
+    .login-btn:hover {
+        background: linear-gradient(135deg, #D4AF37 0%, #BA8B02 100%);
+        transform: scale(1.02);
+        box-shadow: 0 8px 25px rgba(186, 139, 2, 0.5);
+    }
+
+    .login-btn:active {
+        transform: scale(0.98);
+    }
+
+    .login-footer {
+        text-align: center;
+        margin-top: 2.2rem;
+        font-size: 0.9rem;
+        color: #94a3b8;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .login-footer a {
+        color: #BA8B02;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .login-footer a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+    .back-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #64748b;
+        text-decoration: none;
+        font-size: 0.85rem;
+        margin-top: 1.2rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .back-home:hover {
+        color: #BA8B02;
+        transform: translateX(-4px);
+    }
+
+    /* ============ ANIMATION ENGINES ============ */
+    @keyframes premiumEntrance {
+        from {
+            opacity: 0;
+            transform: translateY(40px) scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes logoPop {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes ambientGlow {
+        from {
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0.7;
+        }
+        to {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 1;
+        }
+    }
+    /* Styling for real-time validation feedback */
+.error-msg {
+    color: #ff5722;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-top: 0.4rem;
+    display: block;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.error-msg.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.form-input.invalid {
+    border-color: #ff5722 !important;
+    box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.15) !important;
+}
+
+/* Loading Spinner state for the luxury button */
+.login-btn.loading {
+    background: #A37A00;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.login-btn.loading .btn-text::after {
+    content: '...';
+    animation: pulseDots 1.5s infinite;
+}
+
+@keyframes pulseDots {
+    0% { content: '.'; }
+    33% { content: '..'; }
+    66% { content: '...'; }
+}
+</style>
+</head>
+<body>
+
+    <div class="login-container">
+        <!-- THE LOGO SEAMLESSLY PLACED HERE -->
+        <div class="login-logo-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 120" width="100%" height="100%">
+                <defs>
+                    <linearGradient id="premiumGold" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#BA8B02" />
+                        <stop offset="30%" stop-color="#D4AF37" />
+                        <stop offset="50%" stop-color="#F3E5AB" />
+                        <stop offset="70%" stop-color="#D4AF37" />
+                        <stop offset="100%" stop-color="#A37A00" />
+                    </linearGradient>
+                    <linearGradient id="royalMidnight" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1E293B" />
+                        <stop offset="100%" stop-color="#0F172A" />
+                    </linearGradient>
+                </defs>
+                <g transform="translate(15, 10)">
+                    <circle cx="50" cy="50" r="48" fill="url(#royalMidnight)" />
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="url(#premiumGold)" stroke-width="1.5" stroke-dasharray="4 3" />
+                    <path d="M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z" fill="url(#premiumGold)" />
+                    <circle cx="38" cy="70.5" r="1.5" fill="#0F172A" />
+                    <circle cx="50" cy="70.5" r="1.5" fill="#0F172A" />
+                    <circle cx="62" cy="70.5" r="1.5" fill="#0F172A" />
+                    <path d="M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z" fill="url(#premiumGold)" />
+                    <polygon points="30,37 32,39 30,41 28,39" fill="#ffffff" />
+                    <polygon points="50,23 52,26 50,29 48,26" fill="#ffffff" />
+                    <polygon points="70,37 72,39 70,41 68,39" fill="#ffffff" />
+                    <path d="M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z" fill="url(#premiumGold)" />
+                    <path d="M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z" fill="url(#premiumGold)" />
+                    <path d="M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z" fill="url(#premiumGold)" opacity="0.8" />
+                </g>
+                <g transform="translate(140, 0)">
+                    <text x="0" y="62" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="46" font-weight="900" fill="#111111" letter-spacing="2">
+                        BLACK<tspan fill="url(#premiumGold)">CESS</tspan>
+                    </text>
+                    <text x="3" y="88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12.5" font-weight="800" fill="#64748b" letter-spacing="10.5">
+                        ROYAL AVIATION
+                    </text>
+                    <line x1="3" y1="102" x2="160" y2="102" stroke="url(#premiumGold)" stroke-width="3.5" stroke-linecap="round" />
+                </g>
+            </svg>
+        </div>
+
+        <div class="login-header">
+            <h2>Royal Club Login</h2>
+            <p>Welcome back, member. Please access your dashboard.</p>
+        </div>
+
+       <form id="loginForm" onsubmit="return validateLogin(event)">
+    <!-- Membership Field -->
+    <div class="form-group">
+        <label for="username">Membership ID / Email</label>
+        <div class="input-wrapper">
+            <i class="fas fa-id-card"></i>
+            <input type="text" id="username" class="form-input" placeholder="e.g., BR-982341" required>
+        </div>
+        <small class="error-msg" id="usernameError"></small>
+    </div>
+
+    <!-- Password Field -->
+    <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+        </div>
+        <small class="error-msg" id="passwordError"></small>
+    </div>
+
+    <!-- Remember & Forgot Options -->
+    <div class="form-actions">
+        <label class="remember-me">
+            <input type="checkbox"> Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot Password?</a>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="login-btn" id="submitBtn">
+        <span class="btn-text">Sign In To Dashboard</span>
+    </button>
+</form>
+
+        <div class="login-footer">
+            Don't have an account yet? <a href="#">Join the Club</a>
+            <br>
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> Back to Homepage
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            alert("Authenticating premium access credentials...");
+        }
+        function validateLogin(event) {
+    event.preventDefault(); 
+
+    
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const usernameError = document.getElementById('usernameError');
+    const passwordError = document.getElementById('passwordError');
+    const submitBtn = document.getElementById('submitBtn');
+
+
+    let isValid = true;
+    usernameInput.classList.remove('invalid');
+    passwordInput.classList.remove('invalid');
+    usernameError.classList.remove('visible');
+    passwordError.classList.remove('visible');
+
+    if (usernameInput.value.trim() === "") {
+        usernameError.innerText = "Membership ID or Email is required.";
+        usernameError.classList.add('visible');
+        usernameInput.classList.add('invalid');
+        isValid = false;
+    } else if (usernameInput.value.trim().length < 4) {
+        usernameError.innerText = "Please enter a valid ID/Email.";
+        usernameError.classList.add('visible');
+        usernameInput.classList.add('invalid');
+        isValid = false;
+    }
+
+
+    if (passwordInput.value.length === 0) {
+        passwordError.innerText = "Password cannot be left blank.";
+        passwordError.classList.add('visible');
+        passwordInput.classList.add('invalid');
+        isValid = false;
+    } else if (passwordInput.value.length < 6) {
+        passwordError.innerText = "Password requires at least 6 characters.";
+        passwordError.classList.add('visible');
+        passwordInput.classList.add('invalid');
+        isValid = false;
+    }
+
+
+    if (isValid) {
+        submitBtn.classList.add('loading');
+        submitBtn.querySelector('.btn-text').innerText = "Verifying Credentials";
+
+        setTimeout(() => {
+            submitBtn.classList.remove('loading');
+            submitBtn.querySelector('.btn-text').innerText = "Access Granted";
+            
+            alert("Welcome back to Blackcess Royal Aviation! Redirecting to your premium dashboard...");
+  
+        }, 2000);
+    }
+
+    return isValid;
+}
+
+
+document.getElementById('username').addEventListener('input', function() {
+    this.classList.remove('invalid');
+    document.getElementById('usernameError').classList.remove('visible');
+});
+
+document.getElementById('password').addEventListener('input', function() {
+    this.classList.remove('invalid');
+    document.getElementById('passwordError').classList.remove('visible');
+});
+    </script>
+</body>
+</html>

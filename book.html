@@ -8,6 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%23BA8B02'/><stop offset='50%25' stop-color='%23F3E5AB'/><stop offset='100%25' stop-color='%23A37A00'/></linearGradient><linearGradient id='m' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%231E293B'/><stop offset='100%25' stop-color='%230F172A'/></linearGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23m)'/><circle cx='50' cy='50' r='44' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-dasharray='4 3'/><path d='M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z' fill='url(%23g)'/><path d='M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z' fill='url(%23g)'/><path d='M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z' fill='url(%23g)'/><path d='M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z' fill='url(%23g)'/><path d='M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z' fill='url(%23g)' opacity='0.8'/></svg>">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style2.css">
     <link rel="stylesheet" href="style2.responsiveness.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -184,29 +185,29 @@
             <p>Compare Fares and Schedule Your Next Journey Today</p>
         </div>
     </header>
+<section class="booking-section">
+    <!-- Booking Tabs with target tracking identifiers -->
+    <div class="booking-tabs">
+        <button class="tab-button active" data-tab="book-flights">
+            <i class="fas fa-plane"></i> Book Flights
+        </button>
+        <button class="tab-button" data-tab="my-bookings">
+            <i class="fas fa-calendar-check"></i> My Bookings
+        </button>
+        <button class="tab-button" data-tab="check-in">
+            <i class="fas fa-clipboard-check"></i> Check-in
+        </button>
+        <button class="tab-button" data-tab="loyalty">
+            <i class="fas fa-crown"></i> Loyalty
+        </button>
+    </div>
 
-    <!-- BOOKING FLIGHTS COMPONENT -->
-    <section class="booking-section" style="background-color: var(--bg-light); padding-top: 4rem; padding-bottom: 3rem;">
-        <!-- Booking Tabs -->
-        <div class="booking-tabs">
-            <button class="tab-button active">
-                <i class="fas fa-plane"></i> Book Flights
-            </button>
-            <button class="tab-button">
-                <i class="fas fa-calendar-check"></i> My Bookings
-            </button>
-            <button class="tab-button">
-                <i class="fas fa-clipboard-check"></i> Check-in
-            </button>
-            <button class="tab-button">
-                <i class="fas fa-crown"></i> Loyalty
-            </button>
-        </div>
 
-        <!-- Booking Form -->
-        <div class="booking-container">
+    <div class="booking-container">
+        
+        <!-- PANEL 1: Book Flights (Your original layout) -->
+        <div id="book-flights" class="tab-panel active">
             <div class="booking-form">
-                <!-- Trip Type Selection -->
                 <div class="trip-type">
                     <label class="radio-group">
                         <input type="radio" name="trip" value="oneway" checked>
@@ -218,118 +219,145 @@
                     </label>
                 </div>
 
-                <!-- Search Fields -->
                 <div class="form-row">
-                    <!-- Departure Airport -->
                     <div class="form-group">
-                        <label for="departure">
-                            <i class="fas fa-plane-departure"></i>
-                        </label>
+                        <label for="departure"><i class="fas fa-plane-departure"></i></label>
                         <select id="departure" class="form-input">
                             <option value="">Departure airport</option>
                             <option value="los">Lagos (LOS)</option>
                             <option value="abv">Abuja (ABV)</option>
                             <option value="phc">Port Harcourt (PHC)</option>
                             <option value="kan">Kano (KAN)</option>
-                            <option value="bni">Benin City (BNI)</option>
                             <option value="acc">Accra (ACC)</option>
                             <option value="dss">Dakar (DSS)</option>
-                            <option value="lhr">London Heathrow (LHR)</option>
-                            <option value="lgw">London Gatwick (LGW)</option>
-                            <option value="dxb">Dubai (DXB)</option>
-                            <option value="jfk">New York (JFK)</option>
-                            <option value="cdg">Paris (CDG)</option>
-                            <option value="ams">Amsterdam (AMS)</option>
-                            <option value="bom">Mumbai (BOM)</option>
+                            <option value="bni">Benin City (BNI)</option>
                         </select>
                     </div>
 
-                    <!-- Arrival Airport -->
                     <div class="form-group">
-                        <label for="arrival">
-                            <i class="fas fa-plane-arrival"></i>
-                        </label>
+                        <label for="arrival"><i class="fas fa-plane-arrival"></i></label>
                         <select id="arrival" class="form-input">
                             <option value="">To</option>
-                            <option value="los">Lagos (LOS)</option>
-                            <option value="abv">Abuja (ABV)</option>
-                            <option value="phc">Port Harcourt (PHC)</option>
-                            <option value="kan">Kano (KAN)</option>
-                            <option value="bni">Benin City (BNI)</option>
-                            <option value="acc">Accra (ACC)</option>
-                            <option value="dss">Dakar (DSS)</option>
-                            <option value="lhr">London Heathrow (LHR)</option>
+                            <option value="lhr">London (LHR)</option>
                             <option value="lgw">London Gatwick (LGW)</option>
                             <option value="dxb">Dubai (DXB)</option>
                             <option value="jfk">New York (JFK)</option>
                             <option value="cdg">Paris (CDG)</option>
                             <option value="ams">Amsterdam (AMS)</option>
-                            <option value="bom">Mumbai (BOM)</option>
                         </select>
                     </div>
 
-                    <!-- Departure Date -->
                     <div class="form-group">
-                        <label for="departure-date">
-                            <i class="fas fa-calendar"></i>
-                        </label>
+                        <label for="departure-date"><i class="fas fa-calendar"></i></label>
                         <input type="date" id="departure-date" class="form-input" placeholder="mm/dd/yyyy">
                     </div>
 
-                    <!-- Return Date (Hidden for One Way) -->
-                    <div class="form-group hidden-return" id="return-date-group">
-                        <label for="return-date">
-                            <i class="fas fa-calendar"></i>
-                        </label>
+                    <div class="form-group hidden-return">
+                        <label for="return-date"><i class="fas fa-calendar"></i></label>
                         <input type="date" id="return-date" class="form-input" placeholder="mm/dd/yyyy">
                     </div>
                 </div>
 
-                <!-- Passengers Selection -->
                 <div class="form-row passengers-row">
                     <div class="form-group">
-                        <label for="adults">
-                            <i class="fas fa-user-group"></i>
-                        </label>
+                        <label for="adults"><i class="fas fa-user-group"></i></label>
                         <select id="adults" class="form-input">
                             <option value="1">1 Adult (12yrs+)</option>
                             <option value="2">2 Adults</option>
-                            <option value="3">3 Adults</option>
-                            <option value="4">4 Adults</option>
-                            <option value="5">5 Adults</option>
                         </select>
                     </div>
-
                     <div class="form-group">
-                        <label for="children">
-                            <i class="fas fa-child"></i>
-                        </label>
+                        <label for="children"><i class="fas fa-child"></i></label>
                         <select id="children" class="form-input">
                             <option value="0">0 Child</option>
                             <option value="1">1 Child</option>
-                            <option value="2">2 Children</option>
-                            <option value="3">3 Children</option>
-                            <option value="4">4 Children</option>
                         </select>
                     </div>
-
                     <div class="form-group">
-                        <label for="infants">
-                            <i class="fas fa-baby"></i>
-                        </label>
+                        <label for="infants"><i class="fas fa-baby"></i></label>
                         <select id="infants" class="form-input">
-                            <option value="0">0 Infant (&lt; 2yrs)</option>
+                            <option value="0">0 Infant (< 2yrs)</option>
                             <option value="1">1 Infant</option>
-                            <option value="2">2 Infants</option>
-                            <option value="3">3 Infants</option>
                         </select>
                     </div>
-
                     <button class="search-btn">Search Flights</button>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- PANEL 2: My Bookings (Customized management fields) -->
+        <div id="my-bookings" class="tab-panel">
+            <div class="booking-form">
+                <h3>Manage Your Booking</h3>
+                <p style="color: #64748b; margin-bottom: 5px;">View or modify your itinerary, select seats, or add extra baggage.</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="booking-ref"><i class="fas fa-ticket"></i></label>
+                        <input type="text" id="booking-ref" class="form-input" placeholder="Booking Reference / PNR (e.g., BKC123)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="booking-lastname"><i class="fas fa-user"></i></label>
+                        <input type="text" id="booking-lastname" class="form-input" placeholder="Passenger Last Name">
+                    </div>
+                    
+                    <button class="search-btn">Retrieve Flight</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL 3: Check-in (Customized check-in details) -->
+        <div id="check-in" class="tab-panel">
+            <div class="booking-form">
+                <h3>Online Flight Check-In</h3>
+                <p style="color: #64748b; margin-bottom: 5px;">Skip airport queues. Web check-in opens 24 hours prior to scheduled flight departures.</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkin-pnr"><i class="fas fa-qrcode"></i></label>
+                        <input type="text" id="checkin-pnr" class="form-input" placeholder="Booking Reference or Ticket Number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="checkin-lastname"><i class="fas fa-user"></i></label>
+                        <input type="text" id="checkin-lastname" class="form-input" placeholder="Passenger Last Name">
+                    </div>
+                    
+                    <button class="search-btn">Begin Check-In</button>
+                </div>
+            </div>
+        </div>
+<!-- PANEL 4: Loyalty (Customized profile log-in) -->
+<div id="loyalty" class="tab-panel">
+    <div class="booking-form">
+        <h3>Blackcess Airlines Loyalty</h3>
+        <p style="color: #64748b; margin-bottom: 15px;">Access your digital dashboard to view accumulated miles, claims, and premium tier rewards.</p>
+        
+        <div class="form-row" style="align-items: center;">
+            <div class="form-group">
+                <label for="loyalty-id"><i class="fas fa-id-card"></i></label>
+                <input type="text" id="loyalty-id" class="form-input" placeholder="Membership ID Number">
+            </div>
+            
+            <div class="form-group">
+                <label for="loyalty-password"><i class="fas fa-lock"></i></label>
+                <input type="password" id="loyalty-password" class="form-input" placeholder="Account Password">
+            </div>
+            
+            <!-- Pointing directly to your newly created luxurious login portal -->
+            <button class="search-btn" onclick="window.location.href='login.html'">Sign In</button>
+        </div>
+        
+        <div style="margin-top: 10px; font-size: 0.85rem;">
+            <span style="color: #64748b;">Not a member yet?</span> 
+            <a href="login.html" style="color: rgb(101, 159, 207); font-weight: 700; text-decoration: none; margin-left: 5px;">Create an Account &rarr;</a>
+        </div>
+    </div>
+</div>
+
+    </div>
+</section>
 
     <!-- NEW MIDDLE SECTION: MANAGE TRAVEL PANEL -->
     <section class="manage-travel-section">
@@ -349,12 +377,12 @@
                     <p class="tool-desc">View your itinerary, select seats, request special meals, or modify your flight dates.</p>
                     <div class="tool-form">
                         <div class="tool-field">
-                            <input type="text" placeholder="Booking Ref (e.g. AB12CD)" required class="tool-input">
+                            <input type="text" id="manage-pnr" placeholder="Booking Ref (e.g. AB12CD)" required class="tool-input">
                         </div>
                         <div class="tool-field">
-                            <input type="text" placeholder="Last Name" required class="tool-input">
+                            <input type="text" id="manage-lastname" placeholder="Last Name" required class="tool-input">
                         </div>
-                        <span class="tool-btn" style="display:inline-block;text-align:center;opacity:0.9;">Coming soon</span>
+                        <button type="button" id="manage-submit-btn" class="tool-btn">Retrieve Booking</button>
                     </div>
                 </div>
 
@@ -369,12 +397,12 @@
                     <p class="tool-desc">Check real-time arrival and departure updates for any scheduled Blackcess Airlines flight.</p>
                     <div class="tool-form">
                         <div class="tool-field">
-                            <input type="text" placeholder="Flight Number (e.g. BC101)" required class="tool-input">
+                            <input type="text" id="status-flight-number" placeholder="Flight Number (e.g. BC101)" required class="tool-input">
                         </div>
                         <div class="tool-field">
-                            <input type="date" required class="tool-input">
+                            <input type="date" id="status-date" required class="tool-input">
                         </div>
-                        <span class="tool-btn" style="display:inline-block;text-align:center;opacity:0.9;">Coming soon</span>
+                        <button type="button" id="status-submit-btn" class="tool-btn">Check Status</button>
                     </div>
                 </div>
 
@@ -528,7 +556,46 @@ document.querySelectorAll(".dropdown > .nav-link")
     });
 
 });
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabPanels = document.querySelectorAll('.tab-panel');
+
+function switchTab(targetTabId) {
+    tabButtons.forEach(btn => {
+        if(btn.getAttribute('data-tab') === targetTabId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    tabPanels.forEach(panel => {
+        if(panel.id === targetTabId) {
+            panel.classList.add('active');
+        } else {
+            panel.classList.remove('active');
+        }
+    });
+}
+
+// Click event listener for manual switching
+tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const targetTabId = button.getAttribute('data-tab');
+        switchTab(targetTabId);
+    });
+});
+
+// Premium feature: If someone lands on the page with '#loyalty' in the URL, slide down and focus it!
+window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '#loyalty') {
+        switchTab('loyalty');
+        const bookingSection = document.querySelector('.booking-section');
+        if(bookingSection) {
+            bookingSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
 </script>
-<script src="flight-api.js"></script>
+<script src="blackcess-api.js"></script>
 </body>
 </html>

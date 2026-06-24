@@ -252,132 +252,176 @@
 </section>
 
 <section class="booking-section">
-    <!-- Booking Tabs -->
+    <!-- Booking Tabs with target tracking identifiers -->
     <div class="booking-tabs">
-        <button class="tab-button active">
+        <button class="tab-button active" data-tab="book-flights">
             <i class="fas fa-plane"></i> Book Flights
         </button>
-        <button class="tab-button">
+        <button class="tab-button" data-tab="my-bookings">
             <i class="fas fa-calendar-check"></i> My Bookings
         </button>
-        <button class="tab-button">
+        <button class="tab-button" data-tab="check-in">
             <i class="fas fa-clipboard-check"></i> Check-in
         </button>
-        <button class="tab-button">
+        <button class="tab-button" data-tab="loyalty">
             <i class="fas fa-crown"></i> Loyalty
         </button>
     </div>
 
-    <!-- Booking Form -->
+
     <div class="booking-container">
-        <div class="booking-form">
-            <!-- Trip Type Selection -->
-            <div class="trip-type">
-                <label class="radio-group">
-                    <input type="radio" name="trip" value="oneway" checked>
-                    <span class="radio-label">One Way</span>
-                </label>
-                <label class="radio-group">
-                    <input type="radio" name="trip" value="roundtrip">
-                    <span class="radio-label">Round Trip</span>
-                </label>
-            </div>
-
-            <!-- Search Fields -->
-            <div class="form-row">
-                <!-- Departure Airport -->
-                <div class="form-group">
-                    <label for="departure">
-                        <i class="fas fa-plane-departure"></i>
+        
+        <!-- PANEL 1: Book Flights (Your original layout) -->
+        <div id="book-flights" class="tab-panel active">
+            <div class="booking-form">
+                <div class="trip-type">
+                    <label class="radio-group">
+                        <input type="radio" name="trip" value="oneway" checked>
+                        <span class="radio-label">One Way</span>
                     </label>
-                    <select id="departure" class="form-input">
-                        <option value="">Departure airport</option>
-                        <option value="los">Lagos (LOS)</option>
-                        <option value="abv">Abuja (ABV)</option>
-                        <option value="phc">Port Harcourt (PHC)</option>
-                        <option value="kan">Kano (KAN)</option>
-                        <option value="acc">Accra (ACC)</option>
-                        <option value="dss">Dakar (DSS)</option>
-                        <option value="bni">Benin City (BNI)</option>
-                    </select>
+                    <label class="radio-group">
+                        <input type="radio" name="trip" value="roundtrip">
+                        <span class="radio-label">Round Trip</span>
+                    </label>
                 </div>
 
-                <!-- Arrival Airport -->
-                <div class="form-group">
-                    <label for="arrival">
-                        <i class="fas fa-plane-arrival"></i>
-                    </label>
-                    <select id="arrival" class="form-input">
-                        <option value="">To</option>
-                        <option value="lhr">London (LHR)</option>
-                        <option value="lgw">London Gatwick (LGW)</option>
-                        <option value="dxb">Dubai (DXB)</option>
-                        <option value="jfk">New York (JFK)</option>
-                        <option value="cdg">Paris (CDG)</option>
-                        <option value="ams">Amsterdam (AMS)</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="departure"><i class="fas fa-plane-departure"></i></label>
+                        <select id="departure" class="form-input">
+                            <option value="">Departure airport</option>
+                            <option value="los">Lagos (LOS)</option>
+                            <option value="abv">Abuja (ABV)</option>
+                            <option value="phc">Port Harcourt (PHC)</option>
+                            <option value="kan">Kano (KAN)</option>
+                            <option value="acc">Accra (ACC)</option>
+                            <option value="dss">Dakar (DSS)</option>
+                            <option value="bni">Benin City (BNI)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrival"><i class="fas fa-plane-arrival"></i></label>
+                        <select id="arrival" class="form-input">
+                            <option value="">To</option>
+                            <option value="lhr">London (LHR)</option>
+                            <option value="lgw">London Gatwick (LGW)</option>
+                            <option value="dxb">Dubai (DXB)</option>
+                            <option value="jfk">New York (JFK)</option>
+                            <option value="cdg">Paris (CDG)</option>
+                            <option value="ams">Amsterdam (AMS)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departure-date"><i class="fas fa-calendar"></i></label>
+                        <input type="date" id="departure-date" class="form-input" placeholder="mm/dd/yyyy">
+                    </div>
+
+                    <div class="form-group hidden-return">
+                        <label for="return-date"><i class="fas fa-calendar"></i></label>
+                        <input type="date" id="return-date" class="form-input" placeholder="mm/dd/yyyy">
+                    </div>
                 </div>
 
-                <!-- Departure Date -->
-                <div class="form-group">
-                    <label for="departure-date">
-                        <i class="fas fa-calendar"></i>
-                    </label>
-                    <input type="date" id="departure-date" class="form-input" placeholder="mm/dd/yyyy">
+                <div class="form-row passengers-row">
+                    <div class="form-group">
+                        <label for="adults"><i class="fas fa-user-group"></i></label>
+                        <select id="adults" class="form-input">
+                            <option value="1">1 Adult (12yrs+)</option>
+                            <option value="2">2 Adults</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="children"><i class="fas fa-child"></i></label>
+                        <select id="children" class="form-input">
+                            <option value="0">0 Child</option>
+                            <option value="1">1 Child</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="infants"><i class="fas fa-baby"></i></label>
+                        <select id="infants" class="form-input">
+                            <option value="0">0 Infant (< 2yrs)</option>
+                            <option value="1">1 Infant</option>
+                        </select>
+                    </div>
+                    <button class="search-btn">Search Flights</button>
                 </div>
-
-                <!-- Return Date (Hidden for One Way) -->
-                <div class="form-group hidden-return">
-                    <label for="return-date">
-                        <i class="fas fa-calendar"></i>
-                    </label>
-                    <input type="date" id="return-date" class="form-input" placeholder="mm/dd/yyyy">
-                </div>
-            </div>
-
-            <!-- Passengers Selection -->
-            <div class="form-row passengers-row">
-                <div class="form-group">
-                    <label for="adults">
-                        <i class="fas fa-user-group"></i>
-                    </label>
-                    <select id="adults" class="form-input">
-                        <option value="1">1 Adult (12yrs+)</option>
-                        <option value="2">2 Adults</option>
-                        <option value="3">3 Adults</option>
-                        <option value="4">4 Adults</option>
-                        <option value="5">5 Adults</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="children">
-                        <i class="fas fa-child"></i>
-                    </label>
-                    <select id="children" class="form-input">
-                        <option value="0">0 Child</option>
-                        <option value="1">1 Child</option>
-                        <option value="2">2 Children</option>
-                        <option value="3">3 Children</option>
-                        <option value="4">4 Children</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="infants">
-                        <i class="fas fa-baby"></i>
-                    </label>
-                    <select id="infants" class="form-input">
-                        <option value="0">0 Infant ( 2yrs)</option>
-                        <option value="1">1 Infant</option>
-                        <option value="2">2 Infants</option>
-                        <option value="3">3 Infants</option>
-                    </select>
-                </div>
-
-                <button class="search-btn">Search Flights</button>
             </div>
         </div>
+
+        <!-- PANEL 2: My Bookings (Customized management fields) -->
+        <div id="my-bookings" class="tab-panel">
+            <div class="booking-form">
+                <h3>Manage Your Booking</h3>
+                <p style="color: #64748b; margin-bottom: 5px;">View or modify your itinerary, select seats, or add extra baggage.</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="booking-ref"><i class="fas fa-ticket"></i></label>
+                        <input type="text" id="booking-ref" class="form-input" placeholder="Booking Reference / PNR (e.g., BKC123)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="booking-lastname"><i class="fas fa-user"></i></label>
+                        <input type="text" id="booking-lastname" class="form-input" placeholder="Passenger Last Name">
+                    </div>
+                    
+                    <button class="search-btn">Retrieve Flight</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL 3: Check-in (Customized check-in details) -->
+        <div id="check-in" class="tab-panel">
+            <div class="booking-form">
+                <h3>Online Flight Check-In</h3>
+                <p style="color: #64748b; margin-bottom: 5px;">Skip airport queues. Web check-in opens 24 hours prior to scheduled flight departures.</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkin-pnr"><i class="fas fa-qrcode"></i></label>
+                        <input type="text" id="checkin-pnr" class="form-input" placeholder="Booking Reference or Ticket Number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="checkin-lastname"><i class="fas fa-user"></i></label>
+                        <input type="text" id="checkin-lastname" class="form-input" placeholder="Passenger Last Name">
+                    </div>
+                    
+                    <button class="search-btn">Begin Check-In</button>
+                </div>
+            </div>
+        </div>
+<!-- PANEL 4: Loyalty (Customized profile log-in) -->
+<div id="loyalty" class="tab-panel">
+    <div class="booking-form">
+        <h3>Blackcess Airlines Loyalty</h3>
+        <p style="color: #64748b; margin-bottom: 15px;">Access your digital dashboard to view accumulated miles, claims, and premium tier rewards.</p>
+        
+        <div class="form-row" style="align-items: center;">
+            <div class="form-group">
+                <label for="loyalty-id"><i class="fas fa-id-card"></i></label>
+                <input type="text" id="loyalty-id" class="form-input" placeholder="Membership ID Number">
+            </div>
+            
+            <div class="form-group">
+                <label for="loyalty-password"><i class="fas fa-lock"></i></label>
+                <input type="password" id="loyalty-password" class="form-input" placeholder="Account Password">
+            </div>
+            
+            <!-- Pointing directly to your newly created luxurious login portal -->
+            <button class="search-btn" onclick="window.location.href='login.html'">Sign In</button>
+        </div>
+        
+        <div style="margin-top: 10px; font-size: 0.85rem;">
+            <span style="color: #64748b;">Not a member yet?</span> 
+            <a href="login.html" style="color: rgb(101, 159, 207); font-weight: 700; text-decoration: none; margin-left: 5px;">Create an Account &rarr;</a>
+        </div>
+    </div>
+</div>
+
     </div>
 </section>
 
@@ -760,6 +804,45 @@ document.querySelectorAll(".dropdown > .nav-link")
         }
     });
 
+});
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabPanels = document.querySelectorAll('.tab-panel');
+
+function switchTab(targetTabId) {
+    tabButtons.forEach(btn => {
+        if(btn.getAttribute('data-tab') === targetTabId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    tabPanels.forEach(panel => {
+        if(panel.id === targetTabId) {
+            panel.classList.add('active');
+        } else {
+            panel.classList.remove('active');
+        }
+    });
+}
+
+// Click event listener for manual switching
+tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const targetTabId = button.getAttribute('data-tab');
+        switchTab(targetTabId);
+    });
+});
+
+// Premium feature: If someone lands on the page with '#loyalty' in the URL, slide down and focus it!
+window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '#loyalty') {
+        switchTab('loyalty');
+        const bookingSection = document.querySelector('.booking-section');
+        if(bookingSection) {
+            bookingSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
 });
 </script>
 </body>
