@@ -490,11 +490,14 @@ HAMBURGER MENU
     }
 
 
-    .blackcess-royal-logo{
-        width:160px;
+    .logo-design {
+        height: 58px;
     }
 
-
+    .blackcess-royal-logo{
+     width: 308px;
+        height: 142px;
+    }
 
     .logo-text {
         font-size: 1.05rem;
@@ -865,7 +868,8 @@ HAMBURGER MENU
     }
 
     .blackcess-royal-logo {
-        width: min(178px, 62vw);
+        width: 150px;
+        height: 62px;
     }
 
   
@@ -930,5 +934,57 @@ HAMBURGER MENU
     .time-block,
     .week-calendar {
         justify-content: flex-start;
+    }
+}
+/*new mobile changes*/
+@media (max-width: 768px) {
+    .navbar-container {
+        padding: 0.55rem 0.9rem;
+    }
+
+    .nav-menu {
+        border-top: 1px solid #e6edf3;
+    }
+
+    .nav-menu.menu-open,
+    #menu-toggle:checked ~ .nav-menu {
+        max-height: calc(100vh - 74px);
+    }
+
+    .nav-link {
+        border-radius: 0;
+        font-weight: 700;
+    }
+
+    .destinations-hero {
+        min-height: 320px;
+    }
+
+    .destinations-hero-content h1 {
+        font-size: clamp(1.85rem, 8vw, 2.6rem);
+    }
+
+    .booking-tabs {
+        border-radius: 8px;
+        padding: 0.4rem;
+    }
+
+    .booking-container,
+    .service-card,
+    .destination-item,
+    .app-card,
+    .newsletter-card {
+        box-shadow: 0 8px 22px rgba(18, 50, 71, 0.08);
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-design {
+        height: 52px;
+    }
+
+    .blackcess-royal-logo {
+        width: 142px;
+        height: 58px;
     }
 }

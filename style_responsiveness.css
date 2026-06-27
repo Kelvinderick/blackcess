@@ -1,18 +1,15 @@
-/* =========================================
-   BASE — prevent horizontal scroll
-========================================= */
+/*BASE — prevent horizontal scroll*/
 html, body {
     width: 100%;
     overflow-x: hidden;
 }
 
+
 img, svg {
     max-width: 100%;
 }
 
-/* =========================================
-   HAMBURGER — hidden by default (desktop)
-========================================= */
+/* HAMBURGER — hidden by default (desktop)*/
 .hamburger {
     display: none;
     flex-direction: column;
@@ -49,10 +46,7 @@ img, svg {
 .hamburger.is-active span:nth-child(3) {
     transform: rotate(-45deg) translate(3px, -3px);
 }
-
-/* =========================================
-   LOGO
-========================================= */
+/* logo */
 .navbar-logo {
     min-width: 0;
     flex-shrink: 1;
@@ -60,13 +54,13 @@ img, svg {
 
 .blackcess-royal-logo {
     display: block;
-    width: clamp(170px, 42vw, 240px);
-    height: auto;
+    width: 300px;
+    height: 142px;
+    object-fit: cover;
+    object-position: center;
 }
 
-/* =========================================
-   TABLETS  ≤ 1024px
-========================================= */
+/*TABLETS  ≤ 1024px*/
 @media (max-width: 1024px) {
 
     .navbar-container {
@@ -134,9 +128,7 @@ img, svg {
     }
 }
 
-/* =========================================
-   MOBILE  ≤ 768px  — hamburger activates
-========================================= */
+/* MOBILE  ≤ 768px  — hamburger activates */
 @media (max-width: 768px) {
 
     /* --- Navbar layout --- */
@@ -151,11 +143,14 @@ img, svg {
     }
 
 
-    .blackcess-royal-logo{
-        width:160px;
+    .logo-design {
+        height: 58px;
     }
 
-
+    .blackcess-royal-logo{
+        width: 308px;
+        height: 142px;
+    }
 
     .logo-text {
         font-size: 1.05rem;
@@ -539,9 +534,7 @@ img, svg {
 
 
 
-/* =========================================
-   SMALL PHONES  ≤ 480px
-========================================= */
+/* small phones */
 @media (max-width: 480px) {
 
     .navbar-container {
@@ -549,7 +542,8 @@ img, svg {
     }
 
     .blackcess-royal-logo {
-        width: min(178px, 62vw);
+        width: 150px;
+        height: 62px;
     }
 
     .nav-menu.menu-open {
@@ -673,5 +667,62 @@ img, svg {
     .legal-links {
         flex-wrap: wrap;
         justify-content: center;
+    }
+}
+/*MOBILE POLISH OVERRIDES */
+@media (max-width: 768px) {
+    .navbar-container {
+        padding: 0.55rem 0.9rem;
+    }
+
+    .nav-menu {
+        border-top: 1px solid #e6edf3;
+    }
+
+    .nav-menu.menu-open {
+        max-height: calc(100vh - 74px);
+    }
+
+    .nav-link {
+        border-radius: 0;
+        font-weight: 700;
+    }
+
+    .hero-slider {
+        min-height: 520px;
+    }
+
+    .content p {
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+    }
+
+    .content h1 {
+        font-size: clamp(1.85rem, 8vw, 2.55rem);
+    }
+
+    .booking-tabs {
+        border-radius: 8px;
+        padding: 0.4rem;
+    }
+
+    .booking-container,
+    .service-card,
+    .card,
+    .card2,
+    .app-card,
+    .newsletter-card {
+        box-shadow: 0 8px 22px rgba(18, 50, 71, 0.08);
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-design {
+        height: 52px;
+    }
+
+    .blackcess-royal-logo {
+        width: 142px;
+        height: 58px;
     }
 }

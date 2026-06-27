@@ -23,7 +23,7 @@ body {
     background-color: var(--bg-light);
 }
 
-/* ============ NAVBAR ============ */
+/*  NAVBAR  */
 .navbar {
     background: #ffffff;
     border-bottom: 3px solid var(--secondary-color);
@@ -58,36 +58,16 @@ a.navbar-logo {
     display: flex;
     align-items: center;
     gap: 0.8rem;
+    height: 72px;
+    overflow: hidden;
 }
 
-.crown-wrapper {
-    width: 38px;
-    height: 38px;
-    background: linear-gradient(135deg, var(--accent-color), hsl(236, 11%, 24%));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 3px 10px rgba(255, 87, 34, 0.3);
-    animation: float 3s ease-in-out infinite;
-}
-
-
-.logo-design:hover .crown-wrapper {
-    transform: translateY(-2px);
-}
-
-.crown-icon {
-    width: 24px;
-    height: 24px;
-    color: white;
-}
-
-.logo-text {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    text-transform: uppercase;
+.blackcess-royal-logo {
+    display: block;
+    width: 10000px;
+    height: 222px;
+    object-fit: contain;
+    object-position: center;
 }
 
 /* Navigation Menu */
@@ -123,11 +103,7 @@ a.navbar-logo {
     position: relative;
     font-size: 0.95rem;
 }
-/* 
-.nav-link:hover {
-    background-color: var(--bg-light);
-    color: var(--primary-color);
-} */
+
 
 .nav-link::after {
     content: '';
@@ -144,12 +120,9 @@ a.navbar-logo {
     width: calc(100% - 2.4rem);
  } 
 
-/* .nav-link i {
-    font-size: 0.75rem;
-    transition: transform 0.3s ease;
-} */
 
-/* ============ DROPDOWN MENUS ============ */
+
+/*  DROPDOWN MENUS  */
 .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -321,9 +294,7 @@ a.navbar-logo {
     background-color: #e0e0e0;
     margin: 0.5rem 0;
 }
-/* =========================================
-HERO SLIDER
-========================================= */
+/*HERO SLIDER*/
 
 .hero-slider{
     width:100%;
@@ -389,9 +360,7 @@ input[type="radio"]{
     center/cover;
 }
 
-/* =========================================
-TEXT ANIMATION
-========================================= */
+/*TEXT ANIMATION*/
 
 .content{
     opacity:0;
@@ -444,9 +413,7 @@ button:hover{
     border:transparent;
 }
 
-/* =========================================
-SLIDER DOTS
-========================================= */
+/* slider dots */
 
 .slider-dots{
     position:absolute;
@@ -483,9 +450,6 @@ SLIDER DOTS
     animation-delay:10s;
 }
 
-/* =========================================
-SLIDER MOVEMENT
-========================================= */
 
 @keyframes slideShow{
 
@@ -507,9 +471,6 @@ SLIDER MOVEMENT
 
 }
 
-/* =========================================
-TEXT REVEAL
-========================================= */
 
 @keyframes textReveal{
 
@@ -530,9 +491,6 @@ TEXT REVEAL
 
 }
 
-/* =========================================
-DOT ANIMATION
-========================================= */
 
 @keyframes dotActive{
 
@@ -553,7 +511,7 @@ DOT ANIMATION
 
 }
 
-/* ============ BOOKING SECTION ============ */
+/* BOOKING SECTION */
 .booking-section {
     background: var(--white);
     padding: 3rem 2rem;
@@ -622,14 +580,6 @@ DOT ANIMATION
     gap: 2rem;
 }
 
-/* .radio-group {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--text-dark);
-} */
 
 .radio-group input[type="radio"] {
     display: inline-block !important;
@@ -732,7 +682,7 @@ DOT ANIMATION
     display: none;
 }
 
-/* ============ TRAVEL ADVISORY SECTION ============ */
+/*TRAVEL ADVISORY SECTION*/
 .travel-advisory {
     padding: 3rem 2rem;
 }
@@ -789,7 +739,7 @@ DOT ANIMATION
 
 
 
-/* ============ PROMOTIONAL SECTION ============ */
+/*PROMOTIONAL SECTION*/
 .promo-section {
     background-color: #f5f5f5;
     padding: 3rem 2rem;
@@ -889,7 +839,7 @@ DOT ANIMATION
     transform: scale(0.98);
 }
 
-/* ============ DISCLAIMER SECTION ============ */
+/*DISCLAIMER SECTION */
 .disclaimer-section {
     background-color: #f5f5f5;
     padding: 3rem 2rem;
@@ -927,7 +877,7 @@ DOT ANIMATION
 }
 
 
-/* ============ SERVICES SECTION ============ */
+/* SECTION*/
 .services-section {
     background-color: #f9f9f9;
     padding: 3rem 2rem;
@@ -1001,10 +951,10 @@ a.service-card {
 }
 
     .card-container{
-      /* width:90%; */
+
       margin-left: 20px;
       margin-right: 20px;
-     /* max-width: 1500px; */
+  
       display:grid;
       grid-template-columns:repeat(4, 1fr);
       gap:4px;
@@ -1457,11 +1407,9 @@ a.btn-primary {
 
 .ndp{
   height: 140px;
-  /* background: #fff; */
   width: 140px;
   padding: 6px;
   border-radius: 4px;
-  /* margin-top: 56px; */
 }
 .ios{
     width: 100px;
@@ -1661,6 +1609,149 @@ a.btn-primary {
     color: #ffffff !important;
 }
 
+/* ============ SITE POLISH OVERRIDES ============ */
+:root {
+    --brand-ink: #123247;
+    --brand-teal: #149193;
+    --surface-line: #e6edf3;
+    --surface-soft: #f6f9fb;
+}
+
+body {
+    background: var(--surface-soft);
+}
+
+.navbar {
+    border-bottom: 1px solid var(--surface-line);
+}
+
+.navbar-container {
+    max-width: 1240px;
+    padding: 0.65rem 2rem;
+}
+
+.nav-menu {
+    gap: 0.15rem;
+}
+
+.nav-link {
+    border-radius: 8px;
+    color: var(--brand-ink);
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.nav-link:hover {
+    background: rgba(20, 145, 147, 0.08);
+    color: var(--brand-teal);
+}
+
+.nav-link::after {
+    display: none;
+}
+
+.dropdown-menu {
+    border: 1px solid var(--surface-line);
+    border-top: 3px solid var(--brand-teal);
+}
+
+.hero-slider {
+    height: min(82vh, 760px);
+    min-height: 560px;
+}
+
+.slide {
+    height: 100%;
+    padding-left: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
+}
+
+.content {
+    max-width: 620px;
+}
+
+.content p {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.content h1 {
+    font-size: clamp(2.1rem, 4.5vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: 0;
+}
+
+button,
+.search-btn,
+.promo-btn,
+.btn-primary,
+.btn-learn,
+.btn-subscribe {
+    border-radius: 8px;
+}
+
+.booking-section,
+.services-section {
+    background: var(--surface-soft);
+}
+
+.booking-tabs {
+    background: #ffffff;
+    border: 1px solid var(--surface-line);
+    border-radius: 8px;
+    padding: 0.45rem;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 28px rgba(18, 50, 71, 0.08);
+}
+
+.tab-button {
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+.tab-button.active {
+    background: var(--secondary-color) !important;
+    color: #ffffff !important;
+}
+
+.booking-container,
+.service-card,
+.card,
+.card2,
+.app-card,
+.newsletter-card {
+    border: 1px solid var(--surface-line);
+    box-shadow: 0 12px 34px rgba(18, 50, 71, 0.08);
+}
+
+.booking-container {
+    border-radius: 8px;
+}
+
+.service-card {
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+.service-card:hover {
+    box-shadow: 0 16px 38px rgba(18, 50, 71, 0.14);
+}
+
+.title,
+.destinations h2 {
+    color: var(--brand-ink);
+    letter-spacing: 0;
+}
+
+.btn-primary:hover,
+.btn-learn:hover,
+.btn-subscribe:hover,
+.promo-btn:hover {
+    background: var(--brand-teal);
+}
+
 .tab-panel h3 {
     color: var(--secondary-color, #003d7a);
     font-size: 1.5rem;
@@ -1672,7 +1763,5 @@ a.btn-primary {
     font-size: 0.95rem;
     margin-bottom: 20px;
 }
-
-
 
 

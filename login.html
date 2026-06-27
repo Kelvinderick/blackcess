@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Blackcess Royal Aviation</title>
+    <title>Login | Blackcess Airlines</title>
+<link rel="icon" type="image/png" href="./images/Untitled design.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -14,11 +15,9 @@
     }
 
     body {
-        /* Premium fixed image prevents scrolling distortion */
         background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(10, 15, 30, 0.7)), 
                     url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=1920&auto=format&fit=crop') no-repeat center center;
         background-size: cover;
-        /* background-attachment: fixed; Background stays frozen */
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -28,7 +27,6 @@
         overflow-y: auto;
     }
 
-    /* Soft ambient gold pulse that breathes deep behind the glass card */
     body::before {
         content: '';
         position: absolute;
@@ -45,16 +43,15 @@
     }
 
     .login-container {
-        /* THIS IS IT: Deep smoky transparent glass layout */
         background: rgba(15, 23, 42, 0.45); 
-        backdrop-filter: blur(25px); /* Blurs the background image through the card */
+        backdrop-filter: blur(25px); 
         -webkit-backdrop-filter: blur(25px);
         
         width: 100%;
         max-width: 480px;
         border-radius: 24px;
         
-        /* Thin luxury glass border outline */
+
         border: 1px solid rgba(255, 255, 255, 0.12);
         box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 
                     inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -62,16 +59,15 @@
         padding: 3.5rem 2.5rem;
         position: relative;
         z-index: 10;
-        
-        /* Animations */
+
         animation: premiumEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
     }
 
-    /* Elegant lift when hovering over the glass */
+
     .login-container:hover {
         transform: translateY(-5px);
-        border-color: rgba(186, 139, 2, 0.3); /* Border subtly glows gold */
+        border-color: rgba(186, 139, 2, 0.3); 
         box-shadow: 0 50px 100px rgba(0, 0, 0, 0.7), 
                     0 0 30px rgba(186, 139, 2, 0.1);
     }
@@ -87,7 +83,14 @@
         filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     }
 
-    /* Inverting text to crisp premium white to read perfectly on dark glass */
+    .login-logo {
+        display: block;
+        width: 280px;
+        height: 150px;
+        object-fit: cover;
+        object-position: center;
+    }
+
     .login-header {
         text-align: center;
         margin-bottom: 2.5rem;
@@ -144,13 +147,12 @@
         border-radius: 12px;
         font-size: 0.95rem;
         color: #ffffff;
-        /* Clear frosted inputs inside the glass card */
         background-color: rgba(255, 255, 255, 0.07);
         backdrop-filter: blur(5px);
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Change input highlights to premium gold when clicked */
+
     .form-input:focus {
         outline: none;
         border-color: #BA8B02;
@@ -158,7 +160,6 @@
         box-shadow: 0 0 0 4px rgba(186, 139, 2, 0.2);
     }
 
-    /* Icon turns gold on focus */
     .form-input:focus + i {
         color: #BA8B02;
     }
@@ -263,7 +264,6 @@
         transform: translateX(-4px);
     }
 
-    /* ============ ANIMATION ENGINES ============ */
     @keyframes premiumEntrance {
         from {
             opacity: 0;
@@ -296,7 +296,6 @@
             opacity: 1;
         }
     }
-    /* Styling for real-time validation feedback */
 .error-msg {
     color: #ff5722;
     font-size: 0.78rem;
@@ -318,7 +317,7 @@
     box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.15) !important;
 }
 
-/* Loading Spinner state for the luxury button */
+
 .login-btn.loading {
     background: #A37A00;
     pointer-events: none;
@@ -340,47 +339,8 @@
 <body>
 
     <div class="login-container">
-        <!-- THE LOGO SEAMLESSLY PLACED HERE -->
         <div class="login-logo-wrap">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 120" width="100%" height="100%">
-                <defs>
-                    <linearGradient id="premiumGold" x1="0%" y1="100%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#BA8B02" />
-                        <stop offset="30%" stop-color="#D4AF37" />
-                        <stop offset="50%" stop-color="#F3E5AB" />
-                        <stop offset="70%" stop-color="#D4AF37" />
-                        <stop offset="100%" stop-color="#A37A00" />
-                    </linearGradient>
-                    <linearGradient id="royalMidnight" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#1E293B" />
-                        <stop offset="100%" stop-color="#0F172A" />
-                    </linearGradient>
-                </defs>
-                <g transform="translate(15, 10)">
-                    <circle cx="50" cy="50" r="48" fill="url(#royalMidnight)" />
-                    <circle cx="50" cy="50" r="44" fill="none" stroke="url(#premiumGold)" stroke-width="1.5" stroke-dasharray="4 3" />
-                    <path d="M32,68 L68,68 C68,71 65,73 50,73 C35,73 32,71 32,68 Z" fill="url(#premiumGold)" />
-                    <circle cx="38" cy="70.5" r="1.5" fill="#0F172A" />
-                    <circle cx="50" cy="70.5" r="1.5" fill="#0F172A" />
-                    <circle cx="62" cy="70.5" r="1.5" fill="#0F172A" />
-                    <path d="M32,66 L30,42 L42,52 L50,30 L58,52 L70,42 L68,66 Z" fill="url(#premiumGold)" />
-                    <polygon points="30,37 32,39 30,41 28,39" fill="#ffffff" />
-                    <polygon points="50,23 52,26 50,29 48,26" fill="#ffffff" />
-                    <polygon points="70,37 72,39 70,41 68,39" fill="#ffffff" />
-                    <path d="M6,50 C22,46 32,56 32,66 L34,66 C36,54 24,34 2,42 Z" fill="url(#premiumGold)" />
-                    <path d="M94,50 C78,46 68,56 68,66 L66,66 C64,54 76,34 98,42 Z" fill="url(#premiumGold)" />
-                    <path d="M12,64 C32,78 68,78 88,64 C70,72 30,72 12,64 Z" fill="url(#premiumGold)" opacity="0.8" />
-                </g>
-                <g transform="translate(140, 0)">
-                    <text x="0" y="62" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="46" font-weight="900" fill="#111111" letter-spacing="2">
-                        BLACK<tspan fill="url(#premiumGold)">CESS</tspan>
-                    </text>
-                    <text x="3" y="88" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12.5" font-weight="800" fill="#64748b" letter-spacing="10.5">
-                        ROYAL AVIATION
-                    </text>
-                    <line x1="3" y1="102" x2="160" y2="102" stroke="url(#premiumGold)" stroke-width="3.5" stroke-linecap="round" />
-                </g>
-            </svg>
+            <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="login-logo">
         </div>
 
         <div class="login-header">

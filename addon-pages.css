@@ -1,6 +1,4 @@
-/* =========================================
-   TRAVEL ADD-ON PAGES
-========================================= */
+
 
 .addon-page {
     background: var(--bg-light);
@@ -404,7 +402,6 @@
 .addon-timeline li {
     position: relative;
     padding: 0 0 1.75rem 2.5rem;
-    /* border-left: 2px solid rgba(20, 145, 147, 0.4); */
     margin-left: 0.75rem;
 }
 
