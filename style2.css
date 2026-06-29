@@ -15,7 +15,7 @@
     --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12)
       --brand-ink: #123247;
-    --brand-teal: #149193;
+    --brand-teal: #bf392a;
     --surface-line: #e6edf3;
     --surface-soft: #f6f9
 }
@@ -133,7 +133,7 @@ body {
     transform: translateY(-8px);
     transition: all 0.2s ease;
     margin-top: 0;
-    border-top: 3px solid rgba(20, 145, 147, 0.971);
+    border-top: 3px solid #bf392a;
     pointer-events: none;
     box-shadow: var(--shadow-lg);
     z-index: 1001;
@@ -274,14 +274,14 @@ body {
 
 .dropdown-item:hover {
     background-color: var(--bg-light);
-    color:rgba(20, 145, 147, 0.971) ;
+    color:#bf392a;
     padding-left: 1.8rem;
 }
 
 .dropdown-item i {
     width: 20px;
     text-align: center;
-    color: rgba(20, 145, 147, 0.971);
+    color:#bf392a;
 }
 
 .dropdown-divider {

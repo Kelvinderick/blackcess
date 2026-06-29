@@ -10,7 +10,7 @@
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    background: rgba(20, 145, 147, 0.9);
+    background: #bf392a;
     padding: 0.35rem 0.85rem;
     border-radius: 999px;
     margin-bottom: 0.75rem;
@@ -105,7 +105,7 @@
 
 .addon-benefit-card i {
     font-size: 2rem;
-    color: rgba(20, 145, 147, 0.971);
+    color: #bf392a;
     margin-bottom: 1rem;
 }
 
@@ -132,7 +132,7 @@
     border-radius: 12px;
     padding: 2.5rem;
     box-shadow: var(--shadow-lg);
-    border-top: 4px solid rgba(20, 145, 147, 0.971);
+    border-top: 4px solid #bf392a;
 }
 
 .addon-action-card h2 {
@@ -159,7 +159,7 @@
 
 .addon-coming-soon i {
     font-size: 1.5rem;
-    color: rgba(20, 145, 147, 0.971);
+    color: #bf392a;
     margin-top: 0.15rem;
 }
 
@@ -249,7 +249,7 @@
 }
 
 .addon-policy-card h3 i {
-    color: rgba(20, 145, 147, 0.971);
+    color: #bf392a;
 }
 
 .addon-policy-card ul {
@@ -349,7 +349,7 @@
 
 .addon-callout {
     background: #f0f7f7;
-    border-left: 4px solid rgba(20, 145, 147, 0.971);
+    border-left: 4px solid #bf392a;
     padding: 1.25rem 1.5rem;
     margin: 1.5rem 0;
     border-radius: 0 8px 8px 0;
@@ -464,7 +464,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: rgba(20, 145, 147, 0.971);
+    color: #bf392a;
     margin-bottom: 0.5rem;
 }
 

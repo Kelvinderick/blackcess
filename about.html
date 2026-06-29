@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Blackcess Airlines</title>
+  <link rel="icon" type="image/png" href="./images/Untitled design.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_responsiveness.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /*PAGE HERO */
+    .about-hero {
+      background: #000;
+      color: #fff;
+      padding: 80px 24px 64px;
+      text-align: center;
+      border-bottom: 4px solid #c0392b;
+    }
+    .about-hero h1 {
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .about-hero p {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── SECTION WRAPPER ───────────────────────────── */
+    .about-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .about-section + .about-section {
+      padding-top: 0;
+    }
+
+    /* ── SECTION LABEL ─────────────────────────────── */
+    .section-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c0392b;
+      margin-bottom: 10px;
+    }
+    .section-heading {
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .section-body {
+      color: #475569;
+      font-size: 0.97rem;
+      line-height: 1.8;
+      max-width: 720px;
+    }
+    .section-body p + p {
+      margin-top: 14px;
+    }
+
+    /* ── TWO COL ───────────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .two-col.reverse { direction: rtl; }
+    .two-col.reverse > * { direction: ltr; }
+    .col-image {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0a0a0a;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .col-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .col-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a0a0a, #1e293b);
+      font-size: 4rem;
+      color: #c0392b;
+    }
+
+    /* ── STATS STRIP ───────────────────────────────── */
+    .stats-strip {
+      background: #000;
+      color: #fff;
+      padding: 48px 24px;
+    }
+    .stats-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    .stat-item .stat-num {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #c0392b;
+      line-height: 1;
+    }
+    .stat-item .stat-label {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* ── VALUES GRID ───────────────────────────────── */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .value-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 24px;
+      border: 1.5px solid #e2e8f0;
+      transition: box-shadow .2s;
+    }
+    .value-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,.1);
+    }
+    .value-icon {
+      font-size: 1.6rem;
+      color: #c0392b;
+      margin-bottom: 14px;
+    }
+    .value-card h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .value-card p {
+      font-size: 0.85rem;
+      color: #64748b;
+      line-height: 1.7;
+    }
+
+    /* ── LEADERSHIP GRID ───────────────────────────── */
+    .leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 40px;
+    }
+    .leader-card {
+      text-align: center;
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px 20px 24px;
+      border: 1.5px solid #e2e8f0;
+    }
+    .leader-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0a0a0a, #334155);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #fff;
+    }
+    .leader-name {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .leader-title {
+      font-size: 0.8rem;
+      color: #c0392b;
+      font-weight: 600;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    /* ── MILESTONES ────────────────────────────────── */
+    .timeline {
+      position: relative;
+      margin-top: 40px;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -29px;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #c0392b;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #c0392b;
+    }
+    .timeline-year {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #c0392b;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .timeline-event {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* ── DIVIDER ───────────────────────────────────── */
+    .section-divider {
+      border: none;
+      border-top: 1.5px solid #e2e8f0;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── QUICK LINKS (same as career.html) ─────────── */
+    .quick-links-section {
+      background: #f8fafc;
+      padding: 40px 24px;
+      border-top: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .quick-links-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .quick-links-inner h4 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+    .quick-links-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .quick-links-grid a {
+      background: #fff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 9px 18px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #0a0a0a;
+      text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .quick-links-grid a:hover {
+      border-color: #c0392b;
+      color: #c0392b;
+    }
+
+    .copyright-bar {
+      align-items: center;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .about-hero h1 { font-size: 1.7rem; }
+      .two-col { grid-template-columns: 1fr; gap: 28px; }
+      .two-col.reverse { direction: ltr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .values-grid { grid-template-columns: 1fr 1fr; }
+      .leadership-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .leadership-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR  -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-design">
+        <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+      </div>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+      <li class="nav-item dropdown">
+        <a href="#discover" class="nav-link">DISCOVER <i class="fas fa-chevron-down"></i></a>
+        <div class="dropdown-menu discover-grid">
+          <div class="destination-card">
+            <div class="card-image" style="background: url('./images/4603382592139667072.png') center/cover;"></div>
+            <a href="./discover/discover-all-original.html">All Destinations</a>
+          </div>
+          <div class="destination-card">
+            <div class="card-image" style="background: url('./images/Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;"></div>
+            <a href="./discover/discover-domestic-original.html">Domestic Destinations</a>
+          </div>
+          <div class="destination-card">
+            <div class="card-image" style="background: url('./images/1548181186041623.png') center/cover;"></div>
+            <a href="./discover/discover-regional-original.html">Regional Destinations</a>
+          </div>
+          <div class="destination-card">
+            <div class="card-image" style="background: url('./images/kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;"></div>
+            <a href="./discover/discover-international-original.html">International Destinations</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+      <li class="nav-item dropdown">
+        <a href="#travel" class="nav-link">TRAVEL <i class="fas fa-chevron-down"></i></a>
+        <div class="dropdown-menu travel-menu">
+          <div class="travel-menu-grid">
+            <div class="travel-menu-group">
+              <span class="travel-menu-label">Book &amp; Manage</span>
+              <a href="book.html" class="dropdown-item"><i class="fas fa-plane"></i> Book a Flight</a>
+              <a href="my-bookings.html" class="dropdown-item"><i class="fas fa-calendar-check"></i> My Bookings</a>
+              <a href="online_check.html" class="dropdown-item"><i class="fas fa-clipboard-check"></i> Check-in</a>
+              <a href="./travel/select-seat.html" class="dropdown-item"><i class="fas fa-chair"></i> Select Seat</a>
+            </div>
+            <div class="travel-menu-group">
+              <span class="travel-menu-label">Add-ons &amp; Services</span>
+              <a href="./travel/book-car.html" class="dropdown-item"><i class="fas fa-car"></i> Book a Car</a>
+              <a href="./travel/book-hotel.html" class="dropdown-item"><i class="fas fa-hotel"></i> Book a Hotel</a>
+              <a href="./travel/travel-insurance.html" class="dropdown-item"><i class="fas fa-shield-heart"></i> Travel Insurance</a>
+              <a href="./travel/pay-small-small.html" class="dropdown-item"><i class="fas fa-credit-card"></i> Pay Small Small</a>
+              <a href="./travel/cabin-upgrade.html" class="dropdown-item"><i class="fas fa-door-open"></i> Cabin Upgrade</a>
+              <a href="./travel/extra-baggage.html" class="dropdown-item"><i class="fas fa-suitcase"></i> Extra Baggage</a>
+            </div>
+          </div>
+          <div class="travel-menu-footer">
+            <a href="./travel/prohibited-articles.html" class="dropdown-item"><i class="fas fa-ban"></i> Prohibited Articles</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item"><a href="Routes.html" class="nav-link">ROUTES</a></li>
+      <li class="nav-item"><a href="career.html" class="nav-link">CAREERS</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="about-hero">
+  <h1>About Blackcess</h1>
+  <p>Nigeria's premium airline, connecting West Africa to the world with safety, comfort, and reliability at our core.</p>
+</div>
+
+<!-- OUR STORY -->
+<div class="about-section">
+  <div class="two-col">
+    <div>
+      <p class="section-eyebrow">Our Story</p>
+      <h2 class="section-heading">Born in Nigeria.<br>Built for the World.</h2>
+      <div class="section-body">
+        <p>Blackcess Airlines was founded with a single, clear purpose — to give Nigerians access to world-class air travel without compromise. We believe every passenger deserves punctual flights, attentive service, and the dignity of a truly premium experience, whether flying Lagos to Abuja or Abuja to London.</p>
+        <p>From our first domestic sector to our flagship transatlantic route, we have grown steadily by earning the trust of every passenger who steps aboard. We are not just an airline. We are Nigeria's statement to the world.</p>
+      </div>
+    </div>
+    <div class="col-image">
+      <img src="./images/mimi-thian-vdXMSiX-n6M-unsplash.jpg" alt="Blackcess crew" onerror="this.parentElement.innerHTML='<div class=col-image-placeholder><i class=\'fas fa-plane\'></i></div>'">
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">7+</div>
+      <div class="stat-label">Destinations</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">International Routes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Call Centre Support</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Safety Committed</div>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION & VISION -->
+<div class="about-section">
+  <div class="two-col reverse">
+    <div>
+      <p class="section-eyebrow">Mission & Vision</p>
+      <h2 class="section-heading">Why We Fly</h2>
+      <div class="section-body">
+        <p><strong>Our Mission</strong> is to provide safe, comfortable, and reliable air travel that connects people and creates opportunity — for our passengers, our employees, and the communities we serve.</p>
+        <p><strong>Our Vision</strong> is to be West Africa's most trusted airline, recognised globally for operational excellence, customer experience, and the pride we bring to Nigerian aviation.</p>
+        <p><strong>Our Promise</strong> — every Blackcess flight departs on time, arrives safely, and treats every passenger with the respect they deserve. That is not a marketing line. It is our operating standard.</p>
+      </div>
+    </div>
+    <div class="col-image">
+      <img src="./images/luke-stackpoole-mOEqOtmuPG8-unsplash.jpg" alt="London — Blackcess destination" onerror="this.parentElement.innerHTML='<div class=col-image-placeholder><i class=\'fas fa-globe\'></i></div>'">
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- VALUES -->
+<div class="about-section">
+  <p class="section-eyebrow">Our Values</p>
+  <h2 class="section-heading">What Drives Us</h2>
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-icon"><i class="fas fa-shield-halved"></i></div>
+      <h3>Safety First</h3>
+      <p>Safety is non-negotiable at Blackcess. Every aircraft, every crew member, and every procedure is held to the highest international standard.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><i class="fas fa-star"></i></div>
+      <h3>Excellence</h3>
+      <p>We pursue excellence in everything — from the cleanliness of our cabins to the responsiveness of our call centre.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><i class="fas fa-handshake"></i></div>
+      <h3>Integrity</h3>
+      <p>We are honest with our passengers, our partners, and ourselves. No hidden fees. No false promises. Just straightforward service.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><i class="fas fa-users"></i></div>
+      <h3>People First</h3>
+      <p>Our passengers and our people are at the heart of every decision we make. A great airline is built on great people.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><i class="fas fa-earth-africa"></i></div>
+      <h3>Nigerian Pride</h3>
+      <p>We are proudly Nigerian. Everything we do is a reflection of the potential, ambition, and excellence of this nation.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon"><i class="fas fa-clock"></i></div>
+      <h3>Reliability</h3>
+      <p>Our passengers make plans around our schedules. We take that responsibility seriously and work tirelessly to honour it.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- LEADERSHIP -->
+<div class="about-section">
+  <p class="section-eyebrow">Leadership</p>
+  <h2 class="section-heading">The Team Behind Blackcess</h2>
+  <p class="section-body">Our leadership team brings decades of combined experience in aviation, hospitality, and business management — united by a shared belief in what Nigerian aviation can become.</p>
+  <div class="leadership-grid">
+    <div class="leader-card">
+      <div class="leader-avatar"><i class="fas fa-user-tie"></i></div>
+      <div class="leader-name">Chief Executive Officer</div>
+      <div class="leader-title">Executive Leadership</div>
+    </div>
+    <div class="leader-card">
+      <div class="leader-avatar"><i class="fas fa-user-tie"></i></div>
+      <div class="leader-name">Chief Operating Officer</div>
+      <div class="leader-title">Operations</div>
+    </div>
+    <div class="leader-card">
+      <div class="leader-avatar"><i class="fas fa-user-tie"></i></div>
+      <div class="leader-name">Chief Commercial Officer</div>
+      <div class="leader-title">Commercial & Revenue</div>
+    </div>
+    <div class="leader-card">
+      <div class="leader-avatar"><i class="fas fa-user"></i></div>
+      <div class="leader-name">Director of Flight Operations</div>
+      <div class="leader-title">Flight & Safety</div>
+    </div>
+    <div class="leader-card">
+      <div class="leader-avatar"><i class="fas fa-user"></i></div>
+      <div class="leader-name">Director of Customer Experience</div>
+      <div class="leader-title">Passenger Services</div>
+    </div>
+    <div class="leader-card">
+      <div class="leader-avatar"><i class="fas fa-user"></i></div>
+      <div class="leader-name">Head of Engineering & Maintenance</div>
+      <div class="leader-title">Technical</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- MILESTONES -->
+<div class="about-section">
+  <p class="section-eyebrow">Milestones</p>
+  <h2 class="section-heading">Our Journey So Far</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">Founded</div>
+      <div class="timeline-event">Blackcess Airlines Incorporated</div>
+      <div class="timeline-desc">Blackcess was incorporated as a Nigerian airline with a mandate to redefine domestic aviation standards.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">First Flight</div>
+      <div class="timeline-event">Lagos–Abuja Domestic Service Launched</div>
+      <div class="timeline-desc">Our inaugural flight connected Lagos (LOS) and Abuja (ABV), marking the beginning of a new chapter in Nigerian aviation.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Expansion</div>
+      <div class="timeline-event">Port Harcourt & Kano Added</div>
+      <div class="timeline-desc">Domestic network expanded to cover Port Harcourt (PHC), Kano (KAN), and Benin City (BNI), bringing more Nigerians into our network.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Regional</div>
+      <div class="timeline-event">West Africa Routes — Accra & Dakar</div>
+      <div class="timeline-desc">Blackcess crossed borders, launching regional routes to Accra (ACC) and Dakar (DSS), connecting West Africa.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">International</div>
+      <div class="timeline-event">Abuja–London Heathrow & Gatwick</div>
+      <div class="timeline-desc">Our flagship international route launched — daily service from Abuja (ABV) to London Heathrow (LHR) and Gatwick (LGW), putting Blackcess on the global map.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2026</div>
+      <div class="timeline-event">Continued Growth</div>
+      <div class="timeline-desc">Blackcess continues to grow its network, fleet, and team — with more destinations and partnerships on the horizon.</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK LINKS -->
+<div class="quick-links-section">
+  <div class="quick-links-inner">
+    <h4>Quick Links</h4>
+    <div class="quick-links-grid">
+      <a href="book.html">Book a flight</a>
+      <a href="./travel/select-seat.html">Select a seat</a>
+      <a href="./travel/book-car.html">Book a ride</a>
+      <a href="./travel/book-hotel.html">Reserve a room</a>
+      <a href="./travel/travel-insurance.html">Insure your journey</a>
+      <a href="career.html">Join our team</a>
+      <a href="contact.html">Contact us</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Information</h4>
+        <a href="#">FAQs</a>
+        <a href="#">Terms &amp; Conditions</a>
+        <a href="#" class="active">Departure &amp; Arrivals</a>
+        <a href="#">Baggage Policy</a>
+        <a href="#">Routes</a>
+        <a href="#">ADM Policy</a>
+        <a href="#">Travel Advisory</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Help and Contact</a>
+        <a href="#">Special Assistance</a>
+        <a href="#">Lost Property</a>
+        <a href="#">Blackcess Advantage</a>
+        <a href="#">Airport Charges</a>
+        <a href="#">Sales Outlets</a>
+        <a href="#">Safety Reporting</a>
+        <a href="#">Refunds</a>
+        <a href="#">Reversal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Deals</h4>
+        <a href="#">Student Discount</a>
+        <a href="#">Partnerships</a>
+        <a href="#">Graduate Trainee Program</a>
+      </div>
+      <div class="footer-col">
+        <h4>Corporate</h4>
+        <a href="#">Trade Partners</a>
+        <a href="#">Corporate Accounts</a>
+        <a href="#">Charter &amp; Group Booking</a>
+      </div>
+      <div class="footer-col">
+        <h4>Blackcess</h4>
+        <a href="about.html">About</a>
+        <a href="career.html">Careers</a>
+        <a href="#">Media Centre</a>
+        <a href="#">Blog</a>
+        <a href="#">Newsletter</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="socials">
+        <a href="https://www.facebook.com/"><img src="./images/facebook-f-brands-solid.png" alt="Facebook"></a>
+        <a href="https://twitter.com/"><img src="./images/x-twitter-brands-solid.png" alt="X"></a>
+        <a href="https://youtube.com/"><img src="./images/youtube-brands-solid.png" alt="YouTube"></a>
+        <a href="https://linkedin.com/"><img src="./images/square-linkedin-brands-solid.png" alt="LinkedIn"></a>
+        <a href="https://instagram.com/"><img src="./images/instagram-brands-solid.png" alt="Instagram"></a>
+      </div>
+      <div class="cert-logos">
+        <img src="./images/image.png" alt="IOSA IATA" class="ios">
+        <img src="./images/Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
+        <img src="./images/image.png" alt="IATA" class="iata">
+      </div>
+      <div class="app-badges">
+        <a href="https://play.google.com/store/apps"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
+        <a href="https://www.apple.com/app-store/"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="copyright-bar">
+  <div class="copyright-container">
+    <span>Copyright 2026 Blackcess Limited. All Rights Reserved.</span>
+    <div class="legal-links">
+      <a href="#">Site Map</a>
+      <span class="divider">|</span>
+      <a href="#">Privacy &amp; Cookie Policy</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const hamburger = document.getElementById("hamburger-btn");
+  const navMenu = document.getElementById("navMenu");
+
+  hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("is-active");
+    navMenu.classList.toggle("menu-open");
+  });
+
+  document.querySelectorAll(".dropdown > .nav-link").forEach(link => {
+    link.addEventListener("click", function(e) {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        this.parentElement.classList.toggle("open");
+      }
+    });
+  });
+</script>
+</body>
+</html>
