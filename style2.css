@@ -24,7 +24,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
-    background-color: var(--bg-light);
+    background-color: white;
 }
 
 /* navbar */
@@ -1219,9 +1219,8 @@ body {
 
 
 
-body {
-    background: var(--surface-soft);
-}
+
+
 
 .navbar {
     border-bottom: 1px solid var(--surface-line);
