@@ -131,7 +131,6 @@
 <section class="hero">
 <div class="hero-slider">
 
-  <!-- Radio inputs for dot control -->
   <input type="radio" name="slide" id="slide1" checked>
   <input type="radio" name="slide" id="slide2">
   <input type="radio" name="slide" id="slide3">
@@ -167,7 +166,6 @@
 
   </div>
 
-  <!-- Slide Indicators -->
   <div class="slider-dots">
     <label for="slide1" class="dot dot1"></label>
     <label for="slide2" class="dot dot2"></label>
@@ -179,7 +177,7 @@
 </section>
 
 <section class="booking-section">
-    <!-- Booking Tabs with target tracking identifiers -->
+    <!-- Booking Tabs  -->
     <div class="booking-tabs">
         <button class="tab-button active" data-tab="book-flights">
             <i class="fas fa-plane"></i> Book Flights
@@ -198,7 +196,7 @@
 
     <div class="booking-container">
         
-        <!-- PANEL 1: Book Flights (Your original layout) -->
+        <!--Book Flights  -->
         <div id="book-flights" class="tab-panel active">
             <div class="booking-form">
                 <div class="trip-type">
@@ -278,7 +276,7 @@
             </div>
         </div>
 
-        <!-- PANEL 2: My Bookings (Customized management fields) -->
+        <!--   My Bookings  -->
         <div id="my-bookings" class="tab-panel">
             <div class="booking-form">
                 <h3>Manage Your Booking</h3>
@@ -295,12 +293,12 @@
                         <input type="text" id="booking-lastname" class="form-input" placeholder="Passenger Last Name">
                     </div>
                     
-                    <button class="search-btn">Retrieve Flight</button>
+                    <button class="search-btn" onclick="Retrieve()">Retrieve Flight</button>
                 </div>
             </div>
         </div>
 
-        <!-- PANEL 3: Check-in (Customized check-in details) -->
+        <!--  Check-in  -->
         <div id="check-in" class="tab-panel">
             <div class="booking-form">
                 <h3>Online Flight Check-In</h3>
@@ -317,11 +315,11 @@
                         <input type="text" id="checkin-lastname" class="form-input" placeholder="Passenger Last Name">
                     </div>
                     
-                    <button class="search-btn">Begin Check-In</button>
+                    <button class="search-btn" onclick="Check()">Begin Check-In</button>
                 </div>
             </div>
         </div>
-<!-- PANEL 4: Loyalty (Customized profile log-in) -->
+<!-- Loyalty  -->
 <div id="loyalty" class="tab-panel">
     <div class="booking-form">
         <h3>Blackcess Airlines Loyalty</h3>
@@ -338,7 +336,6 @@
                 <input type="password" id="loyalty-password" class="form-input" placeholder="Account Password">
             </div>
             
-            <!-- Pointing directly to your newly created luxurious login portal -->
             <button class="search-btn" onclick="window.location.href='login.html'">Sign In</button>
         </div>
         
@@ -467,7 +464,7 @@
         <h3>Ride services</h3>
 
         <p>
-          Airport rides from ?200,000 at LOS and ABV when you add transport to your Blackcess booking.
+          Airport rides from ₦200,000 at LOS and ABV when you add transport to your Blackcess booking.
         </p>
       </div>
     </div>
@@ -493,7 +490,7 @@
         <h3>Travel insurance</h3>
 
         <p>
-          Medical, baggage, and trip cancellation cover from ?3,500 on domestic and international Blackcess itineraries.
+          Medical, baggage, and trip cancellation cover from ₦3,500 on domestic and international Blackcess itineraries.
         </p>
       </div>
     </div>
@@ -514,7 +511,7 @@
  <div class="card2">
   <img src="./images/nicole-geri-gMJ3tFOLvnA-unsplash.jpg" alt="Luggage and travel documents">
     <div class="card-content">
-      <h3>Extra 10kg from ?15,000 online</h3>
+      <h3>Extra 10kg from ₦15,000 online</h3>
       <p>Add weight before you reach the airport  pay less than counter rates on LOS LHR and domestic sectors.</p>
       <a href="./travel/extra-baggage.html" class="btn-primary">Buy Now</a>
     </div>
@@ -524,7 +521,7 @@
     <img src="./images/phil-mosley-wOK2f2stPDg-unsplash.jpg" alt="Airport terminal">
     <div class="card-content">
       <h3>Buggy at ABV &amp; LOS terminals</h3>
-      <p>Meet-and-greet buggies from ?5,000 at MMIA and Nnamdi Azikiwe ideal for connections and reduced mobility.</p>
+      <p>Meet-and-greet buggies from ₦5,000 at MMIA and Nnamdi Azikiwe ideal for connections and reduced mobility.</p>
       <span class="btn-primary" style="display:block;text-align:center;opacity:0.85;">Available at airport desk</span>
     </div>
   </div>
@@ -771,6 +768,14 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+  function Retrieve(){
+    window.location.href = "my-bookings.html";
+  }
+
+  function Check(){
+    window.location.href = "online_check.html";
+  }
 </script>
 </body>
 </html>
