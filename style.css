@@ -112,7 +112,7 @@ a.navbar-logo {
     left: 1.2rem;
     width: 0;
     height: 3px;
-    background-color: rgba(20, 145, 147, 0.971);
+    background-color:#c0392b;
     transition: width 0.2s ease;
 }
 
@@ -134,7 +134,7 @@ a.navbar-logo {
     transform: translateY(-8px);
     transition: all 0.2s ease;
     margin-top: 0;
-    border-top: 3px solid rgba(20, 145, 147, 0.971);
+    border-top: 3px solid #c0392b;
     pointer-events: none;
     box-shadow: var(--shadow-lg);
     z-index: 1001;
@@ -279,14 +279,14 @@ a.navbar-logo {
 
 .dropdown-item:hover {
     background-color: var(--bg-light);
-    color:rgba(20, 145, 147, 0.971) ;
+    color:#c0392b;
     padding-left: 1.8rem;
 }
 
 .dropdown-item i {
     width: 20px;
     text-align: center;
-    color: rgba(20, 145, 147, 0.971);
+    color:#c0392b;
 }
 
 .dropdown-divider {
@@ -1689,10 +1689,7 @@ button,
     border-radius: 8px;
 }
 
-.booking-section,
-.services-section {
-    background: var(--surface-soft);
-}
+
 
 .booking-tabs {
     background: #ffffff;
@@ -1761,5 +1758,156 @@ button,
     font-size: 0.95rem;
     margin-bottom: 20px;
 }
+
+/* FLIGHT DETAILS MODAL (CENTERED SOFT STYLE) */
+.flight-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.flight-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.flight-modal-card {
+    background: #f4f8ff;
+    border: 1px solid #d2e4f9;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 460px;
+    padding: 2rem;
+    box-shadow: 0 12px 30px rgba(0, 82, 163, 0.15);
+    position: relative;
+    transform: translateY(-30px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: inherit;
+    color: var(--text-dark, #2c2c2c);
+}
+.flight-modal-overlay.active .flight-modal-card {
+    transform: translateY(0);
+}
+.flight-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+.flight-modal-close:hover {
+    color: var(--accent-color, #ff5722);
+}
+.flight-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #dbeafe;
+    padding-bottom: 0.8rem;
+}
+.flight-modal-header i {
+    font-size: 1.5rem;
+    color: var(--primary-color, #0052a3);
+}
+.flight-modal-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--secondary-color, #003d7a);
+    margin: 0;
+}
+.flight-modal-route {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+.flight-modal-airport {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--secondary-color, #003d7a);
+    letter-spacing: 1px;
+}
+.flight-modal-arrow {
+    font-size: 1.2rem;
+    color: var(--accent-color, #ff5722);
+    animation: flightPulse 2s infinite ease-in-out;
+}
+@keyframes flightPulse {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+.flight-modal-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+}
+.flight-modal-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+.flight-modal-detail-item i {
+    font-size: 1.1rem;
+    color: var(--primary-color, #0052a3);
+}
+.flight-modal-detail-item label {
+    display: block;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.flight-modal-detail-item span {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-dark, #2c2c2c);
+}
+.flight-modal-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-color, #0052a3);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+.flight-modal-btn:hover {
+    background: var(--secondary-color, #003d7a);
+}
+.flight-modal-btn:active {
+    transform: scale(0.98);
+}
+
 
 

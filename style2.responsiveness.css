@@ -290,9 +290,7 @@ SMALL PHONES
 
 }
 
-/* =========================================
-HAMBURGER MENU
-========================================= */
+/* hamburger */
 
 #menu-toggle{
     display: none;
@@ -325,11 +323,7 @@ HAMBURGER MENU
  
 
 
-   
-
-/* ==========================================================================
-   TABLET RESPONSIVENESS (Screens below 1024px)
-   ========================================================================== */
+  /* tablets */
 @media (max-width: 1024px) {
     /* Compress columns slightly to keep the row layout clean on iPads/Tablets */
     .matrix-header, .matrix-row {
@@ -350,9 +344,7 @@ HAMBURGER MENU
     }
 }
 
-/* ==========================================================================
-   BIG PHONES & SMALL TABLETS (Screens below 820px)
-   ========================================================================== */
+/* big phones */
 @media (max-width: 820px) {
     /* Hide the horizontal header completely */
     .matrix-header {
@@ -432,10 +424,7 @@ HAMBURGER MENU
         padding: 0.75rem;
     }
 }
-
-/* ==========================================================================
-   SMALL PHONES (Screens below 400px - iPhone SE, older Androids)
-   ========================================================================== */
+/* small phones */
 @media (max-width: 400px) {
     .matrix-row {
         padding: 1rem;

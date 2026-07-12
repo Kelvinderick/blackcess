@@ -1,0 +1,287 @@
+// Blackcess Airlines Authentication and Database Helper (Supabase Integration)
+
+const BlackcessDB = {
+    // Generate a random membership ID: BC followed by 6 digits
+    generateMembershipId() {
+        return "BC" + Math.floor(100000 + Math.random() * 900000);
+    },
+
+    // Sign Up a new passenger and create their Royal Club profile
+    async signUp(name, email, password, passport) {
+        // 1. Sign up user in Supabase Auth
+        const { data: authData, error: authError } = await window.supabase.auth.signUp({
+            email: email,
+            password: password
+        });
+
+        if (authError) {
+            console.error("Sign up auth error:", authError);
+            throw new Error(authError.message);
+        }
+
+        const user = authData.user;
+        if (!user) throw new Error("Failed to retrieve user registry context.");
+
+        // 2. Generate Membership ID
+        const membershipId = this.generateMembershipId();
+
+        // 3. Create profile entry in 'profiles' table
+        const { error: profileError } = await window.supabase
+            .from('profiles')
+            .insert([
+                {
+                    id: user.id,
+                    full_name: name,
+                    passport_number: passport,
+                    membership_id: membershipId,
+                    miles: 500 // Award 500 welcome miles
+                }
+            ]);
+
+        if (profileError) {
+            console.error("Profile creation error:", profileError);
+            throw new Error("Auth registered, but profile database entry failed: " + profileError.message);
+        }
+
+        const profile = {
+            uid: user.id,
+            email: email,
+            name: name,
+            passport: passport,
+            membership_id: membershipId,
+            miles: 500
+        };
+
+        // Cache user details locally
+        localStorage.setItem("activeUser", JSON.stringify(profile));
+        return profile;
+    },
+
+    // Log In existing passenger
+    async logIn(email, password) {
+        // 1. Sign in via Supabase Auth
+        const { data: authData, error: authError } = await window.supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (authError) {
+            console.error("Login auth error:", authError);
+            throw new Error(authError.message);
+        }
+
+        const user = authData.user;
+        if (!user) throw new Error("Passenger credentials not found.");
+
+        // 2. Fetch profile from database
+        const { data: profileData, error: profileError } = await window.supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+        if (profileError) {
+            console.error("Fetch profile database error:", profileError);
+            throw new Error("Authenticated, but could not load profile details: " + profileError.message);
+        }
+
+        const profile = {
+            uid: user.id,
+            email: user.email,
+            name: profileData.full_name,
+            passport: profileData.passport_number,
+            membership_id: profileData.membership_id,
+            miles: profileData.miles
+        };
+
+        // Cache user details locally
+        localStorage.setItem("activeUser", JSON.stringify(profile));
+        return profile;
+    },
+
+    // Log Out passenger
+    async logOut() {
+        const { error } = await window.supabase.auth.signOut();
+        if (error) {
+            console.error("Sign out error:", error);
+        }
+        localStorage.removeItem("activeUser");
+        window.location.href = "index.html";
+    },
+
+    // Retrieve bookings: either by user UID or by PNR & Lastname (for guest retrieval)
+    async getBookings({ uid, pnr, lastname }) {
+        let query = window.supabase.from('bookings').select('*');
+
+        if (uid) {
+            query = query.eq('user_id', uid);
+        } else if (pnr && lastname) {
+            // Case-insensitive match on text fields
+            query = query.ilike('pnr', pnr.trim())
+                         .ilike('passenger_lastname', lastname.trim());
+        } else {
+            throw new Error("Missing parameters for query filter.");
+        }
+
+        const { data, error } = await query.order('created_at', { ascending: false });
+
+        if (error) {
+            console.error("Retrieve bookings error:", error);
+            throw new Error(error.message);
+        }
+
+        return data;
+    },
+
+    // Check-in passenger by updating booking status and awarding miles
+    async checkInBooking(pnr, lastname) {
+        // 1. Fetch booking to verify existence and check-in eligibility
+        const bookings = await this.getBookings({ pnr, lastname });
+        if (bookings.length === 0) {
+            throw new Error("No booking found matching reference code and passenger last name.");
+        }
+
+        const booking = bookings[0];
+        if (booking.status === 'Checked-In') {
+            throw new Error("Passenger has already checked in online for this flight.");
+        }
+
+        // 2. Perform check-in update
+        const { data, error } = await window.supabase
+            .from('bookings')
+            .update({ status: 'Checked-In' })
+            .eq('id', booking.id)
+            .select();
+
+        if (error) {
+            console.error("Check-in database update error:", error);
+            throw new Error("Failed to register check-in status: " + error.message);
+        }
+
+        // 3. Award miles if booking is associated with a registered member profile
+        if (booking.user_id) {
+            const milesEarned = 500; // Award 500 miles for checking in
+            const { data: profileData } = await window.supabase
+                .from('profiles')
+                .select('miles')
+                .eq('id', booking.user_id)
+                .single();
+                
+            if (profileData) {
+                const updatedMiles = (profileData.miles || 0) + milesEarned;
+                await window.supabase
+                    .from('profiles')
+                    .update({ miles: updatedMiles })
+                    .eq('id', booking.user_id);
+                
+                // Update local storage activeUser cache if user is logged in
+                const cachedUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+                if (cachedUser && cachedUser.uid === booking.user_id) {
+                    cachedUser.miles = updatedMiles;
+                    localStorage.setItem("activeUser", JSON.stringify(cachedUser));
+                    
+                    // Dispatch auth event to trigger navbar update
+                    window.dispatchEvent(new Event("authChange"));
+                }
+            }
+        }
+
+        return data[0];
+    }
+};
+
+// Auto-run: Initialize navbar status based on current session
+function updateNavbarUI() {
+    const navMenu = document.getElementById("navMenu");
+    if (!navMenu) return;
+
+    // Remove any existing user menu or login buttons to prevent duplication
+    const oldUserMenu = navMenu.querySelector(".user-menu");
+    if (oldUserMenu) oldUserMenu.remove();
+    const oldLoginBtn = navMenu.querySelector(".login-nav-item");
+    if (oldLoginBtn) oldLoginBtn.remove();
+
+    const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+
+    if (activeUser) {
+        // Logged In: Create Royal Club Dropdown menu item
+        const userLi = document.createElement("li");
+        userLi.className = "nav-item dropdown user-menu";
+        userLi.innerHTML = `
+            <a href="#" class="nav-link"><i class="fas fa-crown" style="color:#BA8B02; margin-right:5px;"></i> ROYAL CLUB <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-menu" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 0; min-width: 200px;">
+                <span class="dropdown-item-text" style="color: #94a3b8; font-size: 0.75rem; padding: 5px 20px; display: block; font-weight:bold;">ID: ${activeUser.membership_id}</span>
+                <span class="dropdown-item-text" style="color: var(--gold); font-size: 0.75rem; padding: 5px 20px; display: block; font-weight:bold; margin-bottom:5px;"><i class="fas fa-coins"></i> Miles: ${activeUser.miles.toLocaleString()}</span>
+                <hr style="border-color: rgba(255,255,255,0.05); margin: 5px 0;">
+                <a href="book.html#my-bookings" class="dropdown-item" style="display:block; padding:8px 20px; color:#fff; text-decoration:none; font-size:0.8rem;"><i class="fas fa-calendar-check" style="margin-right:10px;"></i> My Bookings</a>
+                <a href="#" id="navbar-logout-btn" class="dropdown-item" style="display:block; padding:8px 20px; color:#ff5722; text-decoration:none; font-size:0.8rem;"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Log Out</a>
+            </div>
+        `;
+        navMenu.appendChild(userLi);
+
+        // Add dropdown interaction click handlers for responsive layout compatibility
+        const dropdownLink = userLi.querySelector(".nav-link");
+        dropdownLink.addEventListener("click", function(e) {
+            e.preventDefault();
+            userLi.classList.toggle("open");
+        });
+
+        // Add logout listener
+        userLi.querySelector("#navbar-logout-btn").addEventListener("click", function(e) {
+            e.preventDefault();
+            BlackcessDB.logOut();
+        });
+    } else {
+        // Logged Out: Create Sign In nav item
+        const loginLi = document.createElement("li");
+        loginLi.className = "nav-item login-nav-item";
+        loginLi.innerHTML = `
+            <a href="login.html" class="nav-link" style="color:var(--gold); font-weight:700;"><i class="fas fa-sign-in-alt"></i> SIGN IN</a>
+        `;
+        navMenu.appendChild(loginLi);
+    }
+}
+
+// Attach event listeners
+document.addEventListener("DOMContentLoaded", () => {
+    updateNavbarUI();
+    window.addEventListener("authChange", updateNavbarUI);
+});
+
+// Update auth indicators in header if auth state shifts inside Supabase auth listener
+if (window.supabase) {
+    window.supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === "SIGNED_IN" && session) {
+            // Check if profile details already cached
+            const cachedUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+            if (!cachedUser || cachedUser.uid !== session.user.id) {
+                // Retrieve profile details to build cache
+                try {
+                    const { data: profileData } = await window.supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', session.user.id)
+                        .single();
+                        
+                    if (profileData) {
+                        const profile = {
+                            uid: session.user.id,
+                            email: session.user.email,
+                            name: profileData.full_name,
+                            passport: profileData.passport_number,
+                            membership_id: profileData.membership_id,
+                            miles: profileData.miles
+                        };
+                        localStorage.setItem("activeUser", JSON.stringify(profile));
+                        window.dispatchEvent(new Event("authChange"));
+                    }
+                } catch(e) {
+                    console.error("Error building session profile cache:", e);
+                }
+            }
+        } else if (event === "SIGNED_OUT") {
+            localStorage.removeItem("activeUser");
+            window.dispatchEvent(new Event("authChange"));
+        }
+    });
+}

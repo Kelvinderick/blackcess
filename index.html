@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_responsiveness.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="booking-flow.css">
 </head>
 <body>
     <!-- NAVBAR -->
@@ -696,7 +697,9 @@
   </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-helper.js"></script>
 <script>
 const hamburger =
 document.getElementById("hamburger-btn");
@@ -758,16 +761,7 @@ tabButtons.forEach(button => {
     });
 });
 
-// Premium feature: If someone lands on the page with '#loyalty' in the URL, slide down and focus it!
-window.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash === '#loyalty') {
-        switchTab('loyalty');
-        const bookingSection = document.querySelector('.booking-section');
-        if(bookingSection) {
-            bookingSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-});
+
 
   function Retrieve(){
     window.location.href = "my-bookings.html";
