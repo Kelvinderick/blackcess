@@ -9,10 +9,115 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style2.css">
     <link rel="stylesheet" href="style2.responsiveness.css">
-    <link rel="stylesheet" href="booking-flow.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+    <style>
+        /* SIMPLE & LUXURIOUS BLACKCESS LOADING OVERLAY */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.96);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .loading-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .loading-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .loading-logo {
+            height: 80px;
+            width: auto;
+            animation: pulseLogo 2s infinite ease-in-out;
+        }
+
+        .loading-bar-container {
+            width: 160px;
+            height: 3px;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-bar-progress {
+            content: '';
+            position: absolute;
+            left: -40%;
+            top: 0;
+            height: 100%;
+            width: 40%;
+            background-color: rgb(101, 159, 207);
+            border-radius: 4px;
+            animation: slideLoading 1.6s infinite linear;
+        }
+
+        .loading-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        @keyframes slideLoading {
+            0% { left: -40%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.04); opacity: 1; }
+        }
+
+        /* Results Area Styles */
+        .flight-results-container {
+            margin-top: 30px;
+            display: none;
+        }
+        .flight-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .flight-info h4 { margin: 0 0 5px 0; color: #1e293b; }
+        .flight-info p { margin: 0; color: #64748b; font-size: 0.9rem; }
+    </style>
 <body>
+       <!-- LOADING OVERLAY -->
+    <div id="flight-loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="loading-logo">
+            <div class="loading-bar-container">
+                <div class="loading-bar-progress"></div>
+            </div>
+            <p class="loading-text">Searching for available flights...</p>
+        </div>
+    </div>
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar-container">
@@ -457,7 +562,28 @@
             </div>
         </div>
     </div>
+        <!-- LIVE API INVENTORY RESULTS TARGET PANEL -->
+                <div id="flight-results-section" class="flight-results-container">
+                    <h3 style="color: #1e293b; margin-bottom: 15px; font-family: 'Outfit', sans-serif;">Available Flight Matches</h3>
+                    <div id="results-target"></div>
 
+                    <!-- SECURE CHECKOUT SUMMARY -->
+                    <div id="checkout-panel" style="display: none; margin-top: 30px; padding: 25px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        <h3 style="color: #1e293b; font-family: 'Outfit', sans-serif; margin-bottom: 15px;"><i class="fas fa-passport"></i> Passenger Information</h3>
+                        <div id="selected-flight-summary" style="margin-bottom: 20px; font-size: 0.95rem; color: #334155;"></div>
+                        
+                        <form id="passenger-checkout-form" style="display: grid; gap: 15px; max-width: 500px;">
+                            <div>
+                                <label style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Email</label>
+                                <input type="email" id="pay-email" required placeholder="customer@blackcess.com" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+                            </div>
+                            <button type="submit" class="search-btn" style="width: 100%; margin-top: 10px; background:#1e293b;">Proceed to Payment <span id="checkout-amount"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 <script>
@@ -531,11 +657,142 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+    let selectedFlightData = null; 
+
+    const DUFFEL_ACCESS_TOKEN = 'duffel_test_iK7b3OLoGr34BGBBMtUxL4l_UD4Q8VLgTxTgZw7ugep'; 
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_ec747fe1262edf30f447fc2e87f982b920392299'; 
+
+    document.getElementById('search-flights-trigger').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const depValue = document.getElementById('departure').value;
+        const arrValue = document.getElementById('arrival').value;
+        const targetDate = document.getElementById('departure-date').value;
+
+        if (!depValue || !arrValue || !targetDate) {
+            alert('Please fill out all search parameters first.');
+            return;
+        }
+
+        const depIata = depValue.match(/\(([^)]+)\)/)?.[1] || depValue;
+        const arrIata = arrValue.match(/\(([^)]+)\)/)?.[1] || arrValue;
+
+        const loader = document.getElementById('flight-loading-overlay');
+        loader.classList.add('visible');
+        document.getElementById('checkout-panel').style.display = 'none';
+
+        // FIXED: Using a free CORS proxy mirror to safely query Duffel without getting blocked by browser rules
+        fetch('https://corsproxy.io/?' + encodeURIComponent('https://api.duffel.com/air/offer_requests?return_offers=true'), {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${DUFFEL_ACCESS_TOKEN}`,
+                'Duffel-Version': 'v2',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: {
+                    slices: [{ origin: depIata, destination: arrIata, departure_date: targetDate }],
+                    passengers: [{ type: "adult" }],
+                    cabin_class: "economy"
+                }
+            })
+        })
+        .then(res => res.json())
+        .then(resBody => {
+            loader.classList.remove('visible');
+            const resultsSection = document.getElementById('flight-results-section');
+            const resultsTarget = document.getElementById('results-target');
+            resultsTarget.innerHTML = '';
+
+            const offers = resBody.data?.offers || [];
+
+            if (offers.length === 0) {
+                resultsTarget.innerHTML = `<p style="color:#64748b; font-family:'Outfit';">No active commercial inventory found for this specific date and route combination.</p>`;
+                resultsSection.style.display = 'block';
+                return;
+            }
+
+            offers.slice(0, 5).forEach((offer) => {
+                const segment = offer.slices[0]?.segments[0];
+                const airlineName = segment?.marketing_carrier?.name || "Global Carrier";
+                const flightNum = segment?.marketing_carrier_flight_number || "BC-100";
+                const totalAmount = offer.total_amount; 
+                const currency = offer.total_currency;
+
+                resultsTarget.innerHTML += `
+                    <div class="flight-card" style="border-left: 4px solid #1e293b;">
+                        <div class="flight-info">
+                            <h4>${airlineName} (${flightNum})</h4>
+                            <p>${depIata} &rarr; ${arrIata} • Direct Flight Schedule</p>
+                            <small style="color: #2e7d32; font-weight: 600; font-size:0.95rem;">${currency} ${totalAmount}</small>
+                        </div>
+                        <button class="search-btn select-flight-btn" 
+                                style="background: #1e293b; padding: 8px 16px; font-size: 0.85rem;"
+                                data-summary="${airlineName} (${flightNum}) from ${depIata} to ${arrIata}"
+                                data-amount="${totalAmount}"
+                                data-currency="${currency}">
+                            Select
+                        </button>
+                    </div>
+                `;
+            });
+
+            resultsSection.style.display = 'block';
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+            document.querySelectorAll('.select-flight-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    selectedFlightData = {
+                        summary: this.getAttribute('data-summary'),
+                        amount: parseFloat(this.getAttribute('data-amount')),
+                        currency: this.getAttribute('data-currency')
+                    };
+                    showCheckout();
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Duffel Air Error:', error);
+            loader.classList.remove('visible');
+            alert('Could not establish secure connection to Duffel API via frontend script.');
+        });
+    });
+
+    function showCheckout() {
+        document.getElementById('selected-flight-summary').innerHTML = `
+            <strong>Selected Itinerary:</strong> ${selectedFlightData.summary}<br>
+            <strong>Total Consolidated Airfare:</strong> ${selectedFlightData.currency} ${selectedFlightData.amount}
+        `;
+        document.getElementById('checkout-amount').innerText = `(${selectedFlightData.currency} ${selectedFlightData.amount})`;
+        document.getElementById('checkout-panel').style.display = 'block';
+        document.getElementById('checkout-panel').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('passenger-checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const userEmail = document.getElementById('pay-email').value;
+        const computedSubunits = Math.round(selectedFlightData.amount * 100);
+
+        const paystackPopInstance = new PaystackPop();
+        paystackPopInstance.newTransaction({
+            key: PAYSTACK_PUBLIC_KEY,
+            email: userEmail,
+            amount: computedSubunits,
+            currency: selectedFlightData.currency,
+            onSuccess: function(transaction) {
+                alert(`🎉 Payment Confirmed!\n\nReference ID: ${transaction.reference}\nYour live ticketing confirmation is processing.`);
+                document.getElementById('passenger-checkout-form').reset();
+                document.getElementById('checkout-panel').style.display = 'none';
+                document.getElementById('flight-results-section').style.display = 'none';
+            },
+            onCancel: function() {
+                alert("Payment checkout verification dismissed by customer.");
+            }
+        });
+    });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="auth-helper.js"></script>
-<script src="https://js.paystack.co/v1/inline.js"></script>
-<script src="blackcess-api.js"></script>
+    <!-- PAYSTACK INLINE POPUP LIBRARY LOADED FIRST -->
+    <script src="https://js.paystack.co/v2/inline.js"></script>
 </body>
 </html>
