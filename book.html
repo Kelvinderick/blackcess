@@ -321,10 +321,32 @@
                             <option value="1">1 Infant</option>
                         </select>
                     </div>
-                    <button class="search-btn">Search Flights</button>
+                     <button class="search-btn" id="search-flights-trigger">Search Flights</button>
                 </div>
             </div>
         </div>
+                <!-- LIVE API INVENTORY RESULTS TARGET PANEL -->
+                <div id="flight-results-section" class="flight-results-container">
+                    <h3 style="color: #1e293b; margin-bottom: 15px; font-family: 'Outfit', sans-serif;">Available Flight Matches</h3>
+                    <div id="results-target"></div>
+
+                    <!-- SECURE CHECKOUT SUMMARY -->
+                    <div id="checkout-panel" style="display: none; margin-top: 30px; padding: 25px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        <h3 style="color: #1e293b; font-family: 'Outfit', sans-serif; margin-bottom: 15px;"><i class="fas fa-passport"></i> Passenger Information</h3>
+                        <div id="selected-flight-summary" style="margin-bottom: 20px; font-size: 0.95rem; color: #334155;"></div>
+                        
+                        <form id="passenger-checkout-form" style="display: grid; gap: 15px; max-width: 500px;">
+                            <div>
+                                <label style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Email</label>
+                                <input type="email" id="pay-email" required placeholder="customer@blackcess.com" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+                            </div>
+                            <button type="submit" class="search-btn" style="width: 100%; margin-top: 10px; background:#1e293b;">Proceed to Payment <span id="checkout-amount"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
         <!-- PANEL 2: My Bookings (Customized management fields) -->
         <div id="my-bookings" class="tab-panel">
@@ -562,28 +584,7 @@
             </div>
         </div>
     </div>
-        <!-- LIVE API INVENTORY RESULTS TARGET PANEL -->
-                <div id="flight-results-section" class="flight-results-container">
-                    <h3 style="color: #1e293b; margin-bottom: 15px; font-family: 'Outfit', sans-serif;">Available Flight Matches</h3>
-                    <div id="results-target"></div>
 
-                    <!-- SECURE CHECKOUT SUMMARY -->
-                    <div id="checkout-panel" style="display: none; margin-top: 30px; padding: 25px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px;">
-                        <h3 style="color: #1e293b; font-family: 'Outfit', sans-serif; margin-bottom: 15px;"><i class="fas fa-passport"></i> Passenger Information</h3>
-                        <div id="selected-flight-summary" style="margin-bottom: 20px; font-size: 0.95rem; color: #334155;"></div>
-                        
-                        <form id="passenger-checkout-form" style="display: grid; gap: 15px; max-width: 500px;">
-                            <div>
-                                <label style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Email</label>
-                                <input type="email" id="pay-email" required placeholder="customer@blackcess.com" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
-                            </div>
-                            <button type="submit" class="search-btn" style="width: 100%; margin-top: 10px; background:#1e293b;">Proceed to Payment <span id="checkout-amount"></span></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
 <script>
