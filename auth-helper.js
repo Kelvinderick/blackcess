@@ -43,14 +43,15 @@ const BlackcessDB = {
             throw new Error("Auth registered, but profile database entry failed: " + profileError.message);
         }
 
-        const profile = {
-            uid: user.id,
-            email: email,
-            name: name,
-            passport: passport,
-            membership_id: membershipId,
-            miles: 500
-        };
+ const profile = {
+    uid: user.id,
+    email: email,
+    name: name,
+    passport: passport,
+    membership_id: membershipId,
+    miles: 500,
+    role: "user"
+};
 
         // Cache user details locally
         localStorage.setItem("activeUser", JSON.stringify(profile));
@@ -85,14 +86,15 @@ const BlackcessDB = {
             throw new Error("Authenticated, but could not load profile details: " + profileError.message);
         }
 
-        const profile = {
-            uid: user.id,
-            email: user.email,
-            name: profileData.full_name,
-            passport: profileData.passport_number,
-            membership_id: profileData.membership_id,
-            miles: profileData.miles
-        };
+     const profile = {
+    uid: user.id,
+    email: user.email,
+    name: profileData.full_name,
+    passport: profileData.passport_number,
+    membership_id: profileData.membership_id,
+    miles: profileData.miles,
+    role: profileData.role
+};
 
         // Cache user details locally
         localStorage.setItem("activeUser", JSON.stringify(profile));
