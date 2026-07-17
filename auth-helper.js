@@ -113,26 +113,38 @@ const BlackcessDB = {
 
     // Retrieve bookings: either by user UID or by PNR & Lastname (for guest retrieval)
     async getBookings({ uid, pnr, lastname }) {
-        let query = window.supabase.from('bookings').select('*');
-
         if (uid) {
-            query = query.eq('user_id', uid);
-        } else if (pnr && lastname) {
-            // Case-insensitive match on text fields
-            query = query.ilike('pnr', pnr.trim())
-                         .ilike('passenger_lastname', lastname.trim());
-        } else {
-            throw new Error("Missing parameters for query filter.");
+            const { data, error } = await window.supabase
+                .from('bookings')
+                .select('*')
+                .eq('user_id', uid)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error("Retrieve bookings error:", error);
+                throw new Error(error.message);
+            }
+
+            return data;
         }
 
-        const { data, error } = await query.order('created_at', { ascending: false });
+        if (pnr && lastname) {
+            // Guests aren't logged in, so RLS blocks a direct table read here
+            // on purpose. This goes through a security-definer function that
+            // only ever returns the one booking matching this exact PNR +
+            // last name pair, instead of exposing the whole bookings table.
+            const { data, error } = await window.supabase
+                .rpc('lookup_booking', { p_pnr: pnr.trim(), p_lastname: lastname.trim() });
 
-        if (error) {
-            console.error("Retrieve bookings error:", error);
-            throw new Error(error.message);
+            if (error) {
+                console.error("Retrieve bookings error:", error);
+                throw new Error(error.message);
+            }
+
+            return data;
         }
 
-        return data;
+        throw new Error("Missing parameters for query filter.");
     },
 
     // Check-in passenger by updating booking status and awarding miles
@@ -206,17 +218,16 @@ function updateNavbarUI() {
     const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
 
     if (activeUser) {
-        // Logged In: Create Royal Club Dropdown menu item
+        // Logged In: link straight to the real dashboard, with a small dropdown
         const userLi = document.createElement("li");
         userLi.className = "nav-item dropdown user-menu";
         userLi.innerHTML = `
-            <a href="#" class="nav-link"><i class="fas fa-crown" style="color:#BA8B02; margin-right:5px;"></i> ROYAL CLUB <i class="fas fa-chevron-down"></i></a>
-            <div class="dropdown-menu" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 0; min-width: 200px;">
-                <span class="dropdown-item-text" style="color: #94a3b8; font-size: 0.75rem; padding: 5px 20px; display: block; font-weight:bold;">ID: ${activeUser.membership_id}</span>
-                <span class="dropdown-item-text" style="color: var(--gold); font-size: 0.75rem; padding: 5px 20px; display: block; font-weight:bold; margin-bottom:5px;"><i class="fas fa-coins"></i> Miles: ${activeUser.miles.toLocaleString()}</span>
-                <hr style="border-color: rgba(255,255,255,0.05); margin: 5px 0;">
-                <a href="book.html#my-bookings" class="dropdown-item" style="display:block; padding:8px 20px; color:#fff; text-decoration:none; font-size:0.8rem;"><i class="fas fa-calendar-check" style="margin-right:10px;"></i> My Bookings</a>
-                <a href="#" id="navbar-logout-btn" class="dropdown-item" style="display:block; padding:8px 20px; color:#ff5722; text-decoration:none; font-size:0.8rem;"><i class="fas fa-sign-out-alt" style="margin-right:10px;"></i> Log Out</a>
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-user-circle" style="margin-right:5px;"></i> ${(activeUser.name || 'Account').split(' ')[0].toUpperCase()} <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-menu">
+                <a href="dashboard.html" class="dropdown-item"><i class="fas fa-gauge"></i> Dashboard</a>
+                <a href="book.html" class="dropdown-item"><i class="fas fa-plane"></i> Book a Flight</a>
+                <a href="online_check.html" class="dropdown-item"><i class="fas fa-clipboard-check"></i> Check-In</a>
+                <a href="#" id="navbar-logout-btn" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Log Out</a>
             </div>
         `;
         navMenu.appendChild(userLi);
@@ -224,8 +235,10 @@ function updateNavbarUI() {
         // Add dropdown interaction click handlers for responsive layout compatibility
         const dropdownLink = userLi.querySelector(".nav-link");
         dropdownLink.addEventListener("click", function(e) {
-            e.preventDefault();
-            userLi.classList.toggle("open");
+            if(window.innerWidth <= 768){
+                e.preventDefault();
+                userLi.classList.toggle("open");
+            }
         });
 
         // Add logout listener
