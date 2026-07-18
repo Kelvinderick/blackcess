@@ -143,7 +143,20 @@ const BlackcessDB = {
                 throw new Error(error.message);
             }
 
-            return data;
+            // Bookings made through Duffel have no flight_id (that table is
+            // no longer the source of flight data), so the join above comes
+            // back null for them — fall back to the flight details stored
+            // directly on the booking row instead.
+            return data.map(b => ({
+                ...b,
+                flights: b.flights || {
+                    flight_number: b.flight_number,
+                    departure_city: b.departure_city,
+                    arrival_city: b.arrival_city,
+                    departure_time: b.departure_time,
+                    arrival_time: b.arrival_time
+                }
+            }));
         }
 
         if (pnr && lastname) {

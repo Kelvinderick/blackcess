@@ -274,13 +274,13 @@
             <label for="departure"><i class="fas fa-plane-departure" aria-hidden="true"></i><span class="sr-only">Departure city</span></label>
             <select id="departure" class="form-input">
               <option value="">Departure city</option>
-              <option value="Lagos">Lagos (LOS)</option>
-              <option value="Abuja">Abuja (ABV)</option>
-              <option value="Port Harcourt">Port Harcourt (PHC)</option>
-              <option value="Kano">Kano (KAN)</option>
-              <option value="Accra">Accra (ACC)</option>
-              <option value="Dakar">Dakar (DSS)</option>
-              <option value="Benin City">Benin City (BNI)</option>
+              <option value="LOS">Lagos (LOS)</option>
+              <option value="ABV">Abuja (ABV)</option>
+              <option value="PHC">Port Harcourt (PHC)</option>
+              <option value="KAN">Kano (KAN)</option>
+              <option value="ACC">Accra (ACC)</option>
+              <option value="DSS">Dakar (DSS)</option>
+              <option value="BNI">Benin City (BNI)</option>
             </select>
           </div>
 
@@ -288,12 +288,12 @@
             <label for="arrival"><i class="fas fa-plane-arrival" aria-hidden="true"></i><span class="sr-only">Arrival city</span></label>
             <select id="arrival" class="form-input">
               <option value="">To</option>
-              <option value="London">London (LHR)</option>
-              <option value="London">London Gatwick (LGW)</option>
-              <option value="Dubai">Dubai (DXB)</option>
-              <option value="New York">New York (JFK)</option>
-              <option value="Paris">Paris (CDG)</option>
-              <option value="Amsterdam">Amsterdam (AMS)</option>
+              <option value="LHR">London Heathrow (LHR)</option>
+              <option value="LGW">London Gatwick (LGW)</option>
+              <option value="DXB">Dubai (DXB)</option>
+              <option value="JFK">New York (JFK)</option>
+              <option value="CDG">Paris (CDG)</option>
+              <option value="AMS">Amsterdam (AMS)</option>
             </select>
           </div>
 
@@ -348,8 +348,16 @@
           <div id="selected-flight-summary" style="margin-bottom: 20px; font-size: 0.95rem; color: #334155;"></div>
           <form id="passenger-checkout-form" style="display: grid; gap: 15px; max-width: 500px;">
             <div>
+              <label for="pay-firstname" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger First Name</label>
+              <input type="text" id="pay-firstname" required placeholder="e.g. Chidi" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+            <div>
               <label for="pay-lastname" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Last Name</label>
               <input type="text" id="pay-lastname" required placeholder="e.g. Adeyemi" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+            <div>
+              <label for="pay-dob" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Date of Birth</label>
+              <input type="date" id="pay-dob" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
             </div>
             <div>
               <label for="pay-email" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Email</label>
@@ -616,21 +624,14 @@ const PAYSTACK_PUBLIC_KEY = 'pk_test_ec747fe1262edf30f447fc2e87f982b920392299';
 
 let selectedFlight = null;
 
-function generatePnr() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let pnr = '';
-  for (let i = 0; i < 6; i++) pnr += chars[Math.floor(Math.random() * chars.length)];
-  return pnr;
-}
-
 document.getElementById('search-flights-trigger').addEventListener('click', async function(e) {
   e.preventDefault();
 
-  const depCity = document.getElementById('departure').value;
-  const arrCity = document.getElementById('arrival').value;
+  const depCode = document.getElementById('departure').value;
+  const arrCode = document.getElementById('arrival').value;
   const targetDate = document.getElementById('departure-date').value;
 
-  if (!depCity || !arrCity || !targetDate) {
+  if (!depCode || !arrCode || !targetDate) {
     alert('Please fill out all search parameters first.');
     return;
   }
@@ -639,19 +640,24 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
   loader.classList.add('visible');
   document.getElementById('checkout-panel').style.display = 'none';
 
-  // Match the whole selected calendar day against the departure_time timestamp
-  const dayStart = `${targetDate}T00:00:00`;
-  const dayEnd = `${targetDate}T23:59:59`;
+  let offers = [];
+  let searchError = null;
 
-  const { data: offers, error } = await window.supabase
-    .from('flights')
-    .select('*')
-    .ilike('departure_city', depCity)
-    .ilike('arrival_city', arrCity)
-    .gte('departure_time', dayStart)
-    .lte('departure_time', dayEnd)
-    .gt('available_seats', 0)
-    .order('departure_time', { ascending: true });
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/search-flights`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ origin: depCode, destination: arrCode, departure_date: targetDate })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Search failed.');
+    offers = json.offers || [];
+  } catch (err) {
+    searchError = err;
+  }
 
   loader.classList.remove('visible');
 
@@ -659,39 +665,39 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
   const resultsTarget = document.getElementById('results-target');
   resultsTarget.innerHTML = '';
 
-  if (error) {
-    console.error('Flight search error:', error);
-    resultsTarget.innerHTML = `<p style="color:#b91c1c; font-family:'Outfit';">Could not search flights: ${error.message}</p>`;
+  if (searchError) {
+    console.error('Flight search error:', searchError);
+    resultsTarget.innerHTML = `<p style="color:#b91c1c; font-family:'Outfit';">Could not search flights: ${BlackcessDB.escapeHtml(searchError.message)}</p>`;
     resultsSection.style.display = 'block';
     return;
   }
 
-  if (!offers || offers.length === 0) {
-    resultsTarget.innerHTML = `<p style="color:#64748b; font-family:'Outfit';">No flights found for ${BlackcessDB.escapeHtml(depCity)} &rarr; ${BlackcessDB.escapeHtml(arrCity)} on this date.</p>`;
+  if (offers.length === 0) {
+    resultsTarget.innerHTML = `<p style="color:#64748b; font-family:'Outfit';">No flights found for ${BlackcessDB.escapeHtml(depCode)} &rarr; ${BlackcessDB.escapeHtml(arrCode)} on this date.</p>`;
     resultsSection.style.display = 'block';
     return;
   }
 
-  offers.forEach((flight) => {
+  offers.forEach((offer) => {
     const esc = BlackcessDB.escapeHtml;
-    const departTime = new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-    const arriveTime = new Date(flight.arrival_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+    const slice = offer.slices[0];
+    const departTime = new Date(slice.departing_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+    const arriveTime = new Date(slice.arriving_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
 
     const card = document.createElement('div');
     card.className = 'flight-card';
     card.style.borderLeft = '4px solid #1e293b';
     card.innerHTML = `
       <div class="flight-info">
-        <h4>${esc(flight.flight_number)}</h4>
-        <p>${esc(flight.departure_city)} &rarr; ${esc(flight.arrival_city)}</p>
+        <h4>${esc(slice.carrier)} ${esc(slice.flight_number)}</h4>
+        <p>${esc(slice.origin_city)} (${esc(slice.origin)}) &rarr; ${esc(slice.destination_city)} (${esc(slice.destination)})</p>
         <p>Depart ${departTime} &bull; Arrive ${arriveTime}</p>
-        <span class="seats-left">${flight.available_seats} seat${flight.available_seats === 1 ? '' : 's'} left</span><br>
-        <small style="color: #2e7d32; font-weight: 600; font-size:0.95rem;">&#8358;${Number(flight.price).toLocaleString()}</small>
+        <small style="color: #2e7d32; font-weight: 600; font-size:0.95rem;">${esc(offer.total_currency)} ${Number(offer.total_amount).toLocaleString()}</small>
       </div>
       <button class="search-btn select-flight-btn" style="background: #1e293b; padding: 8px 16px; font-size: 0.85rem;">Select</button>
     `;
     card.querySelector('.select-flight-btn').addEventListener('click', () => {
-      selectedFlight = flight;
+      selectedFlight = offer;
       showCheckout();
     });
     resultsTarget.appendChild(card);
@@ -703,13 +709,14 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
 
 function showCheckout() {
   const esc = BlackcessDB.escapeHtml;
-  const departTime = new Date(selectedFlight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+  const slice = selectedFlight.slices[0];
+  const departTime = new Date(slice.departing_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
   document.getElementById('selected-flight-summary').innerHTML = `
-    <strong>Selected Itinerary:</strong> ${esc(selectedFlight.flight_number)} — ${esc(selectedFlight.departure_city)} &rarr; ${esc(selectedFlight.arrival_city)}<br>
+    <strong>Selected Itinerary:</strong> ${esc(slice.carrier)} ${esc(slice.flight_number)} — ${esc(slice.origin)} &rarr; ${esc(slice.destination)}<br>
     <strong>Departure:</strong> ${departTime}<br>
-    <strong>Total Fare:</strong> &#8358;${Number(selectedFlight.price).toLocaleString()}
+    <strong>Total Fare:</strong> ${esc(selectedFlight.total_currency)} ${Number(selectedFlight.total_amount).toLocaleString()}
   `;
-  document.getElementById('checkout-amount').innerText = `(₦${Number(selectedFlight.price).toLocaleString()})`;
+  document.getElementById('checkout-amount').innerText = `(${selectedFlight.total_currency} ${Number(selectedFlight.total_amount).toLocaleString()})`;
   document.getElementById('checkout-panel').style.display = 'block';
   document.getElementById('checkout-panel').scrollIntoView({ behavior: 'smooth' });
 }
@@ -717,50 +724,60 @@ function showCheckout() {
 document.getElementById('passenger-checkout-form').addEventListener('submit', function(e) {
   e.preventDefault();
 
+  const firstName = document.getElementById('pay-firstname').value.trim();
   const lastName = document.getElementById('pay-lastname').value.trim();
+  const dob = document.getElementById('pay-dob').value;
   const userEmail = document.getElementById('pay-email').value.trim();
-  const computedSubunits = Math.round(Number(selectedFlight.price) * 100);
+
+  // Paystack settles in NGN subunits (kobo). If the offer is priced in a
+  // different currency, this amount needs converting before charging —
+  // for now this assumes NGN-priced offers, matching the rest of the site.
+  const computedSubunits = Math.round(Number(selectedFlight.total_amount) * 100);
   const paystackPopInstance = new PaystackPop();
 
   paystackPopInstance.newTransaction({
     key: PAYSTACK_PUBLIC_KEY,
     email: userEmail,
     amount: computedSubunits,
-    currency: 'NGN',
+    currency: selectedFlight.total_currency === 'NGN' ? 'NGN' : 'NGN',
     onSuccess: async function(transaction) {
-      // IMPORTANT — still a known limitation even after this fix:
-      // `transaction.reference` should be verified against Paystack's
-      // server-side /transaction/verify endpoint before a booking is
-      // trusted as paid. That verification has to happen on a server that
-      // holds the Paystack *secret* key (never the browser). This project
-      // has no backend, so anyone could open devtools and call
-      // `create_booking_atomic` directly without ever paying. See the
-      // "verify-and-book" Edge Function skeleton in the delivered
-      // supabase/functions folder for the real fix — swap this RPC call
-      // for a fetch() to that function once it's deployed.
       const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
 
-      // create_booking_atomic locks the flight row, checks available_seats
-      // server-side, generates the PNR, inserts the booking, and
-      // decrements the seat count — all inside one transaction, so two
-      // people can't both grab the last seat.
-      const { data: booking, error: bookingError } = await window.supabase
-        .rpc('create_booking_atomic', {
-          p_flight_id: selectedFlight.id,
-          p_lastname: lastName,
-          p_email: userEmail,
-          p_user_id: activeUser ? activeUser.uid : null
-        })
-        .single();
-
-      if (bookingError) {
-        console.error('Booking creation error:', bookingError);
-        alert('Payment succeeded, but saving your booking failed: ' + bookingError.message + '\n\nPlease contact support with reference: ' + transaction.reference);
+      // create-duffel-order re-verifies the Paystack payment server-side,
+      // re-fetches the offer from Duffel to confirm price/availability,
+      // books the real order, and logs it into Supabase — all in one
+      // trusted server-side step. See supabase/functions/create-duffel-order.
+      let result;
+      try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-duffel-order`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({
+            reference: transaction.reference,
+            offer_id: selectedFlight.id,
+            passenger: {
+              given_name: firstName,
+              family_name: lastName,
+              born_on: dob,
+              email: userEmail
+            },
+            user_id: activeUser ? activeUser.uid : null
+          })
+        });
+        result = await res.json();
+        if (!res.ok) throw new Error(result.error || 'Booking failed.');
+      } catch (err) {
+        console.error('Booking creation error:', err);
+        alert('Payment succeeded, but booking failed: ' + err.message + '\n\nPlease contact support with reference: ' + transaction.reference);
         return;
       }
 
-      const pnr = booking.pnr;
-      alert(`Payment Confirmed!\n\nBooking Reference (PNR): ${pnr}\n${selectedFlight.flight_number}: ${selectedFlight.departure_city} → ${selectedFlight.arrival_city}\n\nSave this PNR with your last name to manage this booking or check in later.`);
+      const pnr = result.booking.pnr;
+      const slice = selectedFlight.slices[0];
+      alert(`Payment Confirmed!\n\nBooking Reference (PNR): ${pnr}\n${slice.carrier} ${slice.flight_number}: ${slice.origin} → ${slice.destination}\n\nSave this PNR with your last name to manage this booking or check in later.`);
       document.getElementById('passenger-checkout-form').reset();
       document.getElementById('checkout-panel').style.display = 'none';
       document.getElementById('flight-results-section').style.display = 'none';
