@@ -10,10 +10,41 @@ document.getElementById("logoutBtn").onclick = () => {
 };
 
 const modal = document.getElementById("flightModal");
+const modalTitle = modal.querySelector("h2");
+const submitBtn = document.getElementById("flightForm").querySelector("button[type=submit]");
 
-document.getElementById("addFlightBtn").onclick = () => {
+// Tracks which flight is being edited, if any. null means "Add Flight" mode.
+let editingFlightId = null;
+let flightsById = {};
+
+function openAddModal() {
+    editingFlightId = null;
+    document.getElementById("flightForm").reset();
+    modalTitle.textContent = "Add Flight";
+    submitBtn.textContent = "Save Flight";
     modal.style.display = "flex";
-};
+}
+
+function openEditModal(id) {
+    const flight = flightsById[id];
+    if (!flight) return;
+
+    editingFlightId = id;
+    document.getElementById("flightNumber").value = flight.flight_number || "";
+    document.getElementById("departureCity").value = flight.departure_city || "";
+    document.getElementById("arrivalCity").value = flight.arrival_city || "";
+    // datetime-local inputs need "YYYY-MM-DDTHH:mm" with no timezone suffix
+    document.getElementById("departureTime").value = (flight.departure_time || "").slice(0, 16);
+    document.getElementById("arrivalTime").value = (flight.arrival_time || "").slice(0, 16);
+    document.getElementById("price").value = flight.price;
+    document.getElementById("seats").value = flight.available_seats;
+
+    modalTitle.textContent = "Edit Flight";
+    submitBtn.textContent = "Update Flight";
+    modal.style.display = "flex";
+}
+
+document.getElementById("addFlightBtn").onclick = openAddModal;
 
 document.getElementById("closeModal").onclick = () => {
     modal.style.display = "none";
@@ -39,6 +70,9 @@ async function loadFlights() {
         return;
     }
 
+    flightsById = Object.fromEntries(data.map(f => [f.id, f]));
+
+    const esc = BlackcessDB.escapeHtml;
     const table = document.getElementById("flightTable");
 
     table.innerHTML = "";
@@ -49,11 +83,11 @@ async function loadFlights() {
 
 <tr>
 
-<td>${flight.flight_number}</td>
+<td>${esc(flight.flight_number)}</td>
 
-<td>${flight.departure_city}</td>
+<td>${esc(flight.departure_city)}</td>
 
-<td>${flight.arrival_city}</td>
+<td>${esc(flight.arrival_city)}</td>
 
 <td>₦${Number(flight.price).toLocaleString()}</td>
 
@@ -61,13 +95,13 @@ async function loadFlights() {
 
 <td>
 
-<button class="action-btn edit">
+<button class="action-btn edit" onclick="openEditModal('${esc(flight.id)}')">
 Edit
 </button>
 
 <button
 class="action-btn delete"
-onclick="deleteFlight('${flight.id}')">
+onclick="deleteFlight('${esc(flight.id)}')">
 
 Delete
 
@@ -138,9 +172,9 @@ Number(document.getElementById("seats").value)
 
 };
 
-const { error } = await window.supabase
-.from("flights")
-.insert([flight]);
+const { error } = editingFlightId
+? await window.supabase.from("flights").update(flight).eq("id", editingFlightId)
+: await window.supabase.from("flights").insert([flight]);
 
 if(error){
 
@@ -151,6 +185,8 @@ return;
 }
 
 modal.style.display = "none";
+
+editingFlightId = null;
 
 document.getElementById("flightForm").reset();
 

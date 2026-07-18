@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,29 +19,24 @@
 
     <ul>
 
-        <li class="active">
+        <li onclick="location.href='admin.html'">
             <i class="fas fa-chart-line"></i>
             Dashboard
         </li>
 
-        <li>
+        <li onclick="location.href='flight.html'">
             <i class="fas fa-plane"></i>
             Flights
         </li>
 
-        <li>
+        <li class="active">
             <i class="fas fa-ticket"></i>
             Bookings
         </li>
 
-        <li>
+        <li onclick="location.href='user.html'">
             <i class="fas fa-users"></i>
             Users
-        </li>
-
-        <li>
-            <i class="fas fa-cog"></i>
-            Settings
         </li>
 
     </ul>
@@ -113,9 +108,10 @@
 
 </div>
 
-<script src="../supabaseconfigure.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
 <script src="../auth-helper.js"></script>
-<script src="admin.js"></script>
+<script src="booking.js"></script>
 
 </body>
 </html>

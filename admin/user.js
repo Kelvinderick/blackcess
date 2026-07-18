@@ -31,22 +31,24 @@ async function loadUsers() {
         const role = user.role || "user";
         const buttonLabel = role === "admin" ? "Revoke Admin" : "Make Admin";
 
+        const esc = BlackcessDB.escapeHtml;
+
         table.innerHTML += `
 
 <tr>
 
-<td>${user.full_name || "\u2014"}</td>
+<td>${esc(user.full_name) || "\u2014"}</td>
 
-<td>${user.membership_id || "\u2014"}</td>
+<td>${esc(user.membership_id) || "\u2014"}</td>
 
 <td>${(user.miles || 0).toLocaleString()}</td>
 
-<td>${role}</td>
+<td>${esc(role)}</td>
 
 <td>
 
-<button class="action-btn edit" onclick="toggleAdmin('${user.id}', '${role}')">
-${buttonLabel}
+<button class="action-btn edit" onclick="toggleAdmin('${esc(user.id)}', '${esc(role)}')">
+${esc(buttonLabel)}
 </button>
 
 </td>

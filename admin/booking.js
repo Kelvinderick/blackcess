@@ -14,31 +14,13 @@ async function loadBookings() {
 
     const { data: bookings, error } = await window.supabase
         .from("bookings")
-        .select("*")
+        .select("*, flights(flight_number, departure_city, arrival_city)")
         .order("created_at", { ascending: false });
 
     if (error) {
         console.error(error);
         alert("Could not load bookings: " + error.message);
         return;
-    }
-
-    // Resolve the flight for each booking in one batch query, rather than
-    // one request per row.
-    const flightIds = [...new Set(bookings.map(b => b.flight_id).filter(Boolean))];
-    let flightsById = {};
-
-    if (flightIds.length > 0) {
-        const { data: flights, error: flightsError } = await window.supabase
-            .from("flights")
-            .select("*")
-            .in("id", flightIds);
-
-        if (flightsError) {
-            console.error(flightsError);
-        } else {
-            flightsById = Object.fromEntries(flights.map(f => [f.id, f]));
-        }
     }
 
     const table = document.getElementById("bookingsTable");
@@ -49,33 +31,35 @@ async function loadBookings() {
         return;
     }
 
+    const esc = BlackcessDB.escapeHtml;
+
     bookings.forEach(booking => {
-        const flight = flightsById[booking.flight_id];
+        const flight = booking.flights;
         const route = flight
-            ? `${flight.flight_number}: ${flight.departure_city} \u2192 ${flight.arrival_city}`
+            ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} \u2192 ${esc(flight.arrival_city)}`
             : "\u2014";
 
         table.innerHTML += `
 
 <tr>
 
-<td>${booking.pnr || "\u2014"}</td>
+<td>${esc(booking.pnr) || "\u2014"}</td>
 
-<td>${booking.passenger_lastname || "\u2014"}</td>
+<td>${esc(booking.passenger_lastname) || "\u2014"}</td>
 
-<td>${booking.passenger_email || "\u2014"}</td>
+<td>${esc(booking.passenger_email) || "\u2014"}</td>
 
 <td>${route}</td>
 
-<td>${booking.status || "\u2014"}</td>
+<td>${esc(booking.status) || "\u2014"}</td>
 
 <td>
 
-<button class="action-btn edit" onclick="checkInBooking('${booking.id}')">
+<button class="action-btn edit" onclick="checkInBooking('${esc(booking.id)}')">
 Check-In
 </button>
 
-<button class="action-btn delete" onclick="deleteBooking('${booking.id}')">
+<button class="action-btn delete" onclick="deleteBooking('${esc(booking.id)}')">
 Delete
 </button>
 
