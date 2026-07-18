@@ -235,26 +235,13 @@ async function loadDashboardBookings() {
       return;
     }
 
-    // Resolve each booking's flight in one batched query rather than one per row.
-    const flightIds = [...new Set(bookings.map(b => b.flight_id).filter(Boolean))];
-    let flightsById = {};
-
-    if (flightIds.length > 0) {
-      const { data: flights, error: flightsError } = await window.supabase
-        .from('flights')
-        .select('*')
-        .in('id', flightIds);
-
-      if (!flightsError && flights) {
-        flightsById = Object.fromEntries(flights.map(f => [f.id, f]));
-      }
-    }
-
     listEl.innerHTML = '';
 
+    const esc = BlackcessDB.escapeHtml;
+
     bookings.forEach(booking => {
-      const flight = flightsById[booking.flight_id];
-      const route = flight ? `${flight.flight_number}: ${flight.departure_city} \u2192 ${flight.arrival_city}` : 'Flight details unavailable';
+      const flight = booking.flights;
+      const route = flight ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} \u2192 ${esc(flight.arrival_city)}` : 'Flight details unavailable';
       const departTime = flight ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '';
       const statusClass = booking.status === 'Checked-In' ? 'status-checked-in' : 'status-confirmed';
 
@@ -263,9 +250,9 @@ async function loadDashboardBookings() {
       row.innerHTML = `
         <div>
           <div class="booking-route">${route}</div>
-          <div class="booking-meta">${departTime} &bull; <span class="status-pill ${statusClass}">${booking.status || 'Confirmed'}</span></div>
+          <div class="booking-meta">${departTime} &bull; <span class="status-pill ${statusClass}">${esc(booking.status) || 'Confirmed'}</span></div>
         </div>
-        <div class="booking-pnr">${booking.pnr}</div>
+        <div class="booking-pnr">${esc(booking.pnr)}</div>
       `;
       listEl.appendChild(row);
     });

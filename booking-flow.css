@@ -1,0 +1,10 @@
+/* booking-flow.css
+ *
+ * This file was referenced by several pages (Routes.html, index.html,
+ * login.html, my-bookings.html, online_check.html) but was missing from
+ * the repository entirely — not a broken path, the file itself was never
+ * committed. This is an empty placeholder so those pages stop 404-ing on
+ * load. If you have the original styles (locally, in an editor's undo
+ * history, etc.), drop them in here — no HTML changes needed since the
+ * <link> tags already point here.
+ */

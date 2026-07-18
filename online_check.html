@@ -120,6 +120,9 @@
                 const records = await BlackcessDB.getBookings({ pnr, lastname });
                 if (records.length > 0) {
                     const booking = records[0];
+                    const flight = booking.flights || {};
+                    const esc = BlackcessDB.escapeHtml;
+                    const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
                     resultsTarget.innerHTML = `
                         <div class="boarding-pass" style="margin-top:30px; margin-left: auto; margin-right: auto;">
                             <div class="boarding-pass-header">
@@ -129,46 +132,38 @@
                             <div class="boarding-pass-body">
                                 <div class="bp-row">
                                     <div class="bp-col">
-                                        <div class="bp-label">Passenger</div>
-                                        <div class="bp-val">${booking.passenger_name}</div>
+                                        <div class="bp-label">Passenger (Last Name)</div>
+                                        <div class="bp-val">${esc(booking.passenger_lastname)}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">PNR / Reference</div>
-                                        <div class="bp-val" style="color:var(--gold); font-size:1.25rem;">${booking.pnr}</div>
+                                        <div class="bp-val" style="color:var(--gold); font-size:1.25rem;">${esc(booking.pnr)}</div>
                                     </div>
                                 </div>
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">From</div>
-                                        <div class="bp-val">${booking.departure} (${booking.departure_code})</div>
+                                        <div class="bp-val">${esc(flight.departure_city) || '\u2014'}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">To</div>
-                                        <div class="bp-val">${booking.arrival} (${booking.arrival_code})</div>
+                                        <div class="bp-val">${esc(flight.arrival_city) || '\u2014'}</div>
                                     </div>
                                 </div>
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">Flight</div>
-                                        <div class="bp-val">${booking.flight_number}</div>
-                                    </div>
-                                    <div class="bp-col">
-                                        <div class="bp-label">Cabin Class</div>
-                                        <div class="bp-val">${booking.cabin_class}</div>
-                                    </div>
-                                    <div class="bp-col">
-                                        <div class="bp-label">Seat</div>
-                                        <div class="bp-val">${booking.seat}</div>
+                                        <div class="bp-val">${esc(flight.flight_number) || '\u2014'}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
-                                        <div class="bp-label">Date</div>
-                                        <div class="bp-val">${booking.departure_date}</div>
+                                        <div class="bp-label">Departure</div>
+                                        <div class="bp-val">${departTime}</div>
                                     </div>
                                 </div>
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">Status</div>
-                                        <div class="bp-val" style="color:#37b878;"><i class="fas fa-circle-check"></i> ${booking.status}</div>
+                                        <div class="bp-val" style="color:#37b878;"><i class="fas fa-circle-check"></i> ${esc(booking.status)}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">Gate</div>
@@ -178,11 +173,13 @@
                             </div>
                             <div class="barcode-area">
                                 <div class="barcode-lines"></div>
-                                <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${booking.pnr}*</div>
+                                <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${esc(booking.pnr)}*</div>
                             </div>
                         </div>
                     `;
                     resultsTarget.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;"><i class="fas fa-triangle-exclamation"></i> No ticket found matching code and last name.</p>`;
                 }
             } catch(e) {
                 resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;">Retrieval error.</p>`;

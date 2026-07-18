@@ -458,16 +458,26 @@
     <script src="auth-helper.js"></script>
     
     <script>
-        // Update database connection status indicator
-        document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(() => {
-                const banner = document.getElementById("db-status-banner");
-                if (window.supabase) {
-                    banner.innerHTML = `<i class="fas fa-cloud" style="color: #37b878;"></i> Linked to Live Supabase Cloud.`;
-                } else {
-                    banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color: #ff5722;"></i> Supabase Configuration Missing.`;
-                }
-            }, 800);
+        // Update database connection status indicator. window.supabase is
+        // always truthy once supabase-config.js runs — createClient() never
+        // validates the URL/key, it just builds a client object — so we
+        // have to actually round-trip a request to know if the credentials
+        // are real and the project is reachable.
+        document.addEventListener("DOMContentLoaded", async () => {
+            const banner = document.getElementById("db-status-banner");
+            if (!window.supabase) {
+                banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color: #ff5722;"></i> Supabase Configuration Missing.`;
+                return;
+            }
+
+            try {
+                const { error } = await window.supabase.from("flights").select("id").limit(1);
+                if (error) throw error;
+                banner.innerHTML = `<i class="fas fa-cloud" style="color: #37b878;"></i> Linked to Live Supabase Cloud.`;
+            } catch (e) {
+                console.error("Supabase connectivity check failed:", e);
+                banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color: #ff5722;"></i> Could not reach Supabase — check your credentials.`;
+            }
         });
 
         // Switch panels with simple fade animation

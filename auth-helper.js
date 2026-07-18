@@ -6,6 +6,20 @@ const BlackcessDB = {
         return "BC" + Math.floor(100000 + Math.random() * 900000);
     },
 
+    // Escape user-supplied text before it goes into innerHTML anywhere.
+    // Booking/profile fields (names, PNRs, etc.) come from user input and
+    // are rendered in admin tables and dashboards, so they must never be
+    // inserted raw or a passenger could stash a script tag in their name.
+    escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    },
+
     // Sign Up a new passenger and create their Royal Club profile
     async signUp(name, email, password, passport) {
         // 1. Sign up user in Supabase Auth
@@ -114,9 +128,13 @@ const BlackcessDB = {
     // Retrieve bookings: either by user UID or by PNR & Lastname (for guest retrieval)
     async getBookings({ uid, pnr, lastname }) {
         if (uid) {
+            // Embed the related flight row (requires the bookings.flight_id ->
+            // flights.id foreign key from the migration) so callers get real
+            // flight fields under booking.flights instead of having to do a
+            // second manual lookup.
             const { data, error } = await window.supabase
                 .from('bookings')
-                .select('*')
+                .select('*, flights(flight_number, departure_city, arrival_city, departure_time, arrival_time)')
                 .eq('user_id', uid)
                 .order('created_at', { ascending: false });
 
@@ -147,60 +165,33 @@ const BlackcessDB = {
         throw new Error("Missing parameters for query filter.");
     },
 
-    // Check-in passenger by updating booking status and awarding miles
+    // Check-in passenger by updating booking status and awarding miles.
+    // This runs entirely inside the checkin_booking() Postgres function
+    // (SECURITY DEFINER) so it works under RLS even for guests who have no
+    // direct write access to bookings/profiles — the old version updated
+    // both tables straight from the client, which RLS now blocks.
     async checkInBooking(pnr, lastname) {
-        // 1. Fetch booking to verify existence and check-in eligibility
-        const bookings = await this.getBookings({ pnr, lastname });
-        if (bookings.length === 0) {
-            throw new Error("No booking found matching reference code and passenger last name.");
-        }
-
-        const booking = bookings[0];
-        if (booking.status === 'Checked-In') {
-            throw new Error("Passenger has already checked in online for this flight.");
-        }
-
-        // 2. Perform check-in update
         const { data, error } = await window.supabase
-            .from('bookings')
-            .update({ status: 'Checked-In' })
-            .eq('id', booking.id)
-            .select();
+            .rpc('checkin_booking', { p_pnr: pnr.trim(), p_lastname: lastname.trim() })
+            .single();
 
         if (error) {
-            console.error("Check-in database update error:", error);
-            throw new Error("Failed to register check-in status: " + error.message);
+            console.error("Check-in error:", error);
+            throw new Error(error.message);
         }
 
-        // 3. Award miles if booking is associated with a registered member profile
-        if (booking.user_id) {
-            const milesEarned = 500; // Award 500 miles for checking in
-            const { data: profileData } = await window.supabase
-                .from('profiles')
-                .select('miles')
-                .eq('id', booking.user_id)
-                .single();
-                
-            if (profileData) {
-                const updatedMiles = (profileData.miles || 0) + milesEarned;
-                await window.supabase
-                    .from('profiles')
-                    .update({ miles: updatedMiles })
-                    .eq('id', booking.user_id);
-                
-                // Update local storage activeUser cache if user is logged in
-                const cachedUser = JSON.parse(localStorage.getItem("activeUser") || "null");
-                if (cachedUser && cachedUser.uid === booking.user_id) {
-                    cachedUser.miles = updatedMiles;
-                    localStorage.setItem("activeUser", JSON.stringify(cachedUser));
-                    
-                    // Dispatch auth event to trigger navbar update
-                    window.dispatchEvent(new Event("authChange"));
-                }
+        // Keep the local cache in sync if the checked-in passenger is the
+        // currently logged-in user.
+        if (data.user_id) {
+            const cachedUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+            if (cachedUser && cachedUser.uid === data.user_id) {
+                cachedUser.miles = (cachedUser.miles || 0) + 500;
+                localStorage.setItem("activeUser", JSON.stringify(cachedUser));
+                window.dispatchEvent(new Event("authChange"));
             }
         }
 
-        return data[0];
+        return data;
     }
 };
 
@@ -285,7 +276,8 @@ if (window.supabase) {
                             name: profileData.full_name,
                             passport: profileData.passport_number,
                             membership_id: profileData.membership_id,
-                            miles: profileData.miles
+                            miles: profileData.miles,
+                            role: profileData.role
                         };
                         localStorage.setItem("activeUser", JSON.stringify(profile));
                         window.dispatchEvent(new Event("authChange"));

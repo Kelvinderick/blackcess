@@ -124,18 +124,22 @@
                 if (list.length === 0) {
                     bookingsListDiv.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;"><i class="fas fa-circle-info"></i> You have no cloud booking histories registered under this membership profile.</p>`;
                 } else {
+                    const esc = BlackcessDB.escapeHtml;
                     let html = `<h4 style="color:#fff; margin-bottom:12px;">Stored Cloud Bookings (${list.length})</h4><div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">`;
                     list.forEach(b => {
+                        const flight = b.flights;
+                        const route = flight ? `${esc(flight.departure_city)} &rarr; ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+                        const departDate = flight ? new Date(flight.departure_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
                         html += `
                             <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center;">
                                 <div>
-                                    <span style="font-weight:700; color:#fff;">${b.departure_code} &rarr; ${b.arrival_code}</span>
-                                    <span style="font-size:0.75rem; color:#94a3b8; margin-left:15px;"><i class="fas fa-calendar"></i> ${b.departure_date}</span>
-                                    <span style="font-size:0.75rem; color:#94a3b8; margin-left:15px;"><i class="fas fa-crown text-gold"></i> ${b.cabin_class}</span>
+                                    <span style="font-weight:700; color:#fff;">${route}</span>
+                                    <span style="font-size:0.75rem; color:#94a3b8; margin-left:15px;"><i class="fas fa-calendar"></i> ${departDate}</span>
+                                    <span style="font-size:0.75rem; color:#94a3b8; margin-left:15px;"><i class="fas fa-ticket"></i> ${esc(b.status)}</span>
                                 </div>
                                 <div style="display:flex; align-items:center; gap:15px;">
-                                    <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${b.pnr}</span>
-                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${b.pnr}', '${b.passenger_lastname}')">View Ticket</button>
+                                    <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
+                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
                                 </div>
                             </div>
                         `;
@@ -157,6 +161,9 @@
                 const records = await BlackcessDB.getBookings({ pnr, lastname });
                 if (records.length > 0) {
                     const booking = records[0];
+                    const flight = booking.flights || {};
+                    const esc = BlackcessDB.escapeHtml;
+                    const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
                     resultsTarget.innerHTML = `
                         <div class="boarding-pass" style="margin-top:30px; margin-left: auto; margin-right: auto;">
                             <div class="boarding-pass-header">
@@ -166,46 +173,38 @@
                             <div class="boarding-pass-body">
                                 <div class="bp-row">
                                     <div class="bp-col">
-                                        <div class="bp-label">Passenger</div>
-                                        <div class="bp-val">${booking.passenger_name}</div>
+                                        <div class="bp-label">Passenger (Last Name)</div>
+                                        <div class="bp-val">${esc(booking.passenger_lastname)}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">PNR / Reference</div>
-                                        <div class="bp-val" style="color:var(--gold); font-size:1.25rem;">${booking.pnr}</div>
+                                        <div class="bp-val" style="color:var(--gold); font-size:1.25rem;">${esc(booking.pnr)}</div>
                                     </div>
                                 </div>
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">From</div>
-                                        <div class="bp-val">${booking.departure} (${booking.departure_code})</div>
+                                        <div class="bp-val">${esc(flight.departure_city) || '\u2014'}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">To</div>
-                                        <div class="bp-val">${booking.arrival} (${booking.arrival_code})</div>
+                                        <div class="bp-val">${esc(flight.arrival_city) || '\u2014'}</div>
                                     </div>
                                 </div>
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">Flight</div>
-                                        <div class="bp-val">${booking.flight_number}</div>
-                                    </div>
-                                    <div class="bp-col">
-                                        <div class="bp-label">Cabin Class</div>
-                                        <div class="bp-val">${booking.cabin_class}</div>
-                                    </div>
-                                    <div class="bp-col">
-                                        <div class="bp-label">Seat</div>
-                                        <div class="bp-val">${booking.seat}</div>
+                                        <div class="bp-val">${esc(flight.flight_number) || '\u2014'}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
-                                        <div class="bp-label">Date</div>
-                                        <div class="bp-val">${booking.departure_date}</div>
+                                        <div class="bp-label">Departure</div>
+                                        <div class="bp-val">${departTime}</div>
                                     </div>
                                 </div>
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">Status</div>
-                                        <div class="bp-val" style="color:${booking.status === 'Checked-In' ? '#37b878' : '#BA8B02'};"><i class="fas fa-circle-check"></i> ${booking.status}</div>
+                                        <div class="bp-val" style="color:${booking.status === 'Checked-In' ? '#37b878' : '#BA8B02'};"><i class="fas fa-circle-check"></i> ${esc(booking.status)}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">Gate</div>
@@ -215,7 +214,7 @@
                             </div>
                             <div class="barcode-area">
                                 <div class="barcode-lines"></div>
-                                <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${booking.pnr}*</div>
+                                <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${esc(booking.pnr)}*</div>
                             </div>
                         </div>
                     `;

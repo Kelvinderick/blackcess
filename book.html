@@ -162,19 +162,19 @@
         <div class="dropdown-menu discover-grid">
           <div class="destination-card">
             <div class="card-image" style="background: url('../images/4603382592139667072.png') center/cover;"></div>
-            <a href="../discover/discover-all-original.html">All Destinations</a>
+            <a href="discover/discover-all-original.html">All Destinations</a>
           </div>
           <div class="destination-card">
             <div class="card-image" style="background: url('./images/Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;"></div>
-            <a href="../discover/discover-domestic-original.html">Domestic Destinations</a>
+            <a href="discover/discover-domestic-original.html">Domestic Destinations</a>
           </div>
           <div class="destination-card">
             <div class="card-image" style="background: url('../images/1548181186041623.png') center/cover;"></div>
-            <a href="../discover/discover-regional-original.html">Regional Destinations</a>
+            <a href="discover/discover-regional-original.html">Regional Destinations</a>
           </div>
           <div class="destination-card">
             <div class="card-image" style="background: url('../images/kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;"></div>
-            <a href="../discover/discover-international-original.html">International Destinations</a>
+            <a href="discover/discover-international-original.html">International Destinations</a>
           </div>
         </div>
       </li>
@@ -196,20 +196,20 @@
               <a href="book.html" class="dropdown-item"><i class="fas fa-plane"></i> Book a Flight</a>
               <a href="my-bookings.html" class="dropdown-item"><i class="fas fa-calendar-check"></i> My Bookings</a>
               <a href="online_check.html" class="dropdown-item"><i class="fas fa-clipboard-check"></i> Check-in</a>
-              <a href="../travel/select-seat.html" class="dropdown-item"><i class="fas fa-chair"></i> Select Seat</a>
+              <a href="travel/select-seat.html" class="dropdown-item"><i class="fas fa-chair"></i> Select Seat</a>
             </div>
             <div class="travel-menu-group">
               <span class="travel-menu-label">Add-ons &amp; Services</span>
-              <a href="../travel/book-car.html" class="dropdown-item"><i class="fas fa-car"></i> Book a Car</a>
-              <a href="../travel/book-hotel.html" class="dropdown-item"><i class="fas fa-hotel"></i> Book a Hotel</a>
-              <a href="../travel/travel-insurance.html" class="dropdown-item"><i class="fas fa-shield-heart"></i> Travel Insurance</a>
-              <a href="../travel/pay-small-small.html" class="dropdown-item"><i class="fas fa-credit-card"></i> Pay Small Small</a>
-              <a href="../travel/cabin-upgrade.html" class="dropdown-item"><i class="fas fa-door-open"></i> Cabin Upgrade</a>
-              <a href="../travel/extra-baggage.html" class="dropdown-item"><i class="fas fa-suitcase"></i> Extra Baggage</a>
+              <a href="travel/book-car.html" class="dropdown-item"><i class="fas fa-car"></i> Book a Car</a>
+              <a href="travel/book-hotel.html" class="dropdown-item"><i class="fas fa-hotel"></i> Book a Hotel</a>
+              <a href="travel/travel-insurance.html" class="dropdown-item"><i class="fas fa-shield-heart"></i> Travel Insurance</a>
+              <a href="travel/pay-small-small.html" class="dropdown-item"><i class="fas fa-credit-card"></i> Pay Small Small</a>
+              <a href="travel/cabin-upgrade.html" class="dropdown-item"><i class="fas fa-door-open"></i> Cabin Upgrade</a>
+              <a href="travel/extra-baggage.html" class="dropdown-item"><i class="fas fa-suitcase"></i> Extra Baggage</a>
             </div>
           </div>
           <div class="travel-menu-footer">
-            <a href="../travel/prohibited-articles.html" class="dropdown-item"><i class="fas fa-ban"></i> Prohibited Articles</a>
+            <a href="travel/prohibited-articles.html" class="dropdown-item"><i class="fas fa-ban"></i> Prohibited Articles</a>
           </div>
         </div>
       </li>
@@ -667,12 +667,13 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
   }
 
   if (!offers || offers.length === 0) {
-    resultsTarget.innerHTML = `<p style="color:#64748b; font-family:'Outfit';">No flights found for ${depCity} &rarr; ${arrCity} on this date.</p>`;
+    resultsTarget.innerHTML = `<p style="color:#64748b; font-family:'Outfit';">No flights found for ${BlackcessDB.escapeHtml(depCity)} &rarr; ${BlackcessDB.escapeHtml(arrCity)} on this date.</p>`;
     resultsSection.style.display = 'block';
     return;
   }
 
   offers.forEach((flight) => {
+    const esc = BlackcessDB.escapeHtml;
     const departTime = new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
     const arriveTime = new Date(flight.arrival_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
 
@@ -681,8 +682,8 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
     card.style.borderLeft = '4px solid #1e293b';
     card.innerHTML = `
       <div class="flight-info">
-        <h4>${flight.flight_number}</h4>
-        <p>${flight.departure_city} &rarr; ${flight.arrival_city}</p>
+        <h4>${esc(flight.flight_number)}</h4>
+        <p>${esc(flight.departure_city)} &rarr; ${esc(flight.arrival_city)}</p>
         <p>Depart ${departTime} &bull; Arrive ${arriveTime}</p>
         <span class="seats-left">${flight.available_seats} seat${flight.available_seats === 1 ? '' : 's'} left</span><br>
         <small style="color: #2e7d32; font-weight: 600; font-size:0.95rem;">&#8358;${Number(flight.price).toLocaleString()}</small>
@@ -701,9 +702,10 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
 });
 
 function showCheckout() {
+  const esc = BlackcessDB.escapeHtml;
   const departTime = new Date(selectedFlight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
   document.getElementById('selected-flight-summary').innerHTML = `
-    <strong>Selected Itinerary:</strong> ${selectedFlight.flight_number} — ${selectedFlight.departure_city} &rarr; ${selectedFlight.arrival_city}<br>
+    <strong>Selected Itinerary:</strong> ${esc(selectedFlight.flight_number)} — ${esc(selectedFlight.departure_city)} &rarr; ${esc(selectedFlight.arrival_city)}<br>
     <strong>Departure:</strong> ${departTime}<br>
     <strong>Total Fare:</strong> &#8358;${Number(selectedFlight.price).toLocaleString()}
   `;
@@ -726,36 +728,38 @@ document.getElementById('passenger-checkout-form').addEventListener('submit', fu
     amount: computedSubunits,
     currency: 'NGN',
     onSuccess: async function(transaction) {
-      // NOTE: for real money this should verify `transaction.reference`
-      // against Paystack's server-side verify endpoint before trusting it —
-      // that needs a backend, which is intentionally not part of this build.
-      const pnr = generatePnr();
+      // IMPORTANT — still a known limitation even after this fix:
+      // `transaction.reference` should be verified against Paystack's
+      // server-side /transaction/verify endpoint before a booking is
+      // trusted as paid. That verification has to happen on a server that
+      // holds the Paystack *secret* key (never the browser). This project
+      // has no backend, so anyone could open devtools and call
+      // `create_booking_atomic` directly without ever paying. See the
+      // "verify-and-book" Edge Function skeleton in the delivered
+      // supabase/functions folder for the real fix — swap this RPC call
+      // for a fetch() to that function once it's deployed.
       const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
 
-      const { error: bookingError } = await window.supabase
-        .from('bookings')
-        .insert([{
-          pnr: pnr,
-          flight_id: selectedFlight.id,
-          passenger_lastname: lastName,
-          passenger_email: userEmail,
-          user_id: activeUser ? activeUser.uid : null,
-          status: 'Confirmed'
-        }]);
+      // create_booking_atomic locks the flight row, checks available_seats
+      // server-side, generates the PNR, inserts the booking, and
+      // decrements the seat count — all inside one transaction, so two
+      // people can't both grab the last seat.
+      const { data: booking, error: bookingError } = await window.supabase
+        .rpc('create_booking_atomic', {
+          p_flight_id: selectedFlight.id,
+          p_lastname: lastName,
+          p_email: userEmail,
+          p_user_id: activeUser ? activeUser.uid : null
+        })
+        .single();
 
       if (bookingError) {
-        console.error('Booking insert error:', bookingError);
+        console.error('Booking creation error:', bookingError);
         alert('Payment succeeded, but saving your booking failed: ' + bookingError.message + '\n\nPlease contact support with reference: ' + transaction.reference);
         return;
       }
 
-      // Best-effort seat decrement so this flight's count stays roughly
-      // accurate for future searches and the admin panel.
-      await window.supabase
-        .from('flights')
-        .update({ available_seats: selectedFlight.available_seats - 1 })
-        .eq('id', selectedFlight.id);
-
+      const pnr = booking.pnr;
       alert(`Payment Confirmed!\n\nBooking Reference (PNR): ${pnr}\n${selectedFlight.flight_number}: ${selectedFlight.departure_city} → ${selectedFlight.arrival_city}\n\nSave this PNR with your last name to manage this booking or check in later.`);
       document.getElementById('passenger-checkout-form').reset();
       document.getElementById('checkout-panel').style.display = 'none';
