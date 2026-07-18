@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackcess Admin</title>
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>BLACKCESS</h2>
+
+    <ul>
+
+        <li class="active">
+            <i class="fas fa-chart-line"></i>
+            Dashboard
+        </li>
+
+        <li onclick="location.href='flight.html'">
+            <i class="fas fa-plane"></i>
+            Flights
+        </li>
+
+        <li onclick="location.href='booking.html'">
+            <i class="fas fa-ticket"></i>
+            Bookings
+        </li>
+
+        <li onclick="location.href='user.html'">
+            <i class="fas fa-users"></i>
+            Users
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+<header>
+
+<h1>Dashboard</h1>
+
+<button id="logoutBtn">
+    Logout
+</button>
+
+</header>
+
+<section class="cards">
+
+<div class="card">
+<h3>Total Users</h3>
+<h2 id="users-count">0</h2>
+</div>
+
+<div class="card">
+<h3>Total Flights</h3>
+<h2 id="flights-count">0</h2>
+</div>
+
+<div class="card">
+<h3>Total Bookings</h3>
+<h2 id="bookings-count">0</h2>
+</div>
+
+<div class="card">
+<h3>Total Miles</h3>
+<h2 id="miles-count">0</h2>
+</div>
+
+</section>
+
+<section class="table-box">
+
+<h2>Registered Members</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+<th>Membership ID</th>
+<th>Miles</th>
+<th>Role</th>
+
+</tr>
+
+</thead>
+
+<tbody id="usersTable">
+
+</tbody>
+
+</table>
+
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<script src="../auth-helper.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>
