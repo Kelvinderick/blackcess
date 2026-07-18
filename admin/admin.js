@@ -13,9 +13,8 @@ document.getElementById("logoutBtn").onclick = () => {
 loadDashboard();
 
 async function loadDashboard() {
-    const [usersRes, flightsRes, bookingsRes] = await Promise.all([
+    const [usersRes, bookingsRes] = await Promise.all([
         window.supabase.from("profiles").select("*").order("full_name", { ascending: true }),
-        window.supabase.from("flights").select("id", { count: "exact", head: true }),
         window.supabase.from("bookings").select("id", { count: "exact", head: true })
     ]);
 
@@ -29,7 +28,6 @@ async function loadDashboard() {
     const totalMiles = users.reduce((sum, u) => sum + (u.miles || 0), 0);
 
     document.getElementById("users-count").textContent = users.length;
-    document.getElementById("flights-count").textContent = flightsRes.count ?? 0;
     document.getElementById("bookings-count").textContent = bookingsRes.count ?? 0;
     document.getElementById("miles-count").textContent = totalMiles.toLocaleString();
 

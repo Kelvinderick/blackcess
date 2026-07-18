@@ -12,7 +12,7 @@ loadBookings();
 
 async function loadBookings() {
 
-    const { data: bookings, error } = await window.supabase
+    const { data: rawBookings, error } = await window.supabase
         .from("bookings")
         .select("*, flights(flight_number, departure_city, arrival_city)")
         .order("created_at", { ascending: false });
@@ -22,6 +22,17 @@ async function loadBookings() {
         alert("Could not load bookings: " + error.message);
         return;
     }
+
+    // Duffel bookings have no flight_id, so the join above is null for
+    // them — fall back to the flight details stored directly on the row.
+    const bookings = rawBookings.map(b => ({
+        ...b,
+        flights: b.flights || {
+            flight_number: b.flight_number,
+            departure_city: b.departure_city,
+            arrival_city: b.arrival_city
+        }
+    }));
 
     const table = document.getElementById("bookingsTable");
     table.innerHTML = "";
