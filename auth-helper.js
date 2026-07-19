@@ -229,7 +229,7 @@ function updateNavbarUI() {
             <a href="dashboard.html" class="nav-link"><i class="fas fa-user-circle" style="margin-right:5px;"></i> ${(activeUser.name || 'Account').split(' ')[0].toUpperCase()} <i class="fas fa-chevron-down"></i></a>
             <div class="dropdown-menu">
                 <a href="dashboard.html" class="dropdown-item"><i class="fas fa-gauge"></i> Dashboard</a>
-                <a href="book.html" class="dropdown-item"><i class="fas fa-plane"></i> Book a Flight</a>
+                <a href="my-bookings.html" class="dropdown-item"><i class="fas fa-ticket"></i> My Bookings</a>
                 <a href="online_check.html" class="dropdown-item"><i class="fas fa-clipboard-check"></i> Check-In</a>
                 <a href="#" id="navbar-logout-btn" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Log Out</a>
             </div>

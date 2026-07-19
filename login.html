@@ -514,8 +514,9 @@
             try {
                 const user = await BlackcessDB.logIn(email, password);
                 submitBtn.querySelector(".btn-text").innerText = "Access Granted";
+                const redirectTo = new URLSearchParams(window.location.search).get("redirect") || "dashboard.html";
                 setTimeout(() => {
-                    window.location.href = "book.html#loyalty";
+                    window.location.href = redirectTo;
                 }, 800);
             } catch (err) {
                 errorDiv.innerText = err.message || "Authentication failed.";
@@ -546,7 +547,7 @@
                 submitBtn.querySelector(".btn-text").innerText = "Enrolment Successful";
                 setTimeout(() => {
                     alert(`Welcome, ${name}! Your membership reference is ${user.membership_id}. Redirecting...`);
-                    window.location.href = "book.html#loyalty";
+                    window.location.href = "dashboard.html";
                 }, 1000);
             } catch (err) {
                 errorDiv.innerText = err.message || "Registration failed.";

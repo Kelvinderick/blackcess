@@ -278,9 +278,16 @@
               <option value="ABV">Abuja (ABV)</option>
               <option value="PHC">Port Harcourt (PHC)</option>
               <option value="KAN">Kano (KAN)</option>
+              <option value="BNI">Benin City (BNI)</option>
               <option value="ACC">Accra (ACC)</option>
               <option value="DSS">Dakar (DSS)</option>
-              <option value="BNI">Benin City (BNI)</option>
+              <option value="LHR">London Heathrow (LHR)</option>
+              <option value="LGW">London Gatwick (LGW)</option>
+              <option value="DXB">Dubai (DXB)</option>
+              <option value="JFK">New York (JFK)</option>
+              <option value="CDG">Paris (CDG)</option>
+              <option value="AMS">Amsterdam (AMS)</option>
+              <option value="BOM">Mumbai (BOM)</option>
             </select>
           </div>
 
@@ -288,12 +295,20 @@
             <label for="arrival"><i class="fas fa-plane-arrival" aria-hidden="true"></i><span class="sr-only">Arrival city</span></label>
             <select id="arrival" class="form-input">
               <option value="">To</option>
+              <option value="LOS">Lagos (LOS)</option>
+              <option value="ABV">Abuja (ABV)</option>
+              <option value="PHC">Port Harcourt (PHC)</option>
+              <option value="KAN">Kano (KAN)</option>
+              <option value="BNI">Benin City (BNI)</option>
+              <option value="ACC">Accra (ACC)</option>
+              <option value="DSS">Dakar (DSS)</option>
               <option value="LHR">London Heathrow (LHR)</option>
               <option value="LGW">London Gatwick (LGW)</option>
               <option value="DXB">Dubai (DXB)</option>
               <option value="JFK">New York (JFK)</option>
               <option value="CDG">Paris (CDG)</option>
               <option value="AMS">Amsterdam (AMS)</option>
+              <option value="BOM">Mumbai (BOM)</option>
             </select>
           </div>
 
@@ -604,8 +619,34 @@ tabButtons.forEach(button => {
   });
 });
 
-// Deep-link support: book.html#my-bookings, #check-in, #loyalty all work
+// Booking requires an account — guests get sent to log in first, and land
+// right back here afterward (see the `redirect` param handling in login.html).
+(function requireAuth() {
+  const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
+  if (!activeUser) {
+    window.location.href = 'login.html?redirect=book.html';
+  }
+})();
+
+// Deep-link support: book.html#my-bookings, #check-in, #loyalty all work,
+// plus book.html?from=LOS&to=LHR pre-fills and runs a search immediately —
+// used by the Routes.html "Book Flight" buttons so clicking one doesn't
+// dump you on a blank search form.
 window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const fromCode = params.get('from');
+  const toCode = params.get('to');
+  if (fromCode) document.getElementById('departure').value = fromCode;
+  if (toCode) document.getElementById('arrival').value = toCode;
+  if (fromCode && toCode) {
+    const dateInput = document.getElementById('departure-date');
+    if (!dateInput.value) {
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      dateInput.value = nextWeek.toISOString().split('T')[0];
+    }
+    document.getElementById('search-flights-trigger').click();
+  }
   const hashTarget = window.location.hash.replace('#', '');
   const validTabs = ['book-flights', 'my-bookings', 'check-in', 'loyalty'];
   if (validTabs.includes(hashTarget)) {
