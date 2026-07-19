@@ -739,7 +739,7 @@ document.getElementById('passenger-checkout-form').addEventListener('submit', fu
     key: PAYSTACK_PUBLIC_KEY,
     email: userEmail,
     amount: computedSubunits,
-    currency: selectedFlight.total_currency === 'NGN' ? 'NGN' : 'NGN',
+ currency: selectedFlight.total_currency,
     onSuccess: async function(transaction) {
       const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
 
