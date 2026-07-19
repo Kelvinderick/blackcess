@@ -692,7 +692,8 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
         <h4>${esc(slice.carrier)} ${esc(slice.flight_number)}</h4>
         <p>${esc(slice.origin_city)} (${esc(slice.origin)}) &rarr; ${esc(slice.destination_city)} (${esc(slice.destination)})</p>
         <p>Depart ${departTime} &bull; Arrive ${arriveTime}</p>
-        <small style="color: #2e7d32; font-weight: 600; font-size:0.95rem;">${esc(offer.total_currency)} ${Number(offer.total_amount).toLocaleString()}</small>
+        <small style="color: #2e7d32; font-weight: 600; font-size:0.95rem;">${esc(offer.charge_currency)} ${Number(offer.charge_amount).toLocaleString()}</small>
+        <small style="display:block; color:#94a3b8; font-size:0.75rem;">(${esc(offer.total_currency)} ${Number(offer.total_amount).toLocaleString()} converted)</small>
       </div>
       <button class="search-btn select-flight-btn" style="background: #1e293b; padding: 8px 16px; font-size: 0.85rem;">Select</button>
     `;
@@ -714,9 +715,10 @@ function showCheckout() {
   document.getElementById('selected-flight-summary').innerHTML = `
     <strong>Selected Itinerary:</strong> ${esc(slice.carrier)} ${esc(slice.flight_number)} — ${esc(slice.origin)} &rarr; ${esc(slice.destination)}<br>
     <strong>Departure:</strong> ${departTime}<br>
-    <strong>Total Fare:</strong> ${esc(selectedFlight.total_currency)} ${Number(selectedFlight.total_amount).toLocaleString()}
+    <strong>Total Fare:</strong> ${esc(selectedFlight.charge_currency)} ${Number(selectedFlight.charge_amount).toLocaleString()}
+    <small style="display:block; color:#94a3b8;">(${esc(selectedFlight.total_currency)} ${Number(selectedFlight.total_amount).toLocaleString()} at today's rate)</small>
   `;
-  document.getElementById('checkout-amount').innerText = `(${selectedFlight.total_currency} ${Number(selectedFlight.total_amount).toLocaleString()})`;
+  document.getElementById('checkout-amount').innerText = `(${selectedFlight.charge_currency} ${Number(selectedFlight.charge_amount).toLocaleString()})`;
   document.getElementById('checkout-panel').style.display = 'block';
   document.getElementById('checkout-panel').scrollIntoView({ behavior: 'smooth' });
 }
@@ -732,14 +734,14 @@ document.getElementById('passenger-checkout-form').addEventListener('submit', fu
   // Paystack settles in NGN subunits (kobo). If the offer is priced in a
   // different currency, this amount needs converting before charging —
   // for now this assumes NGN-priced offers, matching the rest of the site.
-  const computedSubunits = Math.round(Number(selectedFlight.total_amount) * 100);
+  const computedSubunits = Math.round(Number(selectedFlight.charge_amount) * 100);
   const paystackPopInstance = new PaystackPop();
 
   paystackPopInstance.newTransaction({
     key: PAYSTACK_PUBLIC_KEY,
     email: userEmail,
     amount: computedSubunits,
- currency: selectedFlight.total_currency,
+    currency: selectedFlight.charge_currency,
     onSuccess: async function(transaction) {
       const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
 
