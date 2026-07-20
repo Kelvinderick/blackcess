@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Flight | Blackcess Airlines</title>
+<link rel="icon" type="image/png" href="./images/Untitled design.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style2.css">
+<link rel="stylesheet" href="style2.responsiveness.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* SIMPLE & LUXURIOUS BLACKCESS LOADING OVERLAY */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.96);
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-in-out;
+}
+.loading-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.loading-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.loading-logo {
+  height: 80px;
+  width: auto;
+  animation: pulseLogo 2s infinite ease-in-out;
+}
+.loading-bar-container {
+  width: 160px;
+  height: 3px;
+  background-color: #f1f5f9;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.loading-bar-progress {
+  content: '';
+  position: absolute;
+  left: -40%;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  background-color: rgb(101, 159, 207);
+  border-radius: 4px;
+  animation: slideLoading 1.6s infinite linear;
+}
+.loading-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  color: #475569;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+@keyframes slideLoading {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+@keyframes pulseLogo {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+/* Results Area Styles */
+.flight-results-container {
+  margin-top: 30px;
+  display: none;
+}
+.flight-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.flight-info h4 { margin: 0 0 5px 0; color: #1e293b; }
+.flight-info p { margin: 0; color: #64748b; font-size: 0.9rem; }
+.flight-info .seats-left { color: #b45309; font-size: 0.8rem; font-weight: 600; }
+
+/* Visually-hidden helper for accessible icon-only labels */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADING OVERLAY -->
+<div id="flight-loading-overlay" class="loading-overlay">
+  <div class="loading-content">
+    <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="loading-logo">
+    <div class="loading-bar-container">
+      <div class="loading-bar-progress"></div>
+    </div>
+    <p class="loading-text">Searching for available flights...</p>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-design">
+        <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+      </div>
+    </a>
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="hamburger" id="hamburger-btn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+
+    <!-- Navigation Menu -->
+    <ul class="nav-menu" id="navMenu">
+      <!-- Home -->
+      <li class="nav-item">
+        <a href="index.html" class="nav-link">HOME</a>
+      </li>
+
+      <!-- Discover with Dropdown -->
+      <li class="nav-item dropdown">
+        <a href="#discover" class="nav-link">
+          DISCOVER <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu discover-grid">
+          <div class="destination-card">
+            <div class="card-image" style="background: url('../images/4603382592139667072.png') center/cover;"></div>
+            <a href="discover/discover-all-original.html">All Destinations</a>
+          </div>
+          <div class="destination-card">
+            <div class="card-image" style="background: url('./images/Curacao’s\ colorful\ Dutch-inspired\ architecture\ and….png') center/cover;"></div>
+            <a href="discover/discover-domestic-original.html">Domestic Destinations</a>
+          </div>
+          <div class="destination-card">
+            <div class="card-image" style="background: url('../images/1548181186041623.png') center/cover;"></div>
+            <a href="discover/discover-regional-original.html">Regional Destinations</a>
+          </div>
+          <div class="destination-card">
+            <div class="card-image" style="background: url('../images/kyle-yen-7iPa_NFKJzE-unsplash.jpg') center/cover;"></div>
+            <a href="discover/discover-international-original.html">International Destinations</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Book -->
+      <li class="nav-item">
+        <a href="book.html" class="nav-link">BOOK</a>
+      </li>
+
+      <!-- Travel with Dropdown -->
+      <li class="nav-item dropdown">
+        <a href="#travel" class="nav-link">
+          TRAVEL <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu travel-menu">
+          <div class="travel-menu-grid">
+            <div class="travel-menu-group">
+              <span class="travel-menu-label">Book &amp; Manage</span>
+              <a href="book.html" class="dropdown-item"><i class="fas fa-plane"></i> Book a Flight</a>
+              <a href="my-bookings.html" class="dropdown-item"><i class="fas fa-calendar-check"></i> My Bookings</a>
+              <a href="online_check.html" class="dropdown-item"><i class="fas fa-clipboard-check"></i> Check-in</a>
+              <a href="travel/select-seat.html" class="dropdown-item"><i class="fas fa-chair"></i> Select Seat</a>
+            </div>
+            <div class="travel-menu-group">
+              <span class="travel-menu-label">Add-ons &amp; Services</span>
+              <a href="travel/book-car.html" class="dropdown-item"><i class="fas fa-car"></i> Book a Car</a>
+              <a href="travel/book-hotel.html" class="dropdown-item"><i class="fas fa-hotel"></i> Book a Hotel</a>
+              <a href="travel/travel-insurance.html" class="dropdown-item"><i class="fas fa-shield-heart"></i> Travel Insurance</a>
+              <a href="travel/pay-small-small.html" class="dropdown-item"><i class="fas fa-credit-card"></i> Pay Small Small</a>
+              <a href="travel/cabin-upgrade.html" class="dropdown-item"><i class="fas fa-door-open"></i> Cabin Upgrade</a>
+              <a href="travel/extra-baggage.html" class="dropdown-item"><i class="fas fa-suitcase"></i> Extra Baggage</a>
+            </div>
+          </div>
+          <div class="travel-menu-footer">
+            <a href="travel/prohibited-articles.html" class="dropdown-item"><i class="fas fa-ban"></i> Prohibited Articles</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Routes -->
+      <li class="nav-item">
+        <a href="Routes.html" class="nav-link">ROUTES</a>
+      </li>
+
+      <!-- Careers -->
+      <li class="nav-item">
+        <a href="career.html" class="nav-link">CAREERS</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO HEADER -->
+<header class="destinations-hero" style="background-image: url('../images/Book\ Your\ Affordable\ Airline\ Reservation\ at.png');">
+  <div class="destinations-hero-content">
+    <h1>Book Your Flight</h1>
+    <p>Compare Fares and Schedule Your Next Journey Today</p>
+  </div>
+</header>
+
+<section class="booking-section">
+
+  <!-- Booking Tabs with target tracking identifiers -->
+  <div class="booking-tabs">
+    <button class="tab-button active" data-tab="book-flights">
+      <i class="fas fa-plane"></i> Book Flights
+    </button>
+    <button class="tab-button" data-tab="my-bookings">
+      <i class="fas fa-calendar-check"></i> My Bookings
+    </button>
+    <button class="tab-button" data-tab="check-in">
+      <i class="fas fa-clipboard-check"></i> Check-in
+    </button>
+    <button class="tab-button" data-tab="loyalty">
+      <i class="fas fa-crown"></i> Loyalty
+    </button>
+  </div>
+
+  <div class="booking-container">
+
+    <!-- PANEL 1: Book Flights -->
+    <div id="book-flights" class="tab-panel active">
+      <div class="booking-form">
+        <div class="trip-type">
+          <label class="radio-group">
+            <input type="radio" name="trip" value="oneway" checked>
+            <span class="radio-label">One Way</span>
+          </label>
+          <label class="radio-group">
+            <input type="radio" name="trip" value="roundtrip">
+            <span class="radio-label">Round Trip</span>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="departure"><i class="fas fa-plane-departure" aria-hidden="true"></i><span class="sr-only">Departure city</span></label>
+            <select id="departure" class="form-input">
+              <option value="">Departure city</option>
+              <option value="LOS">Lagos (LOS)</option>
+              <option value="ABV">Abuja (ABV)</option>
+              <option value="PHC">Port Harcourt (PHC)</option>
+              <option value="KAN">Kano (KAN)</option>
+              <option value="BNI">Benin City (BNI)</option>
+              <option value="ACC">Accra (ACC)</option>
+              <option value="DSS">Dakar (DSS)</option>
+              <option value="LHR">London Heathrow (LHR)</option>
+              <option value="LGW">London Gatwick (LGW)</option>
+              <option value="DXB">Dubai (DXB)</option>
+              <option value="JFK">New York (JFK)</option>
+              <option value="CDG">Paris (CDG)</option>
+              <option value="AMS">Amsterdam (AMS)</option>
+              <option value="BOM">Mumbai (BOM)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="arrival"><i class="fas fa-plane-arrival" aria-hidden="true"></i><span class="sr-only">Arrival city</span></label>
+            <select id="arrival" class="form-input">
+              <option value="">To</option>
+              <option value="LOS">Lagos (LOS)</option>
+              <option value="ABV">Abuja (ABV)</option>
+              <option value="PHC">Port Harcourt (PHC)</option>
+              <option value="KAN">Kano (KAN)</option>
+              <option value="BNI">Benin City (BNI)</option>
+              <option value="ACC">Accra (ACC)</option>
+              <option value="DSS">Dakar (DSS)</option>
+              <option value="LHR">London Heathrow (LHR)</option>
+              <option value="LGW">London Gatwick (LGW)</option>
+              <option value="DXB">Dubai (DXB)</option>
+              <option value="JFK">New York (JFK)</option>
+              <option value="CDG">Paris (CDG)</option>
+              <option value="AMS">Amsterdam (AMS)</option>
+              <option value="BOM">Mumbai (BOM)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="departure-date"><i class="fas fa-calendar" aria-hidden="true"></i><span class="sr-only">Departure date</span></label>
+            <input type="date" id="departure-date" class="form-input">
+          </div>
+
+          <div class="form-group hidden-return">
+            <label for="return-date"><i class="fas fa-calendar" aria-hidden="true"></i><span class="sr-only">Return date</span></label>
+            <input type="date" id="return-date" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-row passengers-row">
+          <div class="form-group">
+            <label for="adults"><i class="fas fa-user-group" aria-hidden="true"></i><span class="sr-only">Adults</span></label>
+            <select id="adults" class="form-input">
+              <option value="1">1 Adult (12yrs+)</option>
+              <option value="2">2 Adults</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="children"><i class="fas fa-child" aria-hidden="true"></i><span class="sr-only">Children</span></label>
+            <select id="children" class="form-input">
+              <option value="0">0 Child</option>
+              <option value="1">1 Child</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="infants"><i class="fas fa-baby" aria-hidden="true"></i><span class="sr-only">Infants</span></label>
+            <select id="infants" class="form-input">
+              <option value="0">0 Infant (&lt; 2yrs)</option>
+              <option value="1">1 Infant</option>
+            </select>
+          </div>
+
+          <button class="search-btn" id="search-flights-trigger">Search Flights</button>
+        </div>
+      </div>
+
+      <!-- LIVE INVENTORY RESULTS (from your Supabase 'flights' table) -->
+      <div id="flight-results-section" class="flight-results-container">
+        <h3 style="color: #1e293b; margin-bottom: 15px; font-family: 'Outfit', sans-serif;">Available Flight Matches</h3>
+        <div id="results-target"></div>
+
+        <!-- SECURE CHECKOUT SUMMARY -->
+        <div id="checkout-panel" style="display: none; margin-top: 30px; padding: 25px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px;">
+          <h3 style="color: #1e293b; font-family: 'Outfit', sans-serif; margin-bottom: 15px;"><i class="fas fa-passport"></i> Passenger Information</h3>
+          <div id="selected-flight-summary" style="margin-bottom: 20px; font-size: 0.95rem; color: #334155;"></div>
+          <form id="passenger-checkout-form" style="display: grid; gap: 15px; max-width: 500px;">
+            <div>
+              <label for="pay-firstname" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger First Name</label>
+              <input type="text" id="pay-firstname" required placeholder="e.g. Chidi" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+            <div>
+              <label for="pay-lastname" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Last Name</label>
+              <input type="text" id="pay-lastname" required placeholder="e.g. Adeyemi" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+            <div>
+              <label for="pay-dob" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Date of Birth</label>
+              <input type="date" id="pay-dob" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+            <div>
+              <label for="pay-email" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Email</label>
+              <input type="email" id="pay-email" required placeholder="customer@blackcess.com" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+            <div>
+              <label for="pay-phone" style="display:block; font-size:0.85rem; margin-bottom:5px; font-weight:600; color:#475569;">Passenger Phone (with country code)</label>
+              <input type="tel" id="pay-phone" required placeholder="e.g. +2348012345678" pattern="^\+[1-9]\d{7,14}$" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px;">
+            </div>
+            <button type="submit" class="search-btn" style="width: 100%; margin-top: 10px; background:#1e293b;">Proceed to Payment <span id="checkout-amount"></span></button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: My Bookings -->
+    <div id="my-bookings" class="tab-panel">
+      <div class="booking-form">
+        <h3>Manage Your Booking</h3>
+        <p style="color: #64748b; margin-bottom: 5px;">View or modify your itinerary, select seats, or add extra baggage.</p>
+        <div class="form-row">
+          <button class="search-btn" onclick="window.location.href='my-bookings.html'">Go to My Bookings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: Check-in -->
+    <div id="check-in" class="tab-panel">
+      <div class="booking-form">
+        <h3>Online Flight Check-In</h3>
+        <p style="color: #64748b; margin-bottom: 5px;">Skip airport queues. Web check-in opens 24 hours prior to scheduled flight departures.</p>
+        <div class="form-row">
+          <button class="search-btn" onclick="window.location.href='online_check.html'">Go to Check-In</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: Loyalty -->
+    <div id="loyalty" class="tab-panel">
+      <div class="booking-form">
+        <h3>Blackcess Airlines Loyalty</h3>
+        <p style="color: #64748b; margin-bottom: 15px;">Access your digital dashboard to view accumulated miles, claims, and premium tier rewards.</p>
+        <div class="form-row" style="align-items: center;">
+          <div class="form-group">
+            <label for="loyalty-id"><i class="fas fa-id-card" aria-hidden="true"></i><span class="sr-only">Membership ID</span></label>
+            <input type="text" id="loyalty-id" class="form-input" placeholder="Membership ID Number">
+          </div>
+          <div class="form-group">
+            <label for="loyalty-password"><i class="fas fa-lock" aria-hidden="true"></i><span class="sr-only">Password</span></label>
+            <input type="password" id="loyalty-password" class="form-input" placeholder="Account Password">
+          </div>
+          <!-- Pointing directly to your newly created luxurious login portal -->
+          <button class="search-btn" onclick="window.location.href='login.html'">Sign In</button>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.85rem;">
+          <span style="color: #64748b;">Not a member yet?</span>
+          <a href="login.html" style="color: rgb(101, 159, 207); font-weight: 700; text-decoration: none; margin-left: 5px;">Create an Account &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MANAGE TRAVEL PANEL -->
+<section class="manage-travel-section">
+  <div class="manage-travel-container">
+    <h2 class="section-title">Manage Your Booking &amp; Travel Tools</h2>
+    <p class="section-subtitle">Take control of your travel plans with our self-service features</p>
+
+    <div class="tools-grid">
+      <!-- Tool 1: Retrieve Booking -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-icon-wrapper">
+            <i class="fas fa-edit"></i>
+          </div>
+          <h3>Manage Booking</h3>
+        </div>
+        <p class="tool-desc">View your itinerary, select seats, request special meals, or modify your flight dates.</p>
+        <div class="tool-form">
+          <a href="my-bookings.html" class="tool-btn" style="display:block; text-align:center; text-decoration:none;">Manage Booking</a>
+        </div>
+      </div>
+
+      <!-- Tool 2: Flight Status Tracker -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-icon-wrapper">
+            <i class="fas fa-search-location"></i>
+          </div>
+          <h3>Flight Status</h3>
+        </div>
+        <p class="tool-desc">Check real-time arrival and departure updates for any flight, any airline.</p>
+        <div class="tool-form">
+          <input type="text" id="track-flight-number" placeholder="Flight number, e.g. BA75" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px; margin-bottom:8px;">
+          <input type="date" id="track-flight-date" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:4px; margin-bottom:8px;">
+          <button id="track-flight-btn" class="tool-btn" style="display:block; width:100%; cursor:pointer; border:none;">Track Flight</button>
+          <div id="track-flight-results" style="margin-top:14px; text-align:left;"></div>
+        </div>
+      </div>
+
+      <!-- Tool 3: Travel Requirements & FAQs -->
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-icon-wrapper">
+            <i class="fas fa-shield-halved"></i>
+          </div>
+          <h3>Travel Advisories</h3>
+        </div>
+        <p class="tool-desc">Check current visa guidelines, transit formalities, baggage regulations, and medical advisories.</p>
+        <div class="faqs-list">
+          <div class="faq-item">
+            <i class="fas fa-circle-info"></i>
+            <span>Abuja to London transit check-in procedures.</span>
+          </div>
+          <div class="faq-item">
+            <i class="fas fa-circle-info"></i>
+            <span>Baggage allowances per booking cabin class.</span>
+          </div>
+          <div class="faq-item">
+            <i class="fas fa-circle-info"></i>
+            <span>Infant and minor travel requirements.</span>
+          </div>
+        </div>
+        <a href="index.html" class="tool-btn outline">View travel advisory</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SITE FOOTER -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Information</h4>
+        <a href="#">FAQs</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#" class="active">Departure & Arrivals</a>
+        <a href="#">Baggage Policy</a>
+        <a href="#">Routes</a>
+        <a href="#">ADM Policy</a>
+        <a href="#">Travel Advisory</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Help and Contact</a>
+        <a href="#">Special Assistance</a>
+        <a href="#">Lost Property</a>
+        <a href="#">Advantage Club</a>
+        <a href="#">Airport Charges</a>
+        <a href="#">Sales Outlets</a>
+        <a href="#">Safety Reporting</a>
+        <a href="#">Refunds</a>
+        <a href="#">Reversal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Deals</h4>
+        <a href="#">Student Discount</a>
+        <a href="#">Partnerships</a>
+        <a href="#">Graduate Program</a>
+      </div>
+      <div class="footer-col">
+        <h4>Corporate</h4>
+        <a href="#">Trade Partners</a>
+        <a href="#">Corporate Accounts</a>
+        <a href="#">Charter Booking</a>
+      </div>
+      <div class="footer-col">
+        <h4>Blackcess</h4>
+        <a href="#">About Us</a>
+        <a href="career.html">Careers</a>
+        <a href="#">Media Centre</a>
+        <a href="#">Blog</a>
+        <a href="#">Newsletter</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="socials">
+        <a href="https://www.facebook.com/"><img src="../images/facebook-f-brands-solid.png" alt="Facebook"></a>
+        <a href="https://twitter.com/"><img src="../images/x-twitter-brands-solid.png" alt="X"></a>
+        <a href="https://youtube.com/"><img src="../images/youtube-brands-solid.png" alt="YouTube"></a>
+        <a href="https://linkedin.com/"><img src="../images/square-linkedin-brands-solid.png" alt="LinkedIn"></a>
+        <a href="https://instagram.com/"><img src="../images/instagram-brands-solid.png" alt="Instagram"></a>
+      </div>
+      <div class="cert-logos">
+        <img src="../images/image.png" alt="IOSA IATA" class="ios">
+        <img src="../images/Screenshot 2026-05-23 223823.png" alt="NDP Audit 2025" class="ndp">
+        <img src="../images/image.png" alt="IATA" class="iata">
+      </div>
+      <div class="app-badges">
+        <a href="https://play.google.com/store/apps"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play"></a>
+        <a href="https://www.apple.com/app-store/"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- COPYRIGHT BAR -->
+<div class="copyright-bar">
+  <div class="copyright-container">
+    <span>Copyright &copy; 2026 Blackcess Airlines. All Rights Reserved.</span>
+    <div class="legal-links">
+      <a href="#">Site Map</a>
+      <span class="divider">|</span>
+      <a href="#">Privacy & Cookie Policy</a>
+    </div>
+  </div>
+</div>
+
+<!-- SUPABASE: same client + shared DB helper the rest of the site uses -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-helper.js"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger-btn");
+const navMenu = document.getElementById("navMenu");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("is-active");
+  navMenu.classList.toggle("menu-open");
+});
+
+document.querySelectorAll(".dropdown > .nav-link").forEach(link => {
+  link.addEventListener("click", function(e){
+    if(window.innerWidth <= 768){
+      e.preventDefault();
+      const parent = this.parentElement;
+      parent.classList.toggle("open");
+    }
+  });
+});
+
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabPanels = document.querySelectorAll('.tab-panel');
+
+function switchTab(targetTabId) {
+  tabButtons.forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-tab') === targetTabId);
+  });
+  tabPanels.forEach(panel => {
+    panel.classList.toggle('active', panel.id === targetTabId);
+  });
+}
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    switchTab(button.getAttribute('data-tab'));
+  });
+});
+
+// Booking requires an account — guests get sent to log in first, and land
+// right back here afterward (see the `redirect` param handling in login.html).
+(function requireAuth() {
+  const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
+  if (!activeUser) {
+    window.location.href = 'login.html?redirect=book.html';
+  }
+})();
+
+// Deep-link support: book.html#my-bookings, #check-in, #loyalty all work,
+// plus book.html?from=LOS&to=LHR pre-fills and runs a search immediately —
+// used by the Routes.html "Book Flight" buttons so clicking one doesn't
+// dump you on a blank search form.
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const fromCode = params.get('from');
+  const toCode = params.get('to');
+  if (fromCode) document.getElementById('departure').value = fromCode;
+  if (toCode) document.getElementById('arrival').value = toCode;
+  if (fromCode && toCode) {
+    const dateInput = document.getElementById('departure-date');
+    if (!dateInput.value) {
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      dateInput.value = nextWeek.toISOString().split('T')[0];
+    }
+    document.getElementById('search-flights-trigger').click();
+  }
+  const hashTarget = window.location.hash.replace('#', '');
+  const validTabs = ['book-flights', 'my-bookings', 'check-in', 'loyalty'];
+  if (validTabs.includes(hashTarget)) {
+    switchTab(hashTarget);
+    const bookingSection = document.querySelector('.booking-section');
+    if (bookingSection) {
+      bookingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+});
+
+// NOTE: Paystack's public key is *meant* to be exposed client-side (that's
+// what "public key" means in their API) — unlike the old Duffel token this
+// replaces, there's nothing to rotate here.
+const PAYSTACK_PUBLIC_KEY = 'pk_test_ec747fe1262edf30f447fc2e87f982b920392299';
+
+let selectedFlight = null;
+
+document.getElementById('search-flights-trigger').addEventListener('click', async function(e) {
+  e.preventDefault();
+
+  const depCode = document.getElementById('departure').value;
+  const arrCode = document.getElementById('arrival').value;
+  const targetDate = document.getElementById('departure-date').value;
+
+  if (!depCode || !arrCode || !targetDate) {
+    alert('Please fill out all search parameters first.');
+    return;
+  }
+
+  const loader = document.getElementById('flight-loading-overlay');
+  loader.classList.add('visible');
+  document.getElementById('checkout-panel').style.display = 'none';
+
+  let offers = [];
+  let searchError = null;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/search-flights`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ origin: depCode, destination: arrCode, departure_date: targetDate })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Search failed.');
+    offers = json.offers || [];
+  } catch (err) {
+    searchError = err;
+  }
+
+  loader.classList.remove('visible');
+
+  const resultsSection = document.getElementById('flight-results-section');
+  const resultsTarget = document.getElementById('results-target');
+  resultsTarget.innerHTML = '';
+
+  if (searchError) {
+    console.error('Flight search error:', searchError);
+    resultsTarget.innerHTML = `<p style="color:#b91c1c; font-family:'Outfit';">Could not search flights: ${BlackcessDB.escapeHtml(searchError.message)}</p>`;
+    resultsSection.style.display = 'block';
+    return;
+  }
+
+  if (offers.length === 0) {
+    resultsTarget.innerHTML = `<p style="color:#64748b; font-family:'Outfit';">No flights found for ${BlackcessDB.escapeHtml(depCode)} &rarr; ${BlackcessDB.escapeHtml(arrCode)} on this date.</p>`;
+    resultsSection.style.display = 'block';
+    return;
+  }
+
+  offers.forEach((offer) => {
+    const esc = BlackcessDB.escapeHtml;
+    const slice = offer.slices[0];
+    const departTime = new Date(slice.departing_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+    const arriveTime = new Date(slice.arriving_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+
+    const card = document.createElement('div');
+    card.className = 'flight-card';
+    card.style.borderLeft = '4px solid #1e293b';
+    card.innerHTML = `
+      <div class="flight-info">
+        <h4>${esc(slice.carrier)} ${esc(slice.flight_number)}</h4>
+        <p>${esc(slice.origin_city)} (${esc(slice.origin)}) &rarr; ${esc(slice.destination_city)} (${esc(slice.destination)})</p>
+        <p>Depart ${departTime} &bull; Arrive ${arriveTime}</p>
+        <small style="color: #2e7d32; font-weight: 600; font-size:0.95rem;">${esc(offer.charge_currency)} ${Number(offer.charge_amount).toLocaleString()}</small>
+        <small style="display:block; color:#94a3b8; font-size:0.75rem;">(${esc(offer.total_currency)} ${Number(offer.total_amount).toLocaleString()} converted)</small>
+      </div>
+      <button class="search-btn select-flight-btn" style="background: #1e293b; padding: 8px 16px; font-size: 0.85rem;">Select</button>
+    `;
+    card.querySelector('.select-flight-btn').addEventListener('click', () => {
+      selectedFlight = offer;
+      showCheckout();
+    });
+    resultsTarget.appendChild(card);
+  });
+
+  resultsSection.style.display = 'block';
+  resultsSection.scrollIntoView({ behavior: 'smooth' });
+});
+
+function showCheckout() {
+  const esc = BlackcessDB.escapeHtml;
+  const slice = selectedFlight.slices[0];
+  const departTime = new Date(slice.departing_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+  document.getElementById('selected-flight-summary').innerHTML = `
+    <strong>Selected Itinerary:</strong> ${esc(slice.carrier)} ${esc(slice.flight_number)} — ${esc(slice.origin)} &rarr; ${esc(slice.destination)}<br>
+    <strong>Departure:</strong> ${departTime}<br>
+    <strong>Total Fare:</strong> ${esc(selectedFlight.charge_currency)} ${Number(selectedFlight.charge_amount).toLocaleString()}
+    <small style="display:block; color:#94a3b8;">(${esc(selectedFlight.total_currency)} ${Number(selectedFlight.total_amount).toLocaleString()} at today's rate)</small>
+  `;
+  document.getElementById('checkout-amount').innerText = `(${selectedFlight.charge_currency} ${Number(selectedFlight.charge_amount).toLocaleString()})`;
+  document.getElementById('checkout-panel').style.display = 'block';
+  document.getElementById('checkout-panel').scrollIntoView({ behavior: 'smooth' });
+}
+
+document.getElementById('passenger-checkout-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const firstName = document.getElementById('pay-firstname').value.trim();
+  const lastName = document.getElementById('pay-lastname').value.trim();
+  const dob = document.getElementById('pay-dob').value;
+  const userEmail = document.getElementById('pay-email').value.trim();
+  const userPhone = document.getElementById('pay-phone').value.trim();
+
+  // Paystack settles in NGN subunits (kobo). If the offer is priced in a
+  // different currency, this amount needs converting before charging —
+  // for now this assumes NGN-priced offers, matching the rest of the site.
+  const computedSubunits = Math.round(Number(selectedFlight.charge_amount) * 100);
+  const paystackPopInstance = new PaystackPop();
+
+  paystackPopInstance.newTransaction({
+    key: PAYSTACK_PUBLIC_KEY,
+    email: userEmail,
+    amount: computedSubunits,
+    currency: selectedFlight.charge_currency,
+    onSuccess: async function(transaction) {
+      const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
+
+      // create-duffel-order re-verifies the Paystack payment server-side,
+      // re-fetches the offer from Duffel to confirm price/availability,
+      // books the real order, and logs it into Supabase — all in one
+      // trusted server-side step. See supabase/functions/create-duffel-order.
+      let result;
+      try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-duffel-order`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({
+            reference: transaction.reference,
+            offer_id: selectedFlight.id,
+            passenger: {
+              given_name: firstName,
+              family_name: lastName,
+              born_on: dob,
+              email: userEmail,
+              phone_number: userPhone
+            },
+            user_id: activeUser ? activeUser.uid : null
+          })
+        });
+        result = await res.json();
+        if (!res.ok) throw new Error(result.error || 'Booking failed.');
+      } catch (err) {
+        console.error('Booking creation error:', err);
+        alert('Payment succeeded, but booking failed: ' + err.message + '\n\nPlease contact support with reference: ' + transaction.reference);
+        return;
+      }
+
+      const pnr = result.booking.pnr;
+      const slice = selectedFlight.slices[0];
+      alert(`Payment Confirmed!\n\nBooking Reference (PNR): ${pnr}\n${slice.carrier} ${slice.flight_number}: ${slice.origin} → ${slice.destination}\n\nSave this PNR with your last name to manage this booking or check in later.`);
+      document.getElementById('passenger-checkout-form').reset();
+      document.getElementById('checkout-panel').style.display = 'none';
+      document.getElementById('flight-results-section').style.display = 'none';
+    },
+    onCancel: function() {
+      alert("Payment checkout dismissed by customer.");
+    }
+  });
+});
+
+document.getElementById('track-flight-btn').addEventListener('click', async function() {
+  const flightNumber = document.getElementById('track-flight-number').value.trim();
+  const flightDate = document.getElementById('track-flight-date').value;
+  const resultsBox = document.getElementById('track-flight-results');
+  const esc = BlackcessDB.escapeHtml;
+
+  if (!flightNumber) {
+    resultsBox.innerHTML = `<p style="color:#b91c1c; font-size:0.85rem;">Enter a flight number first.</p>`;
+    return;
+  }
+
+  resultsBox.innerHTML = `<p style="color:#64748b; font-size:0.85rem;"><i class="fas fa-circle-notch fa-spin"></i> Looking up flight...</p>`;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/flight-status`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ flight_number: flightNumber, date: flightDate || undefined })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Lookup failed.');
+
+    if (!json.flights || json.flights.length === 0) {
+      resultsBox.innerHTML = `<p style="color:#64748b; font-size:0.85rem;">No flight found for "${esc(flightNumber)}"${flightDate ? ' on that date' : ''}. Try including the date, or double-check the flight number.</p>`;
+      return;
+    }
+
+    resultsBox.innerHTML = json.flights.map(f => {
+      const depTime = f.departure.scheduled ? new Date(f.departure.scheduled).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
+      const arrTime = f.arrival.scheduled ? new Date(f.arrival.scheduled).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
+      return `
+        <div style="border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-top:8px; font-size:0.82rem;">
+          <div style="font-weight:700; color:#1e293b;">${esc(f.airline || '')} ${esc(f.number || flightNumber)} &mdash; <span style="color:#BA8B02;">${esc(f.status || 'Unknown')}</span></div>
+          <div style="margin-top:6px; color:#475569;">
+            <strong>${esc(f.departure.iata || '?')}</strong> ${esc(f.departure.airport || '')}<br>
+            Departs: ${depTime}${f.departure.terminal ? ` &bull; Terminal ${esc(f.departure.terminal)}` : ''}${f.departure.gate ? ` &bull; Gate ${esc(f.departure.gate)}` : ''}
+          </div>
+          <div style="margin-top:6px; color:#475569;">
+            <strong>${esc(f.arrival.iata || '?')}</strong> ${esc(f.arrival.airport || '')}<br>
+            Arrives: ${arrTime}${f.arrival.terminal ? ` &bull; Terminal ${esc(f.arrival.terminal)}` : ''}${f.arrival.gate ? ` &bull; Gate ${esc(f.arrival.gate)}` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error('Flight tracking error:', err);
+    resultsBox.innerHTML = `<p style="color:#b91c1c; font-size:0.85rem;">Could not look up flight: ${esc(err.message)}</p>`;
+  }
+});
+</script>
+
+<!-- PAYSTACK INLINE POPUP LIBRARY -->
+<script src="https://js.paystack.co/v2/inline.js"></script>
+
+</body>
+</html>
