@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Flight Check-In - Blackcess Airlines</title>
+    <link rel="icon" type="image/png" href="./images/Untitled design.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_responsiveness.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="booking-flow.css">
+    <style>
+        .copyright-bar{
+            align-items: center;    
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <div class="logo-design">
+                    <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+                </div>
+            </a>
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="hamburger" id="hamburger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+                <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+                <li class="nav-item"><a href="Routes.html" class="nav-link">ROUTES</a></li>
+                <li class="nav-item"><a href="career.html" class="nav-link">CAREERS</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- DEDICATED CONTENT SECTION -->
+    <section class="booking-section" style="padding: 120px 20px 80px 20px;">
+        <div class="booking-container" style="max-width: 800px; margin: 0 auto;">
+            <div class="booking-form">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <img src="./images/Untitled design.png" alt="Blackcess Logo" style="height: 60px; width: auto; margin-bottom: 15px;">
+                    <h3>Online Flight Check-In</h3>
+                    <p style="color: #64748b;">Skip airport queues. Web check-in opens 24 hours prior to scheduled flight departures.</p>
+                </div>
+                
+                <div class="form-row" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="form-group" style="position: relative; width: 100%;">
+                        <label for="checkin-pnr" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b;"><i class="fas fa-qrcode"></i></label>
+                        <input type="text" id="checkin-pnr" class="form-input" placeholder="Booking Reference or Ticket Number" style="width: 100%; padding: 15px 15px 15px 45px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    </div>
+                    
+                    <div class="form-group" style="position: relative; width: 100%;">
+                        <label for="checkin-lastname" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b;"><i class="fas fa-user"></i></label>
+                        <input type="text" id="checkin-lastname" class="form-input" placeholder="Passenger Last Name" style="width: 100%; padding: 15px 15px 15px 45px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    </div>
+                    
+                    <button class="search-btn" style="width: 100%; padding: 15px; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="performOnlineCheckin()">Begin Check-In</button>
+                </div>
+            </div>
+
+            <div id="checkin-status-target"></div>
+            <div id="retrieved-ticket-target"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="copyright-bar">
+        <span>Copyright &copy; 2026 Blackcess Limited. All Rights Reserved.</span>
+    </div>
+
+    <!-- Supabase SDKs -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth-helper.js"></script>
+
+    <script>
+        async function performOnlineCheckin() {
+            const pnr = document.getElementById("checkin-pnr").value;
+            const lastname = document.getElementById("checkin-lastname").value;
+            const statusTarget = document.getElementById("checkin-status-target");
+            const ticketTarget = document.getElementById("retrieved-ticket-target");
+
+            if (!pnr || !lastname) {
+                alert("Please complete check-in criteria fields.");
+                return;
+            }
+
+            statusTarget.innerHTML = `<p style="color:#fff; margin-top:20px; text-align:center;"><i class="fas fa-circle-notch fa-spin"></i> Processing check-in in cloud registry...</p>`;
+            ticketTarget.innerHTML = "";
+
+            try {
+                const res = await BlackcessDB.checkInBooking(pnr, lastname);
+                statusTarget.innerHTML = `
+                    <div style="background:rgba(55,184,120,0.1); border:1px solid #37b878; border-radius:12px; padding:20px; text-align:center; margin-top:25px; color:#fff;">
+                        <i class="fas fa-circle-check" style="font-size:2.5rem; color:#37b878; margin-bottom:10px;"></i>
+                        <h4>Check-In Complete!</h4>
+                        <p style="color:#94a3b8; font-size:0.85rem; margin-top:5px; margin-bottom:15px;">Boarding confirmation generated for PNR reference <strong>${pnr.toUpperCase()}</strong>.</p>
+                        <button class="flight-select-btn" style="margin-top:0;" onclick="showTicketDetailDirect('${pnr}', '${lastname}')">Display Boarding Pass</button>
+                    </div>
+                `;
+            } catch(err) {
+                statusTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center; font-weight:bold;"><i class="fas fa-circle-exclamation"></i> Check-in failed: ${err.message}</p>`;
+            }
+        }
+
+        // Show ticket card details
+        async function showTicketDetailDirect(pnr, lastname) {
+            const resultsTarget = document.getElementById("retrieved-ticket-target");
+            resultsTarget.innerHTML = `<p style="color:#fff; margin-top:20px; text-align:center;"><i class="fas fa-circle-notch fa-spin"></i> Retrieving ticket...</p>`;
+            
+            try {
+                const records = await BlackcessDB.getBookings({ pnr, lastname });
+                if (records.length > 0) {
+                    const booking = records[0];
+                    const flight = booking.flights || {};
+                    const esc = BlackcessDB.escapeHtml;
+                    const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
+                    resultsTarget.innerHTML = `
+                        <div class="boarding-pass" id="boarding-pass-capture" style="margin-top:30px; margin-left: auto; margin-right: auto; background:#fff;">
+                            <div class="boarding-pass-header">
+                                <img src="./images/Untitled design.png" alt="Blackcess Logo" crossorigin="anonymous">
+                                <span style="font-weight:800; letter-spacing:1px; color:#BA8B02;">BOARDING TICKET</span>
+                            </div>
+                            <div class="boarding-pass-body">
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">Passenger (Last Name)</div>
+                                        <div class="bp-val">${esc(booking.passenger_lastname)}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">PNR / Reference</div>
+                                        <div class="bp-val" style="color:#BA8B02; font-size:1.25rem;">${esc(booking.pnr)}</div>
+                                    </div>
+                                </div>
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">From</div>
+                                        <div class="bp-val">${esc(flight.departure_city) || '\u2014'}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">To</div>
+                                        <div class="bp-val">${esc(flight.arrival_city) || '\u2014'}</div>
+                                    </div>
+                                </div>
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">Flight</div>
+                                        <div class="bp-val">${esc(flight.flight_number) || '\u2014'}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">Departure</div>
+                                        <div class="bp-val">${departTime}</div>
+                                    </div>
+                                </div>
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">Status</div>
+                                        <div class="bp-val" style="color:#37b878;"><i class="fas fa-circle-check"></i> ${esc(booking.status)}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">Gate</div>
+                                        <div class="bp-val">Terminal 1, Gate C</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="barcode-area">
+                                <div class="barcode-lines"></div>
+                                <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${esc(booking.pnr)}*</div>
+                            </div>
+                        </div>
+                        <div style="text-align:center; margin-top:18px;">
+                            <button id="download-pdf-btn" class="tool-btn" style="max-width:280px; margin:0 auto; cursor:pointer;">
+                                <i class="fas fa-download"></i> Download PDF Ticket
+                            </button>
+                        </div>
+                    `;
+                    resultsTarget.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('download-pdf-btn').addEventListener('click', () => downloadTicketPDF(booking.pnr));
+                } else {
+                    resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;"><i class="fas fa-triangle-exclamation"></i> No ticket found matching code and last name.</p>`;
+                }
+            } catch(e) {
+                resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;">Retrieval error.</p>`;
+            }
+        }
+
+        async function downloadTicketPDF(pnr) {
+            const btn = document.getElementById('download-pdf-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Generating...';
+            btn.disabled = true;
+
+            try {
+                const element = document.getElementById('boarding-pass-capture');
+                const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+                const imgData = canvas.toDataURL('image/png');
+
+                const { jsPDF } = window.jspdf;
+                // Match the PDF page to the ticket's own proportions rather
+                // than forcing it onto a generic A4 sheet.
+                const pxToMm = 0.264583;
+                const widthMm = canvas.width * pxToMm / 2;
+                const heightMm = canvas.height * pxToMm / 2;
+                const doc = new jsPDF({
+                    orientation: widthMm > heightMm ? 'landscape' : 'portrait',
+                    unit: 'mm',
+                    format: [widthMm, heightMm]
+                });
+                doc.addImage(imgData, 'PNG', 0, 0, widthMm, heightMm);
+                doc.save(`Blackcess-Ticket-${pnr}.pdf`);
+            } catch (err) {
+                console.error('PDF generation error:', err);
+                alert('Could not generate the PDF right now. You can also just screenshot this page as a backup.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
