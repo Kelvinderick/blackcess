@@ -1,7 +1,6 @@
 // Blackcess Airlines Authentication and Database Helper (Supabase Integration)
 
 const BlackcessDB = {
-    // Generate a random membership ID: BC followed by 6 digits
     generateMembershipId() {
         return "BC" + Math.floor(100000 + Math.random() * 900000);
     },

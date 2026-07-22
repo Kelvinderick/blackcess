@@ -380,7 +380,7 @@
                 <div id="login-error" class="error-msg" style="margin-bottom: 1.2rem;"></div>
 
                 <button type="submit" class="login-btn" id="login-submit-btn">
-                    <span class="btn-text">Authenticate Access</span>
+                    <span class="btn-text">Sign In</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </form>
@@ -389,7 +389,7 @@
                 Not enrolled in our premium tier? <a onclick="togglePanels('signup')">Join the Club</a>
                 <br>
                 <a href="index.html" class="back-home">
-                    <i class="fas fa-arrow-left"></i> Return to Main Terminal
+                    <i class="fas fa-arrow-left"></i> Return to Main Page
                 </a>
             </div>
         </div>
@@ -458,11 +458,6 @@
     <script src="auth-helper.js"></script>
     
     <script>
-        // Update database connection status indicator. window.supabase is
-        // always truthy once supabase-config.js runs — createClient() never
-        // validates the URL/key, it just builds a client object — so we
-        // have to actually round-trip a request to know if the credentials
-        // are real and the project is reachable.
         document.addEventListener("DOMContentLoaded", async () => {
             const banner = document.getElementById("db-status-banner");
             if (!window.supabase) {
@@ -509,17 +504,17 @@
             errorDiv.classList.remove("visible");
             submitBtn.classList.add("loading");
             submitBtn.disabled = true;
-            submitBtn.querySelector(".btn-text").innerText = "Authorizing credentials...";
+            submitBtn.querySelector(".btn-text").innerText = "Signing In...";
 
             try {
                 const user = await BlackcessDB.logIn(email, password);
-                submitBtn.querySelector(".btn-text").innerText = "Access Granted";
+                submitBtn.querySelector(".btn-text").innerText = "Login Succesful";
                 const redirectTo = new URLSearchParams(window.location.search).get("redirect") || "dashboard.html";
                 setTimeout(() => {
                     window.location.href = redirectTo;
                 }, 800);
             } catch (err) {
-                errorDiv.innerText = err.message || "Authentication failed.";
+                errorDiv.innerText = err.message || "Sign-In failed.";
                 errorDiv.classList.add("visible");
                 submitBtn.classList.remove("loading");
                 submitBtn.disabled = false;
@@ -554,7 +549,7 @@
                     return;
                 }
 
-                submitBtn.querySelector(".btn-text").innerText = "Enrolment Successful";
+                submitBtn.querySelector(".btn-text").innerText = "Sign up Successful";
                 setTimeout(() => {
                     alert(`Welcome, ${name}! Your membership reference is ${user.membership_id}. Redirecting...`);
                     window.location.href = "dashboard.html";

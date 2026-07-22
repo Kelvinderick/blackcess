@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* SIMPLE & LUXURIOUS BLACKCESS LOADING OVERLAY */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -626,8 +625,7 @@ tabButtons.forEach(button => {
   });
 });
 
-// Booking requires an account — guests get sent to log in first, and land
-// right back here afterward (see the `redirect` param handling in login.html).
+
 (function requireAuth() {
   const activeUser = JSON.parse(localStorage.getItem('activeUser') || 'null');
   if (!activeUser) {
