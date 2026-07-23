@@ -109,28 +109,39 @@ const BlackcessDB = {
         }
 
      const profile = {
-    uid: user.id,
-    email: user.email,
-    name: profileData.full_name,
-    passport: profileData.passport_number,
-    membership_id: profileData.membership_id,
-    miles: profileData.miles,
-    role: profileData.role
-};
+         uid: user.id,
+         email: user.email,
+         name: profileData.full_name,
+         passport: profileData.passport_number,
+         membership_id: profileData.membership_id,
+         miles: profileData.miles,
+         role: profileData.role
+     };
 
         // Cache user details locally
         localStorage.setItem("activeUser", JSON.stringify(profile));
         return profile;
     },
 
-    // Log Out passenger
-    async logOut() {
-        const { error } = await window.supabase.auth.signOut();
-        if (error) {
-            console.error("Sign out error:", error);
+    async logInAsAdmin(email, password) {
+     const profile = await this.logIn(email, password);
+     if (profile.role !== "admin") {
+         await this.logOut({ redirect: false });
+         throw new Error("Admin access is required to sign in here.");
         }
-        localStorage.removeItem("activeUser");
-        window.location.href = "index.html";
+     return profile;
+    },
+
+    // Log Out passenger
+    async logOut({ redirect = true } = {}) {
+     const { error } = await window.supabase.auth.signOut();
+     if (error) {
+         console.error("Sign out error:", error);
+     }
+     localStorage.removeItem("activeUser");
+     if (redirect) {
+         window.location.href = "index.html";
+     }
     },
 
     // Retrieve bookings: either by user UID or by PNR & Lastname (for guest retrieval)

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Blackcess Airlines</title>
+    <link rel="icon" type="image/png" href="./images/Untitled design.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: radial-gradient(circle at top left, rgba(5, 100, 210, 0.16), transparent 30%),
+                        radial-gradient(circle at bottom right, rgba(212, 175, 55, 0.14), transparent 28%),
+                        #051026;
+            color: #f8fafc;
+        }
+
+        .login-container {
+            width: min(520px, 100%);
+            background: rgba(8, 23, 54, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.6px;
+        }
+
+        .login-header p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(203, 213, 225, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            font-size: 0.95rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #5b9df9;
+            box-shadow: 0 0 0 4px rgba(91, 157, 249, 0.18);
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem 1.1rem;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #ffffff;
+            background: linear-gradient(135deg, #3b82f6 0%, #0f172a 100%);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 35px rgba(59, 130, 246, 0.24);
+        }
+
+        .login-btn.loading {
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .error-msg {
+            display: none;
+            margin-top: 0.8rem;
+            color: #fecaca;
+            background: rgba(248, 113, 113, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.22);
+            padding: 0.9rem 1rem;
+            border-radius: 12px;
+            font-size: 0.92rem;
+        }
+
+        .error-msg.visible {
+            display: block;
+        }
+
+        .help-text {
+            margin-top: 1.5rem;
+            color: #94a3b8;
+            font-size: 0.92rem;
+            text-align: center;
+        }
+
+        .help-text a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Admin Access</h1>
+            <p>Sign in to review bookings, manage users, and keep Blackcess running safely.</p>
+        </div>
+
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label for="admin-email">Email address</label>
+                <input type="email" id="admin-email" class="form-input" placeholder="admin@blackcess.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="admin-password">Password</label>
+                <input type="password" id="admin-password" class="form-input" placeholder="Enter your password" required>
+            </div>
+
+            <div id="admin-login-error" class="error-msg"></div>
+
+            <button type="submit" class="login-btn" id="admin-login-btn">
+                <span class="btn-text">Sign in</span>
+            </button>
+        </form>
+
+        <p class="help-text">
+            Need regular member login? <a href="login.html">Go to member login</a>.
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth-helper.js"></script>
+    <script src="admin-login.js"></script>
+</body>
+</html>

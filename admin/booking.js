@@ -1,7 +1,7 @@
 const activeUser = JSON.parse(localStorage.getItem("activeUser"));
 
 if (!activeUser || activeUser.role !== "admin") {
-    window.location.href = "../login.html";
+    window.location.href = "../admin-login.html";
 }
 
 document.getElementById("logoutBtn").onclick = () => {
