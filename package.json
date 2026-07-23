@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.2",
+    "axios": "^1.18.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "node-fetch": "^3.3.2"
+  },
+  "name": "blackcess",
+  "version": "1.0.0",
+  "description": "",
+  "main": "auth-helper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kelvinderick/blackcess.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Kelvinderick/blackcess/issues"
+  },
+  "homepage": "https://github.com/Kelvinderick/blackcess#readme"
+}

@@ -182,6 +182,7 @@ body { background: var(--bc-cream); }
 }
 .status-confirmed { background: #fdf5e0; color: #92670a; }
 .status-checked-in { background: #e7f5ec; color: #15803d; }
+.status-arrived { background: #d1fae5; color: #0f766e; }
 
 .empty-state {
   background: #fff;
@@ -285,41 +286,141 @@ document.getElementById("stat-membership").textContent = activeUser.membership_i
 document.getElementById("stat-miles").textContent = (activeUser.miles || 0).toLocaleString();
 
 loadDashboardBookings();
+scheduleDashboardBookingRefresh();
+setupDashboardRealtime();
+
+function getBookingDisplayStatus(booking) {
+  const rawStatus = (booking.status || 'Confirmed').trim();
+  const flight = booking.flights || {};
+  const arrivalTime = flight.arrival_time || booking.arrival_time;
+  const now = new Date();
+  const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
+  const hasArrived = arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate;
+
+  if (hasArrived) {
+    return { label: 'Arrived Successfully', className: 'status-arrived' };
+  }
+
+  if (/checked[- ]?in/i.test(rawStatus)) {
+    return { label: 'Checked-In', className: 'status-checked-in' };
+  }
+
+  return { label: rawStatus || 'Confirmed', className: 'status-confirmed' };
+}
+
+function hasBookingArrived(arrivalTime, status) {
+  const now = new Date();
+  const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
+  if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
+    return true;
+  }
+  return /arrived|landed/i.test(status || '');
+}
+
+function scheduleDashboardBookingRefresh() {
+  if (window.dashboardBookingRefreshTimer) {
+    clearInterval(window.dashboardBookingRefreshTimer);
+  }
+  window.dashboardBookingRefreshTimer = setInterval(() => {
+    if (document.visibilityState === 'visible') {
+      loadDashboardBookings();
+    }
+  }, 30000);
+}
+
+function setupDashboardRealtime() {
+  if (!window.supabase || !activeUser) return;
+
+  try {
+    window.supabase
+      .channel(`dashboard-bookings-${activeUser.uid}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'bookings',
+        filter: `user_id=eq.${activeUser.uid}`
+      }, payload => {
+        console.log('Realtime dashboard booking update:', payload);
+        loadDashboardBookings();
+      })
+      .subscribe();
+  } catch (err) {
+    console.warn('Could not subscribe to dashboard realtime updates:', err);
+  }
+}
 
 async function loadDashboardBookings() {
   const listEl = document.getElementById("bookings-list");
 
   try {
     const bookings = await BlackcessDB.getBookings({ uid: activeUser.uid });
-
-    document.getElementById("stat-bookings").textContent = bookings.length;
-
-    if (bookings.length === 0) {
-      listEl.innerHTML = `<div class="empty-state"><i class="fas fa-suitcase-rolling" style="font-size:1.5rem; margin-bottom:10px; display:block;"></i>No bookings yet — time to plan your next trip.</div>`;
-      return;
-    }
-
-    listEl.innerHTML = '';
-
+    const activeBookings = [];
+    const arrivedBookings = [];
     const esc = BlackcessDB.escapeHtml;
 
     bookings.forEach(booking => {
-      const flight = booking.flights;
-      const route = flight ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} \u2192 ${esc(flight.arrival_city)}` : 'Flight details unavailable';
-      const departTime = flight ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '';
-      const statusClass = booking.status === 'Checked-In' ? 'status-checked-in' : 'status-confirmed';
-
-      const row = document.createElement('div');
-      row.className = 'booking-row';
-      row.innerHTML = `
-        <div>
-          <div class="booking-route">${route}</div>
-          <div class="booking-meta">${departTime} &bull; <span class="status-pill ${statusClass}">${esc(booking.status) || 'Confirmed'}</span></div>
-        </div>
-        <div class="booking-pnr">${esc(booking.pnr)}</div>
-      `;
-      listEl.appendChild(row);
+      const flight = booking.flights || {};
+      const arrivalTime = flight.arrival_time || booking.arrival_time;
+      if (hasBookingArrived(arrivalTime, booking.status)) {
+        arrivedBookings.push(booking);
+      } else {
+        activeBookings.push(booking);
+      }
     });
+
+    document.getElementById("stat-bookings").textContent = activeBookings.length;
+
+    if (activeBookings.length === 0) {
+      if (arrivedBookings.length === 0) {
+        listEl.innerHTML = `<div class="empty-state"><i class="fas fa-suitcase-rolling" style="font-size:1.5rem; margin-bottom:10px; display:block;"></i>No bookings yet — time to plan your next trip.</div>`;
+      } else {
+        listEl.innerHTML = `<div class="empty-state"><i class="fas fa-plane-arrival" style="font-size:1.5rem; margin-bottom:10px; display:block;"></i>All your booked flights have arrived. Completed flights are shown below.</div>`;
+      }
+    } else {
+      listEl.innerHTML = '';
+      activeBookings.forEach(booking => {
+        const flight = booking.flights;
+        const route = flight ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+        const departTime = flight && flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '';
+        const status = getBookingDisplayStatus(booking);
+
+        const row = document.createElement('div');
+        row.className = 'booking-row';
+        row.innerHTML = `
+          <div>
+            <div class="booking-route">${route}</div>
+            <div class="booking-meta">${departTime} • <span class="status-pill ${status.className}">${esc(status.label)}</span></div>
+          </div>
+          <div class="booking-pnr">${esc(booking.pnr)}</div>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    if (arrivedBookings.length > 0) {
+      const arrivedSection = document.createElement('div');
+      arrivedSection.style.marginTop = '24px';
+      arrivedSection.innerHTML = `<h2 class="dash-section-title" style="margin-bottom: 18px;">Arrived Flights</h2>`;
+      arrivedBookings.forEach(booking => {
+        const flight = booking.flights;
+        const route = flight ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+        const arriveTime = flight && flight.arrival_time ? new Date(flight.arrival_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : 'Arrived';
+        const status = getBookingDisplayStatus(booking);
+        const row = document.createElement('div');
+        row.className = 'booking-row';
+        row.style.background = '#f8fafc';
+        row.style.borderColor = '#d1fae5';
+        row.innerHTML = `
+          <div>
+            <div class="booking-route">${route}</div>
+            <div class="booking-meta">${arriveTime} • <span class="status-pill ${status.className}">${esc(status.label)}</span></div>
+          </div>
+          <div class="booking-pnr">${esc(booking.pnr)}</div>
+        `;
+        arrivedSection.appendChild(row);
+      });
+      listEl.appendChild(arrivedSection);
+    }
 
   } catch (e) {
     console.error(e);

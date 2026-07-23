@@ -11,9 +11,68 @@
     <link rel="stylesheet" href="booking-flow.css">
     <style>
         .copyright-bar {
-            align-items: center;    
+            align-items: center;
             text-align: center;
-        } 
+        }
+
+        .flight-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            border: 1px solid transparent;
+        }
+
+        .status-confirmed {
+            background: rgba(253, 245, 224, 0.9);
+            color: #92670a;
+            border-color: rgba(253, 245, 224, 0.95);
+        }
+
+        .status-checked-in {
+            background: rgba(231, 245, 236, 0.95);
+            color: #15803d;
+            border-color: rgba(231, 245, 236, 0.95);
+        }
+
+        .status-arrived {
+            background: rgba(212, 248, 241, 0.95);
+            color: #0f766e;
+            border-color: rgba(212, 248, 241, 0.95);
+        }
+
+        .booking-card {
+            background: rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:12px;
+            padding:16px 18px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .booking-card h4 {
+            margin: 0 0 6px 0;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .booking-card span {
+            color: #94a3b8;
+            font-size: 0.86rem;
+        }
+
+        .section-subheading {
+            color: #94a3b8;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +145,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             setTimeout(loadMemberBookingsList, 1000);
+            scheduleMemberBookingsRefresh();
             
             // Set up real-time listener for bookings changes
             if (window.supabase) {
@@ -105,10 +165,56 @@
                     })
                     .subscribe();
             }
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    loadMemberBookingsList();
+                }
+            });
         });
 
-        // Load logged in user bookings from database
-        async function loadMemberBookingsList() {
+        function getBookingDisplayStatus(booking) {
+            const rawStatus = (booking.status || 'Confirmed').trim();
+            const flight = booking.flights || {};
+            const arrivalTime = flight.arrival_time || booking.arrival_time;
+            const now = new Date();
+            const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
+            const hasArrived = arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate;
+
+            if (hasArrived) {
+                return { label: 'Arrived Successfully', className: 'status-arrived' };
+            }
+
+            if (/checked[- ]?in/i.test(rawStatus)) {
+                return { label: 'Checked-In', className: 'status-checked-in' };
+            }
+
+            return { label: rawStatus || 'Confirmed', className: 'status-confirmed' };
+        }
+
+        function hasBookingArrived(arrivalTime, status) {
+            const rawStatus = (status || '').trim();
+            const now = new Date();
+            const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
+            if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
+                return true;
+            }
+            return /arrived|landed/i.test(rawStatus);
+        }
+
+                function scheduleMemberBookingsRefresh() {
+                    if (window.memberBookingsRefreshTimer) {
+                        clearInterval(window.memberBookingsRefreshTimer);
+                    }
+                    window.memberBookingsRefreshTimer = setInterval(() => {
+                        if (document.visibilityState === 'visible') {
+                            loadMemberBookingsList();
+                        }
+                    }, 30000);
+                }
+
+                // Load logged in user bookings from database
+                async function loadMemberBookingsList() {
             const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
             const bookingsListDiv = document.getElementById("member-bookings-list");
             if (!bookingsListDiv) return;
@@ -124,21 +230,41 @@
                 const list = await BlackcessDB.getBookings({ uid: activeUser.uid });
                 if (list.length === 0) {
                     bookingsListDiv.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;"><i class="fas fa-circle-info"></i> You have no cloud booking histories registered under this membership profile.</p>`;
-                } else {
-                    const esc = BlackcessDB.escapeHtml;
-                    let html = `<h4 style="color:#fff; margin-bottom:12px;">Stored Cloud Bookings (${list.length})</h4><div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">`;
-                    list.forEach(b => {
+                    return;
+                }
+
+                const esc = BlackcessDB.escapeHtml;
+                const activeBookings = [];
+                const arrivedBookings = [];
+
+                list.forEach(b => {
+                    const flight = b.flights;
+                    const arrivalTime = (flight && flight.arrival_time) || b.arrival_time;
+                    const arrived = hasBookingArrived(arrivalTime, b.status);
+                    if (arrived) {
+                        arrivedBookings.push(b);
+                    } else {
+                        activeBookings.push(b);
+                    }
+                });
+
+                let html = '';
+
+                if (activeBookings.length > 0) {
+                    html += `<h4 style="color:#fff; margin-bottom:12px;">Stored Cloud Bookings (${activeBookings.length})</h4><div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">`;
+                    activeBookings.forEach(b => {
                         const flight = b.flights;
-                        const route = flight ? `${esc(flight.departure_city)} &rarr; ${esc(flight.arrival_city)}` : 'Flight details unavailable';
-                        const departDate = flight ? new Date(flight.departure_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
+                        const route = flight ? `${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+                        const departDate = flight && flight.departure_time ? new Date(flight.departure_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
+                        const displayStatus = getBookingDisplayStatus(b);
                         html += `
-                            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center;">
+                            <div class="booking-card">
                                 <div>
-                                    <span style="font-weight:700; color:#fff;">${route}</span>
-                                    <span style="font-size:0.75rem; color:#94a3b8; margin-left:15px;"><i class="fas fa-calendar"></i> ${departDate}</span>
-                                    <span style="font-size:0.75rem; color:#94a3b8; margin-left:15px;"><i class="fas fa-ticket"></i> ${esc(b.status)}</span>
+                                    <h4>${route}</h4>
+                                    <span><i class="fas fa-calendar"></i> ${departDate}</span>
+                                    <span style="margin-left:15px;"><i class="fas fa-ticket"></i> <span class="flight-status-pill ${displayStatus.className}">${displayStatus.label}</span></span>
                                 </div>
-                                <div style="display:flex; align-items:center; gap:15px;">
+                                <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
                                     <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
                                     <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
                                 </div>
@@ -146,8 +272,35 @@
                         `;
                     });
                     html += `</div>`;
-                    bookingsListDiv.innerHTML = html;
+                } else {
+                    html += `<p class="section-subheading">No active bookings at the moment. Completed flights are listed below.</p>`;
                 }
+
+                if (arrivedBookings.length > 0) {
+                    html += `<h4 style="color:#fff; margin-top:16px; margin-bottom:12px;">Arrived Flights (${arrivedBookings.length})</h4><div style="display:flex; flex-direction:column; gap:10px;">`;
+                    arrivedBookings.forEach(b => {
+                        const flight = b.flights;
+                        const route = flight ? `${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+                        const arriveDate = (flight && flight.arrival_time) ? new Date(flight.arrival_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
+                        const displayStatus = getBookingDisplayStatus(b);
+                        html += `
+                            <div class="booking-card" style="background: rgba(15, 25, 40, 0.9); border-color: rgba(34, 197, 94, 0.2);">
+                                <div>
+                                    <h4>${route}</h4>
+                                    <span><i class="fas fa-calendar"></i> Arrived ${arriveDate}</span>
+                                    <span style="margin-left:15px;"><i class="fas fa-plane-arrival"></i> <span class="flight-status-pill ${displayStatus.className}">${displayStatus.label}</span></span>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
+                                    <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
+                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                bookingsListDiv.innerHTML = html;
             } catch(e) {
                 bookingsListDiv.innerHTML = `<p style="color:#ff5722; font-size:0.85rem;"><i class="fas fa-circle-exclamation"></i> Error loading cloud database.</p>`;
             }
@@ -205,7 +358,7 @@
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">Status</div>
-                                        <div class="bp-val" style="color:${booking.status === 'Checked-In' ? '#37b878' : '#BA8B02'};"><i class="fas fa-circle-check"></i> ${esc(booking.status)}</div>
+                                        <div class="bp-val" style="color:${getBookingDisplayStatus(booking).className === 'status-arrived' ? '#0f766e' : booking.status === 'Checked-In' ? '#37b878' : '#BA8B02'};"><i class="fas fa-circle-check"></i> ${esc(getBookingDisplayStatus(booking).label)}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">Gate</div>
