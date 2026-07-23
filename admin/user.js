@@ -1,7 +1,7 @@
 const activeUser = JSON.parse(localStorage.getItem("activeUser"));
 
 if (!activeUser || activeUser.role !== "admin") {
-    window.location.href = "../login.html";
+    window.location.href = "../admin-login.html";
 }
 
 document.getElementById("logoutBtn").onclick = () => {
@@ -51,6 +51,10 @@ async function loadUsers() {
 ${esc(buttonLabel)}
 </button>
 
+<button class="action-btn delete" onclick="deleteUser('${esc(user.id)}', '${esc(user.full_name)}', '${esc(user.email || '')}')">
+Delete
+</button>
+
 </td>
 
 </tr>
@@ -80,6 +84,53 @@ async function toggleAdmin(id, currentRole) {
         alert(error.message);
         return;
     }
+
+    loadUsers();
+}
+
+async function deleteUser(id, fullName, email) {
+    if (id === activeUser.uid) {
+        alert("You cannot delete your own admin account from here.");
+        return;
+    }
+
+    if (!confirm(`Delete ${fullName || 'this user'} permanently? This action cannot be undone.`)) {
+        return;
+    }
+
+    const userEmail = email || null;
+
+    const { error: deleteBookingsError } = await window.supabase
+        .from("bookings")
+        .delete()
+        .eq("user_id", id);
+
+    if (deleteBookingsError) {
+        console.warn("Could not delete bookings by user_id before deleting profile:", deleteBookingsError.message);
+    }
+
+    if (userEmail) {
+        const { error: deleteBookingsByEmailError } = await window.supabase
+            .from("bookings")
+            .delete()
+            .eq("passenger_email", userEmail);
+
+        if (deleteBookingsByEmailError) {
+            console.warn("Could not delete bookings by email before deleting profile:", deleteBookingsByEmailError.message);
+        }
+    }
+
+    const { error } = await window.supabase
+        .from("profiles")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+        alert(error.message);
+        return;
+    }
+
+    await BlackcessDB.deleteAuthUser(id);
 
     loadUsers();
 }
