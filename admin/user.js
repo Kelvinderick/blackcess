@@ -51,7 +51,7 @@ async function loadUsers() {
 ${esc(buttonLabel)}
 </button>
 
-<button class="action-btn delete" onclick="deleteUser('${esc(user.id)}', '${esc(user.full_name)}')">
+<button class="action-btn delete" onclick="deleteUser('${esc(user.id)}', '${esc(user.full_name)}', '${esc(user.email || '')}')">
 Delete
 </button>
 
@@ -88,7 +88,7 @@ async function toggleAdmin(id, currentRole) {
     loadUsers();
 }
 
-async function deleteUser(id, fullName) {
+async function deleteUser(id, fullName, email) {
     if (id === activeUser.uid) {
         alert("You cannot delete your own admin account from here.");
         return;
@@ -98,13 +98,26 @@ async function deleteUser(id, fullName) {
         return;
     }
 
+    const userEmail = email || null;
+
     const { error: deleteBookingsError } = await window.supabase
         .from("bookings")
         .delete()
         .eq("user_id", id);
 
     if (deleteBookingsError) {
-        console.warn("Could not delete linked bookings before deleting profile:", deleteBookingsError.message);
+        console.warn("Could not delete bookings by user_id before deleting profile:", deleteBookingsError.message);
+    }
+
+    if (userEmail) {
+        const { error: deleteBookingsByEmailError } = await window.supabase
+            .from("bookings")
+            .delete()
+            .eq("passenger_email", userEmail);
+
+        if (deleteBookingsByEmailError) {
+            console.warn("Could not delete bookings by email before deleting profile:", deleteBookingsByEmailError.message);
+        }
     }
 
     const { error } = await window.supabase
@@ -116,6 +129,8 @@ async function deleteUser(id, fullName) {
         alert(error.message);
         return;
     }
+
+    await BlackcessDB.deleteAuthUser(id);
 
     loadUsers();
 }
