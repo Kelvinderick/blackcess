@@ -173,6 +173,20 @@
             });
         });
 
+        function safeParseDate(dateStr) {
+            if (!dateStr) return null;
+            if (dateStr instanceof Date) return dateStr;
+            let normalized = dateStr.trim();
+            if (!normalized.includes('T') && !normalized.endsWith('Z')) {
+                normalized = normalized.replace(' ', 'T');
+                if (!normalized.includes('+') && !normalized.includes('-')) {
+                    normalized += 'Z';
+                }
+            }
+            const d = new Date(normalized);
+            return isNaN(d.getTime()) ? null : d;
+        }
+
         function getBookingArrivalTime(booking) {
             const flight = booking.flights || booking.flight || {};
             return flight.arrival_time || booking.arrival_time || booking.arrival;
@@ -182,9 +196,9 @@
             const rawStatus = (booking.status || '').trim();
             const arrivalTime = getBookingArrivalTime(booking);
             const now = new Date();
-            const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
+            const arrivalDate = safeParseDate(arrivalTime);
 
-            if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
+            if (arrivalDate && now >= arrivalDate) {
                 return true;
             }
 

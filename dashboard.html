@@ -289,6 +289,20 @@ loadDashboardBookings();
 scheduleDashboardBookingRefresh();
 setupDashboardRealtime();
 
+function safeParseDate(dateStr) {
+  if (!dateStr) return null;
+  if (dateStr instanceof Date) return dateStr;
+  let normalized = dateStr.trim();
+  if (!normalized.includes('T') && !normalized.endsWith('Z')) {
+    normalized = normalized.replace(' ', 'T');
+    if (!normalized.includes('+') && !normalized.includes('-')) {
+      normalized += 'Z';
+    }
+  }
+  const d = new Date(normalized);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 function getBookingArrivalTime(booking) {
   const flight = booking.flights || booking.flight || {};
   return flight.arrival_time || booking.arrival_time || booking.arrival;
@@ -298,8 +312,8 @@ function hasBookingArrived(booking) {
   const rawStatus = (booking.status || '').trim();
   const arrivalTime = getBookingArrivalTime(booking);
   const now = new Date();
-  const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
-  if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
+  const arrivalDate = safeParseDate(arrivalTime);
+  if (arrivalDate && now >= arrivalDate) {
     return true;
   }
   return /arrived|landed/i.test(rawStatus);
@@ -427,8 +441,7 @@ async function loadDashboardBookings() {
     console.error(e);
     listEl.innerHTML = `<div class="empty-state" style="color:#b91c1c;">Could not load your bookings right now.</div>`;
   }
-}
-</script>
+}</script>
 
 </body>
 </html>

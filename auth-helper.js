@@ -202,7 +202,16 @@ const BlackcessDB = {
                 throw new Error(error.message);
             }
 
-            return data;
+            return data.map(b => ({
+                ...b,
+                flights: b.flights || {
+                    flight_number: b.flight_number,
+                    departure_city: b.departure_city,
+                    arrival_city: b.arrival_city,
+                    departure_time: b.departure_time,
+                    arrival_time: b.arrival_time
+                }
+            }));
         }
 
         throw new Error("Missing parameters for query filter.");

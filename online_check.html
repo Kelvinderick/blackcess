@@ -112,6 +112,51 @@
             }
         }
 
+        function safeParseDate(dateStr) {
+            if (!dateStr) return null;
+            if (dateStr instanceof Date) return dateStr;
+            let normalized = dateStr.trim();
+            if (!normalized.includes('T') && !normalized.endsWith('Z')) {
+                normalized = normalized.replace(' ', 'T');
+                if (!normalized.includes('+') && !normalized.includes('-')) {
+                    normalized += 'Z';
+                }
+            }
+            const d = new Date(normalized);
+            return isNaN(d.getTime()) ? null : d;
+        }
+
+        function getBookingArrivalTime(booking) {
+            const flight = booking.flights || booking.flight || {};
+            return flight.arrival_time || booking.arrival_time || booking.arrival;
+        }
+
+        function hasBookingArrived(booking) {
+            const rawStatus = (booking.status || '').trim();
+            const arrivalTime = getBookingArrivalTime(booking);
+            const now = new Date();
+            const arrivalDate = safeParseDate(arrivalTime);
+            if (arrivalDate && now >= arrivalDate) {
+                return true;
+            }
+            return /arrived|landed/i.test(rawStatus);
+        }
+
+        function getBookingDisplayStatus(booking) {
+            const rawStatus = (booking.status || 'Confirmed').trim();
+            const hasArrived = hasBookingArrived(booking);
+
+            if (hasArrived) {
+                return { label: 'Arrived Successfully', className: 'status-arrived', color: '#0f766e' };
+            }
+
+            if (/checked[- ]?in/i.test(rawStatus)) {
+                return { label: 'Checked-In', className: 'status-checked-in', color: '#37b878' };
+            }
+
+            return { label: rawStatus || 'Confirmed', className: 'status-confirmed', color: '#BA8B02' };
+        }
+
         // Show ticket card details
         async function showTicketDetailDirect(pnr, lastname) {
             const resultsTarget = document.getElementById("retrieved-ticket-target");
@@ -124,6 +169,7 @@
                     const flight = booking.flights || {};
                     const esc = BlackcessDB.escapeHtml;
                     const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
+                    const displayStatus = getBookingDisplayStatus(booking);
                     resultsTarget.innerHTML = `
                         <div class="boarding-pass" id="boarding-pass-capture" style="margin-top:30px; margin-left: auto; margin-right: auto; background:#fff;">
                             <div class="boarding-pass-header">
@@ -164,7 +210,7 @@
                                 <div class="bp-row">
                                     <div class="bp-col">
                                         <div class="bp-label">Status</div>
-                                        <div class="bp-val" style="color:#37b878;"><i class="fas fa-circle-check"></i> ${esc(booking.status)}</div>
+                                        <div class="bp-val" style="color:${displayStatus.color};"><i class="fas fa-circle-check"></i> ${esc(displayStatus.label)}</div>
                                     </div>
                                     <div class="bp-col" style="text-align:right;">
                                         <div class="bp-label">Gate</div>

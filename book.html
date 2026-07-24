@@ -869,18 +869,18 @@ document.getElementById('track-flight-btn').addEventListener('click', async func
     }
 
     resultsBox.innerHTML = json.flights.map(f => {
-      const depTime = f.departure.scheduled ? new Date(f.departure.scheduled).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
-      const arrTime = f.arrival.scheduled ? new Date(f.arrival.scheduled).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
+      const depTime = f.departure?.scheduled ? new Date(f.departure.scheduled).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
+      const arrTime = f.arrival?.scheduled ? new Date(f.arrival.scheduled).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
       return `
         <div style="border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-top:8px; font-size:0.82rem;">
           <div style="font-weight:700; color:#1e293b;">${esc(f.airline || '')} ${esc(f.number || flightNumber)} &mdash; <span style="color:#BA8B02;">${esc(f.status || 'Unknown')}</span></div>
           <div style="margin-top:6px; color:#475569;">
-            <strong>${esc(f.departure.iata || '?')}</strong> ${esc(f.departure.airport || '')}<br>
-            Departs: ${depTime}${f.departure.terminal ? ` &bull; Terminal ${esc(f.departure.terminal)}` : ''}${f.departure.gate ? ` &bull; Gate ${esc(f.departure.gate)}` : ''}
+            <strong>${esc(f.departure?.iata || '?')}</strong> ${esc(f.departure?.airport || '')}<br>
+            Departs: ${depTime}${f.departure?.terminal ? ` &bull; Terminal ${esc(f.departure.terminal)}` : ''}${f.departure?.gate ? ` &bull; Gate ${esc(f.departure.gate)}` : ''}
           </div>
           <div style="margin-top:6px; color:#475569;">
-            <strong>${esc(f.arrival.iata || '?')}</strong> ${esc(f.arrival.airport || '')}<br>
-            Arrives: ${arrTime}${f.arrival.terminal ? ` &bull; Terminal ${esc(f.arrival.terminal)}` : ''}${f.arrival.gate ? ` &bull; Gate ${esc(f.arrival.gate)}` : ''}
+            <strong>${esc(f.arrival?.iata || '?')}</strong> ${esc(f.arrival?.airport || '')}<br>
+            Arrives: ${arrTime}${f.arrival?.terminal ? ` &bull; Terminal ${esc(f.arrival.terminal)}` : ''}${f.arrival?.gate ? ` &bull; Gate ${esc(f.arrival.gate)}` : ''}
           </div>
         </div>
       `;
