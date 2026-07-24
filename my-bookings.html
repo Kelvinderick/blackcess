@@ -173,13 +173,27 @@
             });
         });
 
-        function getBookingDisplayStatus(booking) {
-            const rawStatus = (booking.status || 'Confirmed').trim();
-            const flight = booking.flights || {};
-            const arrivalTime = flight.arrival_time || booking.arrival_time;
+        function getBookingArrivalTime(booking) {
+            const flight = booking.flights || booking.flight || {};
+            return flight.arrival_time || booking.arrival_time || booking.arrival;
+        }
+
+        function hasBookingArrived(booking) {
+            const rawStatus = (booking.status || '').trim();
+            const arrivalTime = getBookingArrivalTime(booking);
             const now = new Date();
             const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
-            const hasArrived = arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate;
+
+            if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
+                return true;
+            }
+
+            return /arrived|landed/i.test(rawStatus);
+        }
+
+        function getBookingDisplayStatus(booking) {
+            const rawStatus = (booking.status || 'Confirmed').trim();
+            const hasArrived = hasBookingArrived(booking);
 
             if (hasArrived) {
                 return { label: 'Arrived Successfully', className: 'status-arrived' };
@@ -190,16 +204,6 @@
             }
 
             return { label: rawStatus || 'Confirmed', className: 'status-confirmed' };
-        }
-
-        function hasBookingArrived(arrivalTime, status) {
-            const rawStatus = (status || '').trim();
-            const now = new Date();
-            const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
-            if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
-                return true;
-            }
-            return /arrived|landed/i.test(rawStatus);
         }
 
                 function scheduleMemberBookingsRefresh() {
@@ -238,9 +242,8 @@
                 const arrivedBookings = [];
 
                 list.forEach(b => {
-                    const flight = b.flights;
-                    const arrivalTime = (flight && flight.arrival_time) || b.arrival_time;
-                    const arrived = hasBookingArrived(arrivalTime, b.status);
+                    const flight = b.flights || b.flight || {};
+                    const arrived = hasBookingArrived(b);
                     if (arrived) {
                         arrivedBookings.push(b);
                     } else {
@@ -253,9 +256,9 @@
                 if (activeBookings.length > 0) {
                     html += `<h4 style="color:#fff; margin-bottom:12px;">Stored Cloud Bookings (${activeBookings.length})</h4><div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">`;
                     activeBookings.forEach(b => {
-                        const flight = b.flights;
-                        const route = flight ? `${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
-                        const departDate = flight && flight.departure_time ? new Date(flight.departure_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
+                        const flight = b.flights || b.flight || {};
+                        const route = (flight.departure_city || b.departure_city) ? `${esc(flight.departure_city || b.departure_city)} → ${esc(flight.arrival_city || b.arrival_city)}` : 'Flight details unavailable';
+                        const departDate = flight.departure_time ? new Date(flight.departure_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
                         const displayStatus = getBookingDisplayStatus(b);
                         html += `
                             <div class="booking-card">
@@ -279,9 +282,9 @@
                 if (arrivedBookings.length > 0) {
                     html += `<h4 style="color:#fff; margin-top:16px; margin-bottom:12px;">Arrived Flights (${arrivedBookings.length})</h4><div style="display:flex; flex-direction:column; gap:10px;">`;
                     arrivedBookings.forEach(b => {
-                        const flight = b.flights;
-                        const route = flight ? `${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
-                        const arriveDate = (flight && flight.arrival_time) ? new Date(flight.arrival_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
+                        const flight = b.flights || b.flight || {};
+                        const route = (flight.departure_city || b.departure_city) ? `${esc(flight.departure_city || b.departure_city)} → ${esc(flight.arrival_city || b.arrival_city)}` : 'Flight details unavailable';
+                        const arriveDate = getBookingArrivalTime(b) ? new Date(getBookingArrivalTime(b)).toLocaleDateString([], { dateStyle: 'medium' }) : '';
                         const displayStatus = getBookingDisplayStatus(b);
                         html += `
                             <div class="booking-card" style="background: rgba(15, 25, 40, 0.9); border-color: rgba(34, 197, 94, 0.2);">
@@ -315,7 +318,7 @@
                 const records = await BlackcessDB.getBookings({ pnr, lastname });
                 if (records.length > 0) {
                     const booking = records[0];
-                    const flight = booking.flights || {};
+                    const flight = booking.flights || booking.flight || {};
                     const esc = BlackcessDB.escapeHtml;
                     const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
                     resultsTarget.innerHTML = `

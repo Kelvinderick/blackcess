@@ -289,13 +289,25 @@ loadDashboardBookings();
 scheduleDashboardBookingRefresh();
 setupDashboardRealtime();
 
-function getBookingDisplayStatus(booking) {
-  const rawStatus = (booking.status || 'Confirmed').trim();
-  const flight = booking.flights || {};
-  const arrivalTime = flight.arrival_time || booking.arrival_time;
+function getBookingArrivalTime(booking) {
+  const flight = booking.flights || booking.flight || {};
+  return flight.arrival_time || booking.arrival_time || booking.arrival;
+}
+
+function hasBookingArrived(booking) {
+  const rawStatus = (booking.status || '').trim();
+  const arrivalTime = getBookingArrivalTime(booking);
   const now = new Date();
   const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
-  const hasArrived = arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate;
+  if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
+    return true;
+  }
+  return /arrived|landed/i.test(rawStatus);
+}
+
+function getBookingDisplayStatus(booking) {
+  const rawStatus = (booking.status || 'Confirmed').trim();
+  const hasArrived = hasBookingArrived(booking);
 
   if (hasArrived) {
     return { label: 'Arrived Successfully', className: 'status-arrived' };
@@ -306,15 +318,6 @@ function getBookingDisplayStatus(booking) {
   }
 
   return { label: rawStatus || 'Confirmed', className: 'status-confirmed' };
-}
-
-function hasBookingArrived(arrivalTime, status) {
-  const now = new Date();
-  const arrivalDate = arrivalTime ? new Date(arrivalTime) : null;
-  if (arrivalDate && !isNaN(arrivalDate.getTime()) && now >= arrivalDate) {
-    return true;
-  }
-  return /arrived|landed/i.test(status || '');
 }
 
 function scheduleDashboardBookingRefresh() {
@@ -359,9 +362,7 @@ async function loadDashboardBookings() {
     const esc = BlackcessDB.escapeHtml;
 
     bookings.forEach(booking => {
-      const flight = booking.flights || {};
-      const arrivalTime = flight.arrival_time || booking.arrival_time;
-      if (hasBookingArrived(arrivalTime, booking.status)) {
+      if (hasBookingArrived(booking)) {
         arrivedBookings.push(booking);
       } else {
         activeBookings.push(booking);
@@ -379,9 +380,9 @@ async function loadDashboardBookings() {
     } else {
       listEl.innerHTML = '';
       activeBookings.forEach(booking => {
-        const flight = booking.flights;
-        const route = flight ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
-        const departTime = flight && flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '';
+        const flight = booking.flights || booking.flight || {};
+        const route = flight.flight_number ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+        const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '';
         const status = getBookingDisplayStatus(booking);
 
         const row = document.createElement('div');
@@ -402,9 +403,9 @@ async function loadDashboardBookings() {
       arrivedSection.style.marginTop = '24px';
       arrivedSection.innerHTML = `<h2 class="dash-section-title" style="margin-bottom: 18px;">Arrived Flights</h2>`;
       arrivedBookings.forEach(booking => {
-        const flight = booking.flights;
-        const route = flight ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
-        const arriveTime = flight && flight.arrival_time ? new Date(flight.arrival_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : 'Arrived';
+        const flight = booking.flights || booking.flight || {};
+        const route = flight.flight_number ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+        const arriveTime = getBookingArrivalTime(booking) ? new Date(getBookingArrivalTime(booking)).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : 'Arrived';
         const status = getBookingDisplayStatus(booking);
         const row = document.createElement('div');
         row.className = 'booking-row';
