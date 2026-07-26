@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Profile | Blackcess Airlines</title>
+<link rel="icon" type="image/png" href="./images/Untitled design.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_responsiveness.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bc-navy: #0f172a;
+  --bc-navy-light: #1e293b;
+  --bc-gold: #BA8B02;
+  --bc-cream: #faf8f4;
+  --bc-text: #1e293b;
+  --bc-text-muted: #64748b;
+  --bc-border: #e8e3d8;
+  --bc-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  --bc-shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+}
+body { background: var(--bc-cream); }
+
+.prof-hero {
+  background: linear-gradient(135deg, var(--bc-navy), var(--bc-navy-light));
+  color: #fff;
+  padding: 120px 20px 50px;
+  text-align: center;
+}
+.prof-hero h1 { font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 8px; }
+.prof-hero p { opacity: 0.78; font-size: 0.95rem; }
+
+.prof-wrap { max-width: 760px; margin: -34px auto 60px; padding: 0 20px; }
+
+.prof-card {
+  background: #fff;
+  border: 1px solid var(--bc-border);
+  border-top: 3px solid var(--bc-gold);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: var(--bc-shadow-lg);
+  margin-bottom: 24px;
+}
+.prof-card h2 { font-family: 'Outfit', sans-serif; color: var(--bc-navy); font-size: 1.15rem; margin-bottom: 4px; }
+.prof-card .subtext { color: var(--bc-text-muted); font-size: 0.85rem; margin-bottom: 22px; }
+
+.pf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.pf-field { display: flex; flex-direction: column; gap: 6px; }
+.pf-field.full { grid-column: 1 / -1; }
+.pf-field label { font-size: 0.8rem; font-weight: 600; color: var(--bc-navy); }
+.pf-field input {
+  padding: 10px 12px;
+  border: 1px solid var(--bc-border);
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-family: inherit;
+}
+.pf-field input:disabled { background: var(--bc-cream); color: var(--bc-text-muted); }
+.pf-field .hint { font-size: 0.72rem; color: var(--bc-text-muted); }
+
+.pf-save-btn {
+  background: var(--bc-navy);
+  color: #fff;
+  border: none;
+  padding: 13px 26px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.pf-save-btn:hover { background: var(--bc-navy-light); }
+.pf-save-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* Saved passengers */
+.saved-passenger-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 0.4fr;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--bc-border);
+}
+.saved-passenger-row:last-child { border-bottom: none; }
+.saved-passenger-row .sp-name { font-weight: 600; color: var(--bc-navy); font-size: 0.9rem; }
+.saved-passenger-row .sp-meta { font-size: 0.82rem; color: var(--bc-text-muted); }
+.sp-remove-btn { background: none; border: none; color: #dc2626; cursor: pointer; font-size: 1rem; justify-self: end; }
+
+.add-passenger-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end; margin-top: 16px; }
+.add-passenger-grid .pf-field label { font-size: 0.72rem; }
+.add-passenger-grid input { padding: 9px 10px; border: 1px solid var(--bc-border); border-radius: 6px; font-size: 0.85rem; }
+.add-passenger-btn {
+  background: var(--bc-cream);
+  border: 1px solid var(--bc-gold);
+  color: var(--bc-gold);
+  padding: 9px 14px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.add-passenger-btn:hover { background: #fdf5e0; }
+
+.pf-empty { color: var(--bc-text-muted); font-size: 0.86rem; padding: 10px 0; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-design">
+        <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+      </div>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+      <li class="nav-item"><a href="dashboard.html" class="nav-link">DASHBOARD</a></li>
+      <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="prof-hero">
+  <h1>Edit Profile</h1>
+  <p>Keep your personal and travel details up to date.</p>
+</header>
+
+<div class="prof-wrap">
+
+  <!-- Personal details -->
+  <div class="prof-card">
+    <h2>Personal Details</h2>
+    <p class="subtext">This information is used to pre-fill bookings and verify your identity.</p>
+
+    <form id="profile-form">
+      <div class="pf-row">
+        <div class="pf-field">
+          <label for="pf-name">Full Name</label>
+          <input type="text" id="pf-name" required>
+        </div>
+        <div class="pf-field">
+          <label for="pf-email">Email</label>
+          <input type="email" id="pf-email" disabled>
+        </div>
+      </div>
+      <div class="pf-row">
+        <div class="pf-field">
+          <label for="pf-passport">Passport Number</label>
+          <input type="text" id="pf-passport" placeholder="e.g. A1234567">
+        </div>
+        <div class="pf-field">
+          <label for="pf-phone">Phone Number</label>
+          <input type="tel" id="pf-phone" placeholder="e.g. +2348012345678" pattern="^\+[1-9]\d{7,14}$">
+          <span class="hint">Include your country code, e.g. +234...</span>
+        </div>
+      </div>
+
+      <button type="submit" class="pf-save-btn" id="pf-save-btn">Save Changes</button>
+    </form>
+  </div>
+
+  <!-- Saved passengers -->
+  <div class="prof-card">
+    <h2>Saved Passengers</h2>
+    <p class="subtext">Store frequent travel companions to speed up checkout.</p>
+
+    <div id="saved-passengers-list">
+      <div class="pf-empty">No saved passengers yet.</div>
+    </div>
+
+    <div class="add-passenger-grid">
+      <div class="pf-field">
+        <label for="sp-first">First Name</label>
+        <input type="text" id="sp-first" placeholder="Chidi">
+      </div>
+      <div class="pf-field">
+        <label for="sp-last">Last Name</label>
+        <input type="text" id="sp-last" placeholder="Adeyemi">
+      </div>
+      <div class="pf-field">
+        <label for="sp-dob">Date of Birth</label>
+        <input type="date" id="sp-dob">
+      </div>
+      <div class="pf-field">
+        <label for="sp-passport">Passport No.</label>
+        <input type="text" id="sp-passport" placeholder="Optional">
+      </div>
+      <button type="button" class="add-passenger-btn" id="sp-add-btn"><i class="fas fa-plus"></i> Add</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="copyright-bar" style="text-align:center; padding: 20px;">
+  <span>Copyright &copy; 2026 Blackcess Airlines. All Rights Reserved.</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-helper.js"></script>
+<script src="blackcess-ui.js"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger-btn");
+const navMenu = document.getElementById("navMenu");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("is-active");
+  navMenu.classList.toggle("menu-open");
+});
+
+const esc = BlackcessDB.escapeHtml;
+const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+
+if (!activeUser) {
+  window.location.href = "login.html?redirect=profile.html";
+}
+
+let savedPassengers = [];
+
+async function loadProfile() {
+  document.getElementById("pf-name").value = activeUser.name || "";
+  document.getElementById("pf-email").value = activeUser.email || "";
+  document.getElementById("pf-passport").value = activeUser.passport || "";
+
+  try {
+    // phone and saved_passengers are new columns — see the SQL note this
+    // page ships with. If they don't exist yet on `profiles`, this select
+    // will error; we degrade gracefully rather than blocking the page.
+    const { data, error } = await window.supabase
+      .from("profiles")
+      .select("phone, saved_passengers")
+      .eq("id", activeUser.uid)
+      .single();
+
+    if (error) throw error;
+
+    document.getElementById("pf-phone").value = data.phone || "";
+    savedPassengers = Array.isArray(data.saved_passengers) ? data.saved_passengers : [];
+    renderSavedPassengers();
+  } catch (err) {
+    console.warn("Could not load extended profile fields (phone/saved_passengers):", err.message);
+    BlackcessUI.toast("Some profile fields aren't available yet \u2014 see the setup note in profile.html.", "info", 7000);
+  }
+}
+
+function renderSavedPassengers() {
+  const list = document.getElementById("saved-passengers-list");
+  if (savedPassengers.length === 0) {
+    list.innerHTML = `<div class="pf-empty">No saved passengers yet.</div>`;
+    return;
+  }
+  list.innerHTML = savedPassengers.map((p, i) => `
+    <div class="saved-passenger-row">
+      <div class="sp-name">${esc(p.given_name)} ${esc(p.family_name)}</div>
+      <div class="sp-meta">${esc(p.dob || "\u2014")}</div>
+      <div class="sp-meta">${esc(p.passport_number || "No passport on file")}</div>
+      <button class="sp-remove-btn" data-index="${i}" aria-label="Remove"><i class="fas fa-trash"></i></button>
+    </div>
+  `).join("");
+
+  list.querySelectorAll(".sp-remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = Number(btn.dataset.index);
+      savedPassengers.splice(idx, 1);
+      renderSavedPassengers();
+      persistSavedPassengers();
+    });
+  });
+}
+
+document.getElementById("sp-add-btn").addEventListener("click", () => {
+  const first = document.getElementById("sp-first").value.trim();
+  const last = document.getElementById("sp-last").value.trim();
+  const dob = document.getElementById("sp-dob").value;
+  const passport = document.getElementById("sp-passport").value.trim();
+
+  if (!first || !last) {
+    BlackcessUI.toast("First and last name are required.", "error");
+    return;
+  }
+
+  savedPassengers.push({ given_name: first, family_name: last, dob, passport_number: passport });
+  renderSavedPassengers();
+  persistSavedPassengers();
+
+  document.getElementById("sp-first").value = "";
+  document.getElementById("sp-last").value = "";
+  document.getElementById("sp-dob").value = "";
+  document.getElementById("sp-passport").value = "";
+});
+
+async function persistSavedPassengers() {
+  try {
+    const { error } = await window.supabase
+      .from("profiles")
+      .update({ saved_passengers: savedPassengers })
+      .eq("id", activeUser.uid);
+    if (error) throw error;
+    BlackcessUI.toast("Saved passengers updated.", "success", 2500);
+  } catch (err) {
+    console.error("Could not save passenger list:", err);
+    BlackcessUI.toast("Could not save that passenger. " + err.message, "error");
+  }
+}
+
+document.getElementById("profile-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const saveBtn = document.getElementById("pf-save-btn");
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Saving...";
+
+  const name = document.getElementById("pf-name").value.trim();
+  const passport = document.getElementById("pf-passport").value.trim();
+  const phone = document.getElementById("pf-phone").value.trim();
+
+  try {
+    const { error } = await window.supabase
+      .from("profiles")
+      .update({ full_name: name, passport_number: passport, phone })
+      .eq("id", activeUser.uid);
+
+    if (error) throw error;
+
+    activeUser.name = name;
+    activeUser.passport = passport;
+    localStorage.setItem("activeUser", JSON.stringify(activeUser));
+
+    BlackcessUI.toast("Profile updated successfully.", "success");
+  } catch (err) {
+    console.error("Profile update error:", err);
+    BlackcessUI.toast("Could not save changes: " + err.message, "error", 7000);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save Changes";
+  }
+});
+
+loadProfile();
+
+document.querySelectorAll(".dropdown > .nav-link").forEach(link => {
+  link.addEventListener("click", function (e) {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      this.parentElement.classList.toggle("open");
+    }
+  });
+});
+</script>
+
+</body>
+</html>
