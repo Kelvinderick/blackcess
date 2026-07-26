@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Confirmed | Blackcess Airlines</title>
+<link rel="icon" type="image/png" href="./images/Untitled design.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_responsiveness.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --bc-navy: #0f172a;
+  --bc-navy-light: #1e293b;
+  --bc-gold: #BA8B02;
+  --bc-gold-light: #d4a521;
+  --bc-cream: #faf8f4;
+  --bc-text: #1e293b;
+  --bc-text-muted: #64748b;
+  --bc-border: #e8e3d8;
+  --bc-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  --bc-shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+  --bc-green: #15803d;
+}
+
+body { background: var(--bc-cream); }
+
+.conf-hero {
+  background: linear-gradient(135deg, var(--bc-navy), var(--bc-navy-light));
+  color: #fff;
+  padding: 110px 20px 70px 20px;
+  text-align: center;
+  position: relative;
+}
+.conf-check {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  background: rgba(21, 128, 61, 0.18);
+  border: 2px solid var(--bc-green);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+  color: #4ade80;
+}
+.conf-hero h1 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.conf-hero p { opacity: 0.8; font-size: 0.95rem; }
+
+.conf-wrap {
+  max-width: 760px;
+  margin: -44px auto 60px auto;
+  padding: 0 20px;
+}
+
+.conf-card {
+  background: #fff;
+  border: 1px solid var(--bc-border);
+  border-top: 3px solid var(--bc-gold);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--bc-shadow-lg);
+  margin-bottom: 24px;
+}
+
+.conf-pnr-block {
+  text-align: center;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px dashed var(--bc-border);
+}
+.conf-pnr-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--bc-text-muted);
+  margin-bottom: 8px;
+}
+.conf-pnr-value {
+  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--bc-gold);
+}
+.conf-pnr-hint {
+  font-size: 0.8rem;
+  color: var(--bc-text-muted);
+  margin-top: 8px;
+}
+
+.conf-route {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.conf-route .airport {
+  text-align: center;
+}
+.conf-route .airport .code {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--bc-navy);
+}
+.conf-route .airport .city {
+  font-size: 0.8rem;
+  color: var(--bc-text-muted);
+}
+.conf-route .arrow {
+  color: var(--bc-gold);
+  font-size: 1.3rem;
+}
+
+.conf-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.conf-detail-item {
+  background: var(--bc-cream);
+  border: 1px solid var(--bc-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.conf-detail-item label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--bc-text-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.conf-detail-item span {
+  font-weight: 700;
+  color: var(--bc-navy);
+  font-size: 0.95rem;
+}
+
+.conf-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+.conf-action-btn {
+  background: var(--bc-navy);
+  color: #fff;
+  border: 1px solid var(--bc-navy);
+  padding: 13px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.conf-action-btn:hover { background: var(--bc-navy-light); transform: translateY(-1px); }
+.conf-action-btn.secondary {
+  background: transparent;
+  color: var(--bc-navy);
+  border: 1px solid var(--bc-border);
+}
+.conf-action-btn.secondary:hover { border-color: var(--bc-gold); color: var(--bc-gold); }
+
+.conf-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--bc-text-muted);
+}
+.conf-empty i { font-size: 2rem; color: var(--bc-gold); margin-bottom: 14px; display: block; }
+
+.conf-email-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--bc-text-muted);
+  margin-top: -8px;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-design">
+        <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+      </div>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+      <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+      <li class="nav-item"><a href="Routes.html" class="nav-link">ROUTES</a></li>
+      <li class="nav-item"><a href="career.html" class="nav-link">CAREERS</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="conf-hero">
+  <div class="conf-check"><i class="fas fa-check"></i></div>
+  <h1>Booking Confirmed</h1>
+  <p>Your itinerary has been saved. Details are below.</p>
+</header>
+
+<div class="conf-wrap" id="conf-wrap">
+  <div class="conf-card">
+    <div class="conf-empty">
+      <i class="fas fa-circle-notch fa-spin"></i>
+      Loading your booking details...
+    </div>
+  </div>
+</div>
+
+<!-- COPYRIGHT BAR -->
+<div class="copyright-bar" style="text-align:center; padding: 20px;">
+  <span>Copyright &copy; 2026 Blackcess Airlines. All Rights Reserved.</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-helper.js"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger-btn");
+const navMenu = document.getElementById("navMenu");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("is-active");
+  navMenu.classList.toggle("menu-open");
+});
+
+const esc = BlackcessDB.escapeHtml;
+const confWrap = document.getElementById("conf-wrap");
+
+function fmt(dt) {
+  if (!dt) return "\u2014";
+  const d = new Date(dt);
+  return isNaN(d.getTime()) ? String(dt) : d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+}
+
+function renderBooking({ pnr, carrier, flightNumber, origin, originCity, destination, destCity, departTime, arriveTime, fare }) {
+  confWrap.innerHTML = `
+    <div class="conf-card">
+      <div class="conf-pnr-block">
+        <div class="conf-pnr-label">Booking Reference (PNR)</div>
+        <div class="conf-pnr-value">${esc(pnr)}</div>
+        <div class="conf-pnr-hint">Save this with your last name to manage this booking or check in later.</div>
+      </div>
+
+      <div class="conf-route">
+        <div class="airport">
+          <div class="code">${esc(origin || "\u2014")}</div>
+          <div class="city">${esc(originCity || "")}</div>
+        </div>
+        <div class="arrow"><i class="fas fa-plane"></i></div>
+        <div class="airport">
+          <div class="code">${esc(destination || "\u2014")}</div>
+          <div class="city">${esc(destCity || "")}</div>
+        </div>
+      </div>
+
+      <div class="conf-detail-grid">
+        <div class="conf-detail-item">
+          <label>Flight</label>
+          <span>${esc(carrier || "")} ${esc(flightNumber || "")}</span>
+        </div>
+        <div class="conf-detail-item">
+          <label>Departs</label>
+          <span>${fmt(departTime)}</span>
+        </div>
+        <div class="conf-detail-item">
+          <label>Arrives</label>
+          <span>${fmt(arriveTime)}</span>
+        </div>
+        ${fare ? `<div class="conf-detail-item"><label>Fare Paid</label><span>${esc(fare)}</span></div>` : ""}
+      </div>
+    </div>
+
+    <p class="conf-email-note"><i class="fas fa-envelope"></i> A confirmation email has been sent to the address on this booking.</p>
+
+    <div class="conf-actions">
+      <a href="track.html?flight=${encodeURIComponent(flightNumber || "")}" class="conf-action-btn"><i class="fas fa-location-arrow"></i> Track This Flight</a>
+      <a href="my-bookings.html" class="conf-action-btn secondary"><i class="fas fa-ticket"></i> View My Bookings</a>
+      <a href="index.html" class="conf-action-btn secondary"><i class="fas fa-house"></i> Back Home</a>
+    </div>
+  `;
+}
+
+function renderEmpty() {
+  confWrap.innerHTML = `
+    <div class="conf-card">
+      <div class="conf-empty">
+        <i class="fas fa-ticket"></i>
+        We couldn't find a recent booking to show here &mdash; this usually happens if the page was reloaded.
+        <div style="margin-top:18px;">
+          <a href="my-bookings.html" class="conf-action-btn">Look Up My Booking</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+(async function init() {
+  // Primary path: book.html hands off full offer + booking detail via
+  // sessionStorage right before redirecting here, so we don't have to
+  // re-fetch anything from Duffel/Supabase.
+  const handoff = sessionStorage.getItem("lastBooking");
+  if (handoff) {
+    try {
+      const data = JSON.parse(handoff);
+      renderBooking(data);
+      sessionStorage.removeItem("lastBooking");
+      return;
+    } catch (e) {
+      console.warn("Could not parse booking handoff data:", e);
+    }
+  }
+
+  // Fallback path: came back via a bookmark/reload with ?pnr=... in the
+  // URL. If logged in, look it up among the user's own bookings.
+  const params = new URLSearchParams(window.location.search);
+  const pnr = params.get("pnr");
+  const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+
+  if (pnr && activeUser) {
+    try {
+      const bookings = await BlackcessDB.getBookings({ uid: activeUser.uid });
+      const match = bookings.find(b => (b.pnr || "").toUpperCase() === pnr.toUpperCase());
+      if (match) {
+        const flight = match.flights || {};
+        renderBooking({
+          pnr: match.pnr,
+          carrier: "Blackcess",
+          flightNumber: flight.flight_number,
+          origin: flight.departure_city,
+          originCity: flight.departure_city,
+          destination: flight.arrival_city,
+          destCity: flight.arrival_city,
+          departTime: flight.departure_time,
+          arriveTime: flight.arrival_time
+        });
+        return;
+      }
+    } catch (e) {
+      console.error("Could not fetch booking for confirmation page:", e);
+    }
+  }
+
+  renderEmpty();
+})();
+
+document.querySelectorAll(".dropdown > .nav-link").forEach(link => {
+  link.addEventListener("click", function (e) {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      this.parentElement.classList.toggle("open");
+    }
+  });
+});
+</script>
+
+</body>
+</html>
