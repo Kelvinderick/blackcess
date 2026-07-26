@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Issue | Blackcess Airlines</title>
+<link rel="icon" type="image/png" href="./images/Untitled design.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_responsiveness.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bc-navy: #0f172a;
+  --bc-navy-light: #1e293b;
+  --bc-gold: #BA8B02;
+  --bc-cream: #faf8f4;
+  --bc-text-muted: #64748b;
+  --bc-border: #e8e3d8;
+  --bc-shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+  --bc-red: #dc2626;
+}
+body { background: var(--bc-cream); }
+
+.err-hero {
+  background: linear-gradient(135deg, var(--bc-navy), var(--bc-navy-light));
+  color: #fff;
+  padding: 110px 20px 70px 20px;
+  text-align: center;
+}
+.err-icon {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.18);
+  border: 2px solid var(--bc-red);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+  color: #fca5a5;
+}
+.err-hero h1 { font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 8px; }
+.err-hero p { opacity: 0.8; font-size: 0.95rem; }
+
+.err-wrap { max-width: 620px; margin: -44px auto 60px auto; padding: 0 20px; }
+
+.err-card {
+  background: #fff;
+  border: 1px solid var(--bc-border);
+  border-top: 3px solid var(--bc-red);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--bc-shadow-lg);
+}
+.err-card h2 { color: var(--bc-navy); font-family: 'Outfit', sans-serif; font-size: 1.2rem; margin-bottom: 12px; }
+.err-card p { color: var(--bc-text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px; }
+
+.err-ref-box {
+  background: var(--bc-cream);
+  border: 1px solid var(--bc-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+.err-ref-box label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--bc-text-muted); margin-bottom: 4px; font-weight: 600; }
+.err-ref-box span { font-family: 'Courier New', monospace; font-weight: 700; color: var(--bc-navy); font-size: 1rem; }
+
+.err-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.err-action-btn {
+  background: var(--bc-navy);
+  color: #fff;
+  border: 1px solid var(--bc-navy);
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.err-action-btn:hover { background: var(--bc-navy-light); }
+.err-action-btn.secondary { background: transparent; color: var(--bc-navy); border: 1px solid var(--bc-border); }
+.err-action-btn.secondary:hover { border-color: var(--bc-gold); color: var(--bc-gold); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-design">
+        <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+      </div>
+    </a>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+      <li class="nav-item"><a href="contact.html" class="nav-link">CONTACT</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="err-hero">
+  <div class="err-icon"><i class="fas fa-triangle-exclamation"></i></div>
+  <h1 id="err-title">We Hit a Snag</h1>
+  <p id="err-subtitle">Something went wrong finishing your booking.</p>
+</header>
+
+<div class="err-wrap">
+  <div class="err-card">
+    <h2 id="err-heading">What happened</h2>
+    <p id="err-explanation">We couldn't complete this request.</p>
+
+    <div class="err-ref-box" id="err-ref-box" style="display:none;">
+      <label>Reference</label>
+      <span id="err-ref-value"></span>
+    </div>
+
+    <div class="err-actions" id="err-actions"></div>
+  </div>
+</div>
+
+<div class="copyright-bar" style="text-align:center; padding: 20px;">
+  <span>Copyright &copy; 2026 Blackcess Airlines. All Rights Reserved.</span>
+</div>
+
+<script>
+function esc(str) {
+  if (str === null || str === undefined) return "";
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+const params = new URLSearchParams(window.location.search);
+const stage = params.get("stage") || "unknown";
+const reference = params.get("reference") || "";
+const reason = params.get("reason") || "";
+
+const COPY = {
+  booking: {
+    heading: "Payment succeeded, but the booking didn't save",
+    explanation: "Your card was charged, but we couldn't confirm the seat on our end. This is on us, not you \u2014 do not try to pay again. Contact support with the reference below and we'll sort it out, usually within a few hours.",
+  },
+  search: {
+    heading: "Couldn't search flights",
+    explanation: "We couldn't reach the flight search service. This is usually temporary \u2014 wait a moment and try your search again.",
+  },
+  unknown: {
+    heading: "Something went wrong",
+    explanation: "An unexpected error interrupted this process.",
+  }
+};
+
+const copy = COPY[stage] || COPY.unknown;
+document.getElementById("err-heading").textContent = copy.heading;
+document.getElementById("err-explanation").textContent = copy.explanation + (reason ? ` (Details: ${reason})` : "");
+
+if (reference) {
+  document.getElementById("err-ref-box").style.display = "block";
+  document.getElementById("err-ref-value").textContent = reference;
+}
+
+const actions = document.getElementById("err-actions");
+if (stage === "booking") {
+  actions.innerHTML = `
+    <a href="contact.html" class="err-action-btn"><i class="fas fa-headset"></i> Contact Support</a>
+    <a href="my-bookings.html" class="err-action-btn secondary"><i class="fas fa-ticket"></i> Check My Bookings</a>
+  `;
+} else {
+  actions.innerHTML = `
+    <a href="book.html" class="err-action-btn"><i class="fas fa-arrow-rotate-left"></i> Try Again</a>
+    <a href="contact.html" class="err-action-btn secondary"><i class="fas fa-headset"></i> Contact Support</a>
+  `;
+}
+</script>
+
+</body>
+</html>
