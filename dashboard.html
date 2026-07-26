@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="style_responsiveness.css">
+<link rel="stylesheet" href="booking-flow.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -248,6 +249,12 @@ body { background: var(--bc-cream); }
     <a href="online_check.html" class="dash-action-btn secondary"><i class="fas fa-clipboard-check"></i> Check In</a>
   </div>
 
+  <!-- LIVE TRACKER -->
+  <h2 class="dash-section-title">Live Flight Tracker</h2>
+  <div id="dashboard-live-tracker">
+    <div class="empty-state"><i class="fas fa-location-crosshairs" style="font-size:1.5rem; margin-bottom:10px; display:block;"></i>Your next active flight tracker will appear here.</div>
+  </div>
+
   <!-- BOOKINGS -->
   <h2 class="dash-section-title">My Bookings</h2>
   <div id="bookings-list">
@@ -262,6 +269,7 @@ body { background: var(--bc-cream); }
 </div>
 
 <!-- SUPABASE -->
+<script src="flight-tracker.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="auth-helper.js"></script>
@@ -368,6 +376,7 @@ function setupDashboardRealtime() {
 
 async function loadDashboardBookings() {
   const listEl = document.getElementById("bookings-list");
+  const trackerEl = document.getElementById("dashboard-live-tracker");
 
   try {
     const bookings = await BlackcessDB.getBookings({ uid: activeUser.uid });
@@ -383,7 +392,8 @@ async function loadDashboardBookings() {
       }
     });
 
-    document.getElementById("stat-bookings").textContent = activeBookings.length;
+    document.getElementById("stat-bookings").textContent = bookings.length;
+    updateDashboardTracker(activeBookings, trackerEl);
 
     if (activeBookings.length === 0) {
       if (arrivedBookings.length === 0) {
@@ -441,6 +451,27 @@ async function loadDashboardBookings() {
     console.error(e);
     listEl.innerHTML = `<div class="empty-state" style="color:#b91c1c;">Could not load your bookings right now.</div>`;
   }
+}
+
+function updateDashboardTracker(activeBookings, trackerEl) {
+  if (!trackerEl || !window.BlackcessFlightTracker) return;
+  if (window.dashboardTrackerStop) {
+    window.dashboardTrackerStop();
+    window.dashboardTrackerStop = null;
+  }
+
+  if (!activeBookings.length) {
+    trackerEl.innerHTML = `<div class="empty-state"><i class="fas fa-plane-arrival" style="font-size:1.5rem; margin-bottom:10px; display:block;"></i>No active flight to track right now.</div>`;
+    return;
+  }
+
+  const nextBooking = [...activeBookings].sort((a, b) => {
+    const aTime = safeParseDate(getBookingArrivalTime(a) || (a.flights || {}).departure_time)?.getTime() || Number.MAX_SAFE_INTEGER;
+    const bTime = safeParseDate(getBookingArrivalTime(b) || (b.flights || {}).departure_time)?.getTime() || Number.MAX_SAFE_INTEGER;
+    return aTime - bTime;
+  })[0];
+
+  window.dashboardTrackerStop = window.BlackcessFlightTracker.mount(trackerEl, nextBooking);
 }</script>
 
 </body>

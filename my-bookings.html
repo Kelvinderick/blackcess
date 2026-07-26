@@ -136,6 +136,7 @@
     </div>
 
     <!-- Supabase SDKs -->
+    <script src="flight-tracker.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -283,7 +284,7 @@
                                 </div>
                                 <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
                                     <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
-                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
+                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View / Track</button>
                                 </div>
                             </div>
                         `;
@@ -309,7 +310,7 @@
                                 </div>
                                 <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
                                     <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
-                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
+                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View / Track</button>
                                 </div>
                             </div>
                         `;
@@ -388,6 +389,7 @@
                                 <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${esc(booking.pnr)}*</div>
                             </div>
                         </div>
+                        <div id="flight-tracker-target"></div>
                         <div style="text-align:center; margin-top:18px;">
                             <button id="download-pdf-btn" class="tool-btn" style="max-width:280px; margin:0 auto; cursor:pointer;">
                                 <i class="fas fa-download"></i> Download PDF Ticket
@@ -396,6 +398,10 @@
                     `;
                     resultsTarget.scrollIntoView({ behavior: 'smooth' });
                     document.getElementById('download-pdf-btn').addEventListener('click', () => downloadTicketPDF(booking.pnr));
+                    if (window.ticketTrackerStop) {
+                        window.ticketTrackerStop();
+                    }
+                    window.ticketTrackerStop = window.BlackcessFlightTracker?.mount(document.getElementById('flight-tracker-target'), booking);
                 } else {
                     resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;"><i class="fas fa-triangle-exclamation"></i> No ticket found matching code and last name.</p>`;
                 }

@@ -76,12 +76,14 @@
     </div>
 
     <!-- Supabase SDKs -->
+    <script src="flight-tracker.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-helper.js"></script>
-
+    <script src="site-experience.js"></script>
+     
     <script>
         async function performOnlineCheckin() {
             const pnr = document.getElementById("checkin-pnr").value;
@@ -90,7 +92,16 @@
             const ticketTarget = document.getElementById("retrieved-ticket-target");
 
             if (!pnr || !lastname) {
-                alert("Please complete check-in criteria fields.");
+                if (BlackcessUI?.renderStatus) {
+                    BlackcessUI.renderStatus(statusTarget, {
+                        type: "warning",
+                        title: "Check-in details required",
+                        message: "Please complete the booking reference and passenger last name fields.",
+                        detail: "We need both details to locate the reservation."
+                    });
+                } else {
+                    statusTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center; font-weight:bold;"><i class="fas fa-circle-exclamation"></i> Please complete the check-in criteria fields.</p>`;
+                }
                 return;
             }
 
@@ -99,16 +110,54 @@
 
             try {
                 const res = await BlackcessDB.checkInBooking(pnr, lastname);
-                statusTarget.innerHTML = `
-                    <div style="background:rgba(55,184,120,0.1); border:1px solid #37b878; border-radius:12px; padding:20px; text-align:center; margin-top:25px; color:#fff;">
-                        <i class="fas fa-circle-check" style="font-size:2.5rem; color:#37b878; margin-bottom:10px;"></i>
-                        <h4>Check-In Complete!</h4>
-                        <p style="color:#94a3b8; font-size:0.85rem; margin-top:5px; margin-bottom:15px;">Boarding confirmation generated for PNR reference <strong>${pnr.toUpperCase()}</strong>.</p>
-                        <button class="flight-select-btn" style="margin-top:0;" onclick="showTicketDetailDirect('${pnr}', '${lastname}')">Display Boarding Pass</button>
-                    </div>
-                `;
+                try {
+                    await BlackcessDB.dispatchEmailEvent('checkin', {
+                        recipient: res?.email || '',
+                        subject: 'Blackcess check-in confirmation',
+                        data: {
+                            pnr: pnr.toUpperCase(),
+                            lastname: lastname.trim(),
+                            status: 'Checked in'
+                        }
+                    });
+                } catch (emailError) {
+                    console.warn('Check-in email notification warning:', emailError);
+                }
+
+                if (BlackcessUI?.renderStatus) {
+                    BlackcessUI.renderStatus(statusTarget, {
+                        type: "success",
+                        title: "Check-in complete",
+                        message: `Boarding confirmation generated for PNR reference ${pnr.toUpperCase()}.`,
+                        detail: "You can now display your boarding pass below.",
+                        actionLabel: "Display boarding pass",
+                        actionHref: "#"
+                    });
+                } else {
+                    statusTarget.innerHTML = `
+                        <div style="background:rgba(55,184,120,0.1); border:1px solid #37b878; border-radius:12px; padding:20px; text-align:center; margin-top:25px; color:#fff;">
+                            <i class="fas fa-circle-check" style="font-size:2.5rem; color:#37b878; margin-bottom:10px;"></i>
+                            <h4>Check-In Complete!</h4>
+                            <p style="color:#94a3b8; font-size:0.85rem; margin-top:5px; margin-bottom:15px;">Boarding confirmation generated for PNR reference <strong>${pnr.toUpperCase()}</strong>.</p>
+                            <button class="flight-select-btn" style="margin-top:0;" onclick="showTicketDetailDirect('${pnr}', '${lastname}')">Display Boarding Pass</button>
+                        </div>
+                    `;
+                }
+                document.querySelector('#checkin-status-target a')?.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    showTicketDetailDirect(pnr, lastname);
+                });
             } catch(err) {
-                statusTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center; font-weight:bold;"><i class="fas fa-circle-exclamation"></i> Check-in failed: ${err.message}</p>`;
+                if (BlackcessUI?.renderStatus) {
+                    BlackcessUI.renderStatus(statusTarget, {
+                        type: "error",
+                        title: "Check-in failed",
+                        message: err.message || "We could not complete your check-in.",
+                        detail: "Please verify your booking reference and last name and try again."
+                    });
+                } else {
+                    statusTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center; font-weight:bold;"><i class="fas fa-circle-exclamation"></i> Check-in failed: ${err.message}</p>`;
+                }
             }
         }
 
@@ -223,6 +272,7 @@
                                 <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${esc(booking.pnr)}*</div>
                             </div>
                         </div>
+                        <div id="flight-tracker-target"></div>
                         <div style="text-align:center; margin-top:18px;">
                             <button id="download-pdf-btn" class="tool-btn" style="max-width:280px; margin:0 auto; cursor:pointer;">
                                 <i class="fas fa-download"></i> Download PDF Ticket
@@ -231,6 +281,10 @@
                     `;
                     resultsTarget.scrollIntoView({ behavior: 'smooth' });
                     document.getElementById('download-pdf-btn').addEventListener('click', () => downloadTicketPDF(booking.pnr));
+                    if (window.ticketTrackerStop) {
+                        window.ticketTrackerStop();
+                    }
+                    window.ticketTrackerStop = window.BlackcessFlightTracker?.mount(document.getElementById('flight-tracker-target'), booking);
                 } else {
                     resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;"><i class="fas fa-triangle-exclamation"></i> No ticket found matching code and last name.</p>`;
                 }

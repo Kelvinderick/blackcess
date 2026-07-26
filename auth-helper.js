@@ -151,7 +151,7 @@ const BlackcessDB = {
        }
        localStorage.removeItem("activeUser");
        if (redirect) {
-           window.location.href = "index.html";
+           window.location.href = "../index.html";
        }
     },
 
@@ -244,6 +244,118 @@ const BlackcessDB = {
         }
 
         return data;
+    },
+
+    getCurrentProfile() {
+        try {
+            return JSON.parse(localStorage.getItem("activeUser") || "null");
+        } catch (_) {
+            return null;
+        }
+    },
+
+    async updateProfile(updates) {
+        const current = this.getCurrentProfile();
+        if (!current) {
+            throw new Error("Please sign in before editing your profile.");
+        }
+
+        const nextProfile = {
+            ...current,
+            ...updates,
+            uid: current.uid,
+            email: updates.email || current.email,
+            name: updates.name || current.name,
+            passport: updates.passport || current.passport,
+            phone: updates.phone || current.phone,
+            savedPassengers: Array.isArray(updates.savedPassengers) ? updates.savedPassengers : (current.savedPassengers || [])
+        };
+
+        localStorage.setItem("activeUser", JSON.stringify(nextProfile));
+        window.dispatchEvent(new Event("authChange"));
+
+        try {
+            if (window.supabase?.from) {
+                await window.supabase.from('profiles').upsert({
+                    id: current.uid,
+                    full_name: nextProfile.name,
+                    passport_number: nextProfile.passport,
+                    phone_number: nextProfile.phone,
+                    saved_passengers: nextProfile.savedPassengers
+                }, { onConflict: 'id' });
+            }
+        } catch (error) {
+            console.warn("Profile persistence warning:", error);
+        }
+
+        return nextProfile;
+    },
+
+    async dispatchEmailEvent(eventType, payload) {
+        const templates = {
+            signup: 'signup-confirmation',
+            booking: 'booking-confirmation',
+            payment: 'payment-confirmation',
+            checkin: 'checkin-confirmation'
+        };
+
+        const template = templates[eventType] || 'generic';
+        return this.sendEmail(template, payload);
+    },
+
+    async submitContactRequest(payload) {
+        const request = {
+            ...payload,
+            submittedAt: new Date().toISOString()
+        };
+
+        const history = JSON.parse(localStorage.getItem("blackcessContactRequests") || "[]");
+        history.unshift(request);
+        localStorage.setItem("blackcessContactRequests", JSON.stringify(history.slice(0, 20)));
+
+        try {
+            if (window.supabase?.from) {
+                await window.supabase.from('contact_messages').insert([request]);
+            }
+        } catch (error) {
+            console.warn("Contact persistence warning:", error);
+        }
+
+        try {
+            await this.sendEmail('contact-request', {
+                recipient: payload.email,
+                subject: 'We received your Blackcess support request',
+                data: request
+            });
+        } catch (error) {
+            console.warn("Support notification warning:", error);
+        }
+
+        return request;
+    },
+
+    async sendEmail(template, payload) {
+        if (!window.supabase?.functions?.invoke) {
+            return { ok: true, skipped: true, message: 'Email delivery is not configured in this preview build.' };
+        }
+
+        const body = {
+            template,
+            recipient: payload.recipient,
+            subject: payload.subject,
+            data: payload.data || {}
+        };
+
+        try {
+            const { data, error } = await window.supabase.functions.invoke('send-email', { body });
+            if (error) {
+                throw new Error(error.message || 'Email delivery failed.');
+            }
+            return { ok: true, data };
+        } catch (error) {
+            console.warn('Email helper warning:', error);
+            return { ok: false, error: error.message };
+        }
     }
 };
 

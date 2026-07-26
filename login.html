@@ -345,7 +345,8 @@
         <div class="db-status-banner" id="db-status-banner">
             <i class="fas fa-circle-notch fa-spin"></i> Initializing secure access gate...
         </div>
-
+        <div id="auth-status-target" style="margin-bottom: 1rem;"></div>
+        
         <!-- Panel 1: SIGN IN -->
         <div id="login-form-panel">
             <div class="login-header">
@@ -458,7 +459,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-helper.js"></script>
-    
+    <script src="site-experience.js"></script>
+     
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             const banner = document.getElementById("db-status-banner");
@@ -511,13 +513,33 @@
             try {
                 const user = await BlackcessDB.logIn(email, password);
                 submitBtn.querySelector(".btn-text").innerText = "Login Succesful";
+                if (BlackcessUI?.renderStatus) {
+                    BlackcessUI.renderStatus("#auth-status-target", {
+                        type: "success",
+                        title: "Signed in successfully",
+                        message: `Welcome back, ${user.name || email}.`,
+                        detail: "You are being redirected to your dashboard."
+                    });
+                } else {
+                    errorDiv.innerText = "Signed in successfully.";
+                    errorDiv.classList.add("visible");
+                }
                 const redirectTo = new URLSearchParams(window.location.search).get("redirect") || "dashboard.html";
                 setTimeout(() => {
                     window.location.href = redirectTo;
-                }, 800);
+                }, 1000);
             } catch (err) {
-                errorDiv.innerText = err.message || "Sign-In failed.";
-                errorDiv.classList.add("visible");
+                if (BlackcessUI?.renderStatus) {
+                    BlackcessUI.renderStatus("#auth-status-target", {
+                        type: "error",
+                        title: "Sign-in failed",
+                        message: err.message || "We could not sign you in.",
+                        detail: "Please check your email and password, or use the signup option if you are new."
+                    });
+                } else {
+                    errorDiv.innerText = err.message || "Sign-In failed.";
+                    errorDiv.classList.add("visible");
+                }
                 submitBtn.classList.remove("loading");
                 submitBtn.disabled = false;
                 submitBtn.querySelector(".btn-text").innerText = "Authenticate Access";
@@ -544,21 +566,60 @@
 
                 if (user.pendingConfirmation) {
                     submitBtn.querySelector(".btn-text").innerText = "Check Your Email";
-                    alert(`Almost there! We've sent a confirmation link to ${user.email}. Click it, then come back and log in with your new account (membership reference: ${user.membership_id}).`);
+                    if (BlackcessUI?.renderStatus) {
+                        BlackcessUI.renderStatus("#auth-status-target", {
+                            type: "info",
+                            title: "Confirm your email",
+                            message: `Almost there! We've sent a confirmation link to ${user.email}.`,
+                            detail: `Membership reference: ${user.membership_id}`
+                        });
+                    } else {
+                        errorDiv.innerText = `Almost there! We've sent a confirmation link to ${user.email}.`;
+                        errorDiv.classList.add("visible");
+                    }
                     submitBtn.classList.remove("loading");
                     submitBtn.disabled = false;
                     submitBtn.querySelector(".btn-text").innerText = "SIGN UP";
                     return;
                 }
 
+                await BlackcessDB.dispatchEmailEvent('signup', {
+                    recipient: user.email,
+                    subject: 'Welcome to Blackcess Airlines',
+                    data: {
+                        name,
+                        membershipId: user.membership_id,
+                        route: 'Royal Club onboarding'
+                    }
+                });
+
                 submitBtn.querySelector(".btn-text").innerText = "Sign up Successful";
+                if (BlackcessUI?.renderStatus) {
+                    BlackcessUI.renderStatus("#auth-status-target", {
+                        type: "success",
+                        title: "Welcome aboard",
+                        message: `Welcome, ${name}! Your membership reference is ${user.membership_id}.`,
+                        detail: "You are being redirected to your dashboard."
+                    });
+                } else {
+                    errorDiv.innerText = `Welcome, ${name}! Your membership reference is ${user.membership_id}.`;
+                    errorDiv.classList.add("visible");
+                }
                 setTimeout(() => {
-                    alert(`Welcome, ${name}! Your membership reference is ${user.membership_id}. Redirecting...`);
                     window.location.href = "dashboard.html";
-                }, 1000);
+                }, 1200);
             } catch (err) {
-                errorDiv.innerText = err.message || "Registration failed.";
-                errorDiv.classList.add("visible");
+                if (BlackcessUI?.renderStatus) {
+                    BlackcessUI.renderStatus("#auth-status-target", {
+                        type: "error",
+                        title: "Registration failed",
+                        message: err.message || "We could not create your profile.",
+                        detail: "Please try again or contact support if the problem persists."
+                    });
+                } else {
+                    errorDiv.innerText = err.message || "Registration failed.";
+                    errorDiv.classList.add("visible");
+                }
                 submitBtn.classList.remove("loading");
                 submitBtn.disabled = false;
                 submitBtn.querySelector(".btn-text").innerText = "SIGN UP";

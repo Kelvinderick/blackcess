@@ -354,7 +354,8 @@
       <!-- LIVE INVENTORY RESULTS (from your Supabase 'flights' table) -->
       <div id="flight-results-section" class="flight-results-container">
         <h3 style="color: #1e293b; margin-bottom: 15px; font-family: 'Outfit', sans-serif;">Available Flight Matches</h3>
-        <div id="results-target"></div>
+      <div id="booking-status-target" style="margin-bottom: 16px;"></div>
+      <div id="results-target"></div>
 
         <!-- SECURE CHECKOUT SUMMARY -->
         <div id="checkout-panel" style="display: none; margin-top: 30px; padding: 25px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px;">
@@ -588,7 +589,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="auth-helper.js"></script>
-
+<script src="site-experience.js"></script>
+  
 <script>
 const hamburger = document.getElementById("hamburger-btn");
 const navMenu = document.getElementById("navMenu");
@@ -670,6 +672,14 @@ const PAYSTACK_PUBLIC_KEY = 'pk_test_ec747fe1262edf30f447fc2e87f982b920392299';
 
 let selectedFlight = null;
 
+function showBookingStatus(type, title, message, detail) {
+  if (window.BlackcessUI?.renderStatus) {
+    window.BlackcessUI.renderStatus('#booking-status-target', { type, title, message, detail });
+  } else {
+    document.getElementById('booking-status-target').innerHTML = `<p style="margin:0; color:#475569;">${message}</p>`;
+  }
+}
+
 document.getElementById('search-flights-trigger').addEventListener('click', async function(e) {
   e.preventDefault();
 
@@ -678,7 +688,7 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
   const targetDate = document.getElementById('departure-date').value;
 
   if (!depCode || !arrCode || !targetDate) {
-    alert('Please fill out all search parameters first.');
+    showBookingStatus('warning', 'Search details needed', 'Please fill in departure, destination, and departure date before searching.', 'We need those details before we can show fares.');
     return;
   }
 
@@ -713,12 +723,14 @@ document.getElementById('search-flights-trigger').addEventListener('click', asyn
 
   if (searchError) {
     console.error('Flight search error:', searchError);
+    showBookingStatus('error', 'Search unavailable', 'We could not search flights right now.', `Please try again in a moment. (${searchError.message})`);
     resultsTarget.innerHTML = `<p style="color:#b91c1c; font-family:'Outfit';">Could not search flights: ${BlackcessDB.escapeHtml(searchError.message)}</p>`;
     resultsSection.style.display = 'block';
     return;
   }
 
   if (offers.length === 0) {
+    showBookingStatus('info', 'No matching flights', `No flights found for ${depCode} → ${arrCode} on this date.`, 'Try a different date or choose a nearby airport.');
     resultsTarget.innerHTML = `<p style="color:#64748b; font-family:'Outfit';">No flights found for ${BlackcessDB.escapeHtml(depCode)} &rarr; ${BlackcessDB.escapeHtml(arrCode)} on this date.</p>`;
     resultsSection.style.display = 'block';
     return;
@@ -821,19 +833,42 @@ document.getElementById('passenger-checkout-form').addEventListener('submit', fu
         if (!res.ok) throw new Error(result.error || 'Booking failed.');
       } catch (err) {
         console.error('Booking creation error:', err);
-        alert('Payment succeeded, but booking failed: ' + err.message + '\n\nPlease contact support with reference: ' + transaction.reference);
+        showBookingStatus('error', 'Booking could not be confirmed', 'Payment succeeded, but we could not create your reservation.', `Please contact support with reference ${transaction.reference}.`);
         return;
       }
 
       const pnr = result.booking.pnr;
       const slice = selectedFlight.slices[0];
-      alert(`Payment Confirmed!\n\nBooking Reference (PNR): ${pnr}\n${slice.carrier} ${slice.flight_number}: ${slice.origin} → ${slice.destination}\n\nSave this PNR with your last name to manage this booking or check in later.`);
+      const route = `${slice.origin} → ${slice.destination}`;
+      const departure = new Date(slice.departing_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+      const bookingSummary = {
+        pnr,
+        route,
+        departure,
+        email: userEmail,
+        flightNumber: `${slice.carrier} ${slice.flight_number}`,
+        passenger: `${firstName} ${lastName}`
+      };
+
+      sessionStorage.setItem('blackcess-last-booking', JSON.stringify(bookingSummary));
+      await BlackcessDB.dispatchEmailEvent('booking', {
+        recipient: userEmail,
+        subject: 'Blackcess flight booking confirmed',
+        data: bookingSummary
+      });
+      await BlackcessDB.dispatchEmailEvent('payment', {
+        recipient: userEmail,
+        subject: 'Blackcess payment received',
+        data: bookingSummary
+      });
+
       document.getElementById('passenger-checkout-form').reset();
       document.getElementById('checkout-panel').style.display = 'none';
       document.getElementById('flight-results-section').style.display = 'none';
+      window.location.href = `confirmation.html?pnr=${encodeURIComponent(pnr)}&route=${encodeURIComponent(route)}&departure=${encodeURIComponent(departure)}&email=${encodeURIComponent(userEmail)}`;
     },
     onCancel: function() {
-      alert("Payment checkout dismissed by customer.");
+      showBookingStatus('info', 'Payment cancelled', 'Your booking was not completed.', 'You can try again when you are ready.');
     }
   });
 });

@@ -3,15 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login | Blackcess Airlines</title>
+    <title>Admin Portal | Blackcess Airlines</title>
     <link rel="icon" type="image/png" href="./images/Untitled design.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg-dark: #030712;
+            --card-bg: rgba(10, 16, 30, 0.65);
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-glow: rgba(212, 175, 55, 0.25);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.12);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
@@ -19,38 +33,101 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
-            background: radial-gradient(circle at top left, rgba(5, 100, 210, 0.16), transparent 30%),
-                        radial-gradient(circle at bottom right, rgba(212, 175, 55, 0.14), transparent 28%),
-                        #051026;
-            color: #f8fafc;
+            padding: 1.5rem;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: hidden;
+            position: relative;
         }
 
+        /* High-Quality Jet/Aviation Background with Motion Blur Effect */
+        .bg-image-container {
+            position: absolute;
+            inset: -20px; /* Slight overflow to hide blur edges */
+            background-image: linear-gradient(
+                135deg, 
+                rgba(3, 7, 18, 0.75) 0%, 
+                rgba(15, 23, 42, 0.6) 100%
+            ), 
+            url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1920&auto=format&fit=crop'); /* Replace with your own image path e.g., './images/hero-jet.jpg' */
+            background-size: cover;
+            background-position: center;
+            /* Motion blur simulation */
+            filter: blur(10px) contrast(105%);
+            transform: scale(1.08); /* Scales up to prevent white edges from filter blur */
+            z-index: 0;
+            animation: subtlePan 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes subtlePan {
+            0% { transform: scale(1.08) translate(0, 0); }
+            100% { transform: scale(1.12) translate(-10px, -5px); }
+        }
+
+        /* Glassmorphism Container */
         .login-container {
-            width: min(520px, 100%);
-            background: rgba(8, 23, 54, 0.92);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-            border-radius: 24px;
-            padding: 2.5rem;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+            position: relative;
+            z-index: 10;
+            width: min(440px, 100%);
+            background: var(--card-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 28px;
+            padding: 2.75rem 2.25rem;
+            box-shadow: 
+                0 30px 60px -12px rgba(0, 0, 0, 0.75),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Brand & Header Section */
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--gold-primary);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
         }
 
         .login-header {
-            text-align: center;
-            margin-bottom: 1.8rem;
+            margin-bottom: 2rem;
         }
 
         .login-header h1 {
-            font-size: 2rem;
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #FFFFFF;
             margin-bottom: 0.5rem;
-            letter-spacing: 0.6px;
         }
 
         .login-header p {
-            color: #94a3b8;
-            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
+        /* Form Controls */
         .form-group {
             margin-bottom: 1.25rem;
         }
@@ -58,114 +135,178 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #cbd5e1;
-            font-size: 0.85rem;
+            color: #CBD5E1;
+            font-size: 0.825rem;
             font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 1.1rem;
+            color: #94A3B8;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
 
         .form-input {
             width: 100%;
-            padding: 0.95rem 1rem;
-            border-radius: 12px;
-            border: 1px solid rgba(203, 213, 225, 0.15);
-            background: rgba(255, 255, 255, 0.05);
-            color: #f8fafc;
-            font-size: 0.95rem;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            border-radius: 14px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.925rem;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .form-input::placeholder {
+            color: #64748B;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #5b9df9;
-            box-shadow: 0 0 0 4px rgba(91, 157, 249, 0.18);
-            background: rgba(255, 255, 255, 0.10);
+            border-color: var(--gold-primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px var(--gold-glow);
         }
 
+        .form-input:focus + i, 
+        .input-wrapper:focus-within i {
+            color: var(--gold-primary);
+        }
+
+        /* Actions & Button */
         .login-btn {
             width: 100%;
-            padding: 1rem 1.1rem;
+            margin-top: 0.75rem;
+            padding: 0.95rem 1.25rem;
             border: none;
             border-radius: 14px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 1rem;
-            color: #ffffff;
-            background: linear-gradient(135deg, #3b82f6 0%, #0f172a 100%);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            color: #0F172A;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+            box-shadow: 0 8px 20px -4px var(--gold-glow);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .login-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 18px 35px rgba(59, 130, 246, 0.24);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px -4px rgba(212, 175, 55, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
         }
 
         .login-btn.loading {
-            opacity: 0.8;
+            opacity: 0.75;
             pointer-events: none;
         }
 
+        /* Error States */
         .error-msg {
             display: none;
-            margin-top: 0.8rem;
-            color: #fecaca;
-            background: rgba(248, 113, 113, 0.12);
-            border: 1px solid rgba(248, 113, 113, 0.22);
-            padding: 0.9rem 1rem;
+            margin-bottom: 1.25rem;
+            color: #FCA5A5;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 0.85rem 1rem;
             border-radius: 12px;
-            font-size: 0.92rem;
+            font-size: 0.85rem;
+            backdrop-filter: blur(8px);
         }
 
         .error-msg.visible {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        /* Footer Link */
         .help-text {
-            margin-top: 1.5rem;
-            color: #94a3b8;
-            font-size: 0.92rem;
+            margin-top: 1.75rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
             text-align: center;
         }
 
         .help-text a {
-            color: #3b82f6;
+            color: var(--gold-primary);
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
+            transition: color 0.2s ease;
         }
 
         .help-text a:hover {
+            color: var(--gold-light);
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
+
+    <!-- Background Aviation Image with Motion Blur -->
+    <div class="bg-image-container"></div>
+
     <div class="login-container">
+        <div class="brand-badge">
+            <i class="fa-solid fa-plane-up"></i> Blackcess Admin
+        </div>
+
         <div class="login-header">
-            <h1>Admin Access</h1>
-            <p>Sign in to review bookings, manage users, and keep Blackcess running safely.</p>
+            <h1>Welcome back</h1>
+            <p>Access the control tower to manage flight schedules, bookings, and user systems.</p>
+        </div>
+
+        <div id="admin-login-error" class="error-msg">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span class="error-text"></span>
         </div>
 
         <form id="adminLoginForm">
             <div class="form-group">
-                <label for="admin-email">Email address</label>
-                <input type="email" id="admin-email" class="form-input" placeholder="admin@blackcess.com" required>
+                <label for="admin-email">Email Address</label>
+                <div class="input-wrapper">
+                    <input type="email" id="admin-email" class="form-input" placeholder="admin@blackcess.com" required autocomplete="email">
+                    <i class="fa-regular fa-envelope"></i>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="admin-password">Password</label>
-                <input type="password" id="admin-password" class="form-input" placeholder="Enter your password" required>
+                <div class="input-wrapper">
+                    <input type="password" id="admin-password" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
             </div>
 
-            <div id="admin-login-error" class="error-msg"></div>
-
             <button type="submit" class="login-btn" id="admin-login-btn">
-                <span class="btn-text">Sign in</span>
+                <span class="btn-text">Authenticate</span>
+                <i class="fa-solid fa-arrow-right"></i>
             </button>
         </form>
 
         <p class="help-text">
-            Need regular member login? <a href="login.html">Go to member login</a>.
+            Need regular passenger login? <a href="login.html">Go to member login</a>
         </p>
     </div>
 
+    <!-- Scripts preserved from original setup -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-helper.js"></script>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Blackcess Airlines</title>
+  <link rel="icon" type="image/png" href="./images/Untitled design.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root { --navy:#0f172a; --gold:#BA8B02; --text:#334155; --muted:#64748b; --border:#e2e8f0; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Segoe UI, sans-serif; background:#f8fafc; color:var(--text); }
+    .page-shell { max-width:1200px; margin:0 auto; padding:24px 20px 60px; }
+    .hero { background:linear-gradient(135deg,var(--navy),#1e293b); color:#fff; border-radius:24px; padding:48px 36px; box-shadow:0 16px 40px rgba(15,23,42,0.2); }
+    .hero h1 { margin:0 0 10px; font-size:2rem; }
+    .hero p { margin:0; color:#cbd5e1; max-width:720px; line-height:1.7; }
+    .content-grid { display:grid; grid-template-columns:1.05fr 0.95fr; gap:24px; margin-top:24px; }
+    .card { background:#fff; border:1px solid var(--border); border-radius:20px; padding:24px; box-shadow:0 10px 24px rgba(15,23,42,0.06); }
+    .details-list { display:grid; gap:14px; margin-top:18px; }
+    .detail-item { display:flex; gap:12px; align-items:flex-start; padding:12px 14px; border:1px solid #e2e8f0; border-radius:14px; background:#fbfdff; }
+    .detail-item i { color:var(--gold); margin-top:2px; }
+    form { display:grid; gap:14px; }
+    label { font-weight:700; font-size:0.92rem; color:#1e293b; }
+    input, select, textarea { width:100%; border:1px solid var(--border); border-radius:12px; padding:12px 14px; font:inherit; color:var(--text); }
+    textarea { min-height:120px; resize:vertical; }
+    button { border:none; border-radius:999px; padding:12px 18px; background:var(--gold); color:#fff; font-weight:700; cursor:pointer; }
+    .status-target { margin-top:16px; }
+    .secondary-links { display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
+    .secondary-links a { color:var(--navy); text-decoration:none; font-weight:700; }
+    @media (max-width:900px){ .content-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <section class="hero">
+      <h1>Contact Blackcess support</h1>
+      <p>Our service desk is available for bookings, check-in questions, loyalty support, and trip changes. Use the form below or reach us directly through the channels listed.</p>
+    </section>
+
+    <div class="content-grid">
+      <section class="card">
+        <h2>Support channels</h2>
+        <div class="details-list">
+          <div class="detail-item"><i class="fas fa-phone"></i><div><strong>Call us</strong><br />+234 700 225 5500</div></div>
+          <div class="detail-item"><i class="fab fa-whatsapp"></i><div><strong>WhatsApp</strong><br />+234 801 234 5678</div></div>
+          <div class="detail-item"><i class="fas fa-envelope"></i><div><strong>Email</strong><br />support@blackcess.com</div></div>
+          <div class="detail-item"><i class="fas fa-location-dot"></i><div><strong>Airport offices</strong><br />Murtala Muhammed International Airport, Lagos<br />Nnamdi Azikiwe International Airport, Abuja</div></div>
+        </div>
+        <div class="secondary-links">
+          <a href="my-bookings.html"><i class="fas fa-ticket"></i> Manage booking</a>
+          <a href="online_check.html"><i class="fas fa-clipboard-check"></i> Online check-in</a>
+          <a href="dashboard.html"><i class="fas fa-user"></i> Your dashboard</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Send us a message</h2>
+        <form id="contact-form">
+          <div>
+            <label for="contact-name">Your name</label>
+            <input id="contact-name" name="name" required placeholder="Ada Okafor" />
+          </div>
+          <div>
+            <label for="contact-email">Email address</label>
+            <input id="contact-email" name="email" type="email" required placeholder="ada@blackcess.com" />
+          </div>
+          <div>
+            <label for="contact-phone">Phone number</label>
+            <input id="contact-phone" name="phone" placeholder="+2348012345678" />
+          </div>
+          <div>
+            <label for="contact-topic">Topic</label>
+            <select id="contact-topic" name="topic">
+              <option value="Booking">Booking</option>
+              <option value="Payment">Payment</option>
+              <option value="Check-in">Check-in</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" required placeholder="Tell us what you need help with..."></textarea>
+          </div>
+          <button type="submit"><i class="fas fa-paper-plane"></i> Send request</button>
+        </form>
+        <div id="contact-status" class="status-target"></div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth-helper.js"></script>
+  <script src="site-experience.js"></script>
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const submitBtn = form.querySelector('button');
+      const statusTarget = document.getElementById('contact-status');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending...';
+
+      try {
+        const payload = {
+          name: document.getElementById('contact-name').value.trim(),
+          email: document.getElementById('contact-email').value.trim(),
+          phone: document.getElementById('contact-phone').value.trim(),
+          topic: document.getElementById('contact-topic').value,
+          message: document.getElementById('contact-message').value.trim()
+        };
+
+        const result = await BlackcessDB.submitContactRequest(payload);
+        BlackcessUI.renderStatus(statusTarget, {
+          type: 'success',
+          title: 'Request received',
+          message: 'We have logged your support request and will follow up shortly.',
+          detail: `Reference: ${result.submittedAt || 'saved locally'}`
+        });
+        form.reset();
+      } catch (error) {
+        BlackcessUI.renderStatus(statusTarget, {
+          type: 'error',
+          title: 'We could not log your request',
+          message: error.message || 'Please call our support desk directly.',
+          detail: 'You can also reach us on WhatsApp or through the airport offices listed above.'
+        });
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send request';
+      }
+    });
+  </script>
+</body>
+</html>

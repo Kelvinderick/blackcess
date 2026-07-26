@@ -8,3 +8,221 @@
  * history, etc.), drop them in here — no HTML changes needed since the
  * <link> tags already point here.
  */
+
+.flight-tracker-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 18px;
+  margin-top: 18px;
+  color: #0f172a;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.tracker-head,
+.tracker-route,
+.tracker-grid,
+.tracker-stop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tracker-head {
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.tracker-kicker,
+.tracker-label {
+  display: block;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tracker-head h4 {
+  margin: 4px 0 0 0;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.tracker-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tracker-status-scheduled {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.tracker-status-warning {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.tracker-status-live {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.tracker-status-arrived {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.tracker-status-alert {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.tracker-route {
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.tracker-route > div:first-child,
+.tracker-route > div:last-child {
+  min-width: 96px;
+}
+
+.tracker-route > div:last-child {
+  text-align: right;
+}
+
+.tracker-route strong {
+  display: block;
+  font-size: 1.12rem;
+}
+
+.tracker-route span {
+  display: block;
+  color: #64748b;
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
+
+.tracker-progress {
+  flex: 1;
+  min-width: 120px;
+  height: 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+  position: relative;
+}
+
+.tracker-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ba8b02, #0f766e);
+}
+
+.tracker-grid {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+ 
+.tracker-footer {
+  margin-bottom: 16px;
+}
+ 
+.tracker-footer small {
+  color: #64748b;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+ 
+.tracker-grid > div {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.tracker-grid strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.95rem;
+}
+
+.tracker-stops {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 14px;
+}
+
+.tracker-stop,
+.tracker-stop-empty {
+  margin-top: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.tracker-stop-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fef3c7;
+  color: #92400e;
+  flex: 0 0 auto;
+}
+
+.tracker-stop strong,
+.tracker-stop span,
+.tracker-stop small,
+.tracker-stop-empty span {
+  display: block;
+}
+
+.tracker-stop span,
+.tracker-stop small,
+.tracker-stop-empty span {
+  color: #64748b;
+  font-size: 0.82rem;
+  margin-top: 3px;
+}
+
+.tracker-stop-empty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tracker-stop-empty i {
+  color: #ba8b02;
+}
+
+@media (max-width: 720px) {
+  .tracker-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tracker-route {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tracker-route > div:last-child {
+    text-align: left;
+  }
+}
