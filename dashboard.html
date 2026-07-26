@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard | Blackcess Airlines</title>
+<link rel="icon" type="image/png" href="./images/Untitled design.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_responsiveness.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --bc-navy: #0f172a;
+  --bc-navy-light: #1e293b;
+  --bc-gold: #BA8B02;
+  --bc-gold-light: #d4a521;
+  --bc-cream: #faf8f4;
+  --bc-text: #1e293b;
+  --bc-text-muted: #64748b;
+  --bc-border: #e8e3d8;
+  --bc-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  --bc-shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+}
+
+body { background: var(--bc-cream); }
+
+.dash-hero {
+  background: linear-gradient(135deg, var(--bc-navy), var(--bc-navy-light));
+  color: #fff;
+  padding: 140px 20px 60px 20px;
+  text-align: center;
+  position: relative;
+}
+.dash-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 64px; height: 3px;
+  background: var(--bc-gold);
+}
+.dash-hero h1 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+.dash-hero p { opacity: 0.75; font-size: 0.95rem; }
+
+.dash-wrap {
+  max-width: 1100px;
+  margin: -44px auto 60px auto;
+  padding: 0 20px;
+}
+
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  margin-bottom: 36px;
+}
+.dash-stat-card {
+  background: #fff;
+  border: 1px solid var(--bc-border);
+  border-top: 3px solid var(--bc-gold);
+  border-radius: 10px;
+  padding: 24px 22px;
+  box-shadow: var(--bc-shadow);
+  text-align: center;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.dash-stat-card:hover {
+  box-shadow: var(--bc-shadow-lg);
+  transform: translateY(-2px);
+}
+.dash-stat-card .stat-label {
+  color: var(--bc-text-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.dash-stat-card .stat-value {
+  color: var(--bc-navy);
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.dash-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 44px;
+}
+.dash-action-btn {
+  background: var(--bc-navy);
+  color: #fff;
+  border: 1px solid var(--bc-navy);
+  padding: 13px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: all 0.2s ease;
+}
+.dash-action-btn:hover {
+  background: var(--bc-navy-light);
+  transform: translateY(-1px);
+}
+.dash-action-btn.secondary {
+  background: transparent;
+  color: var(--bc-navy);
+  border: 1px solid var(--bc-border);
+}
+.dash-action-btn.secondary:hover {
+  border-color: var(--bc-gold);
+  color: var(--bc-gold);
+  background: transparent;
+}
+
+.dash-section-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--bc-navy);
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dash-section-title::before {
+  content: '';
+  width: 4px; height: 20px;
+  background: var(--bc-gold);
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.booking-row {
+  background: #fff;
+  border: 1px solid var(--bc-border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  box-shadow: var(--bc-shadow);
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  transition: box-shadow 0.2s ease;
+}
+.booking-row:hover { box-shadow: var(--bc-shadow-lg); }
+.booking-route { font-weight: 700; color: var(--bc-navy); font-size: 1.02rem; }
+.booking-meta { color: var(--bc-text-muted); font-size: 0.82rem; margin-top: 5px; }
+.booking-pnr {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--bc-gold);
+  background: var(--bc-cream);
+  border: 1px solid var(--bc-border);
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.status-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.status-confirmed { background: #fdf5e0; color: #92670a; }
+.status-checked-in { background: #e7f5ec; color: #15803d; }
+.status-arrived { background: #d1fae5; color: #0f766e; }
+
+.empty-state {
+  background: #fff;
+  border: 1px dashed var(--bc-border);
+  border-radius: 10px;
+  padding: 48px 30px;
+  text-align: center;
+  color: var(--bc-text-muted);
+}
+.empty-state i { color: var(--bc-gold); }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-design">
+        <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+      </div>
+    </a>
+    <label for="menu-toggle" class="hamburger" id="hamburger-btn">
+      <span></span><span></span><span></span>
+    </label>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+      <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+      <li class="nav-item"><a href="Routes.html" class="nav-link">ROUTES</a></li>
+      <li class="nav-item"><a href="career.html" class="nav-link">CAREERS</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="dash-hero">
+  <h1 id="welcome-heading">Welcome back</h1>
+  <p id="welcome-sub">Here's what's happening with your account.</p>
+</header>
+
+<div class="dash-wrap">
+
+  <!-- STATS -->
+  <div class="dash-stats">
+    <div class="dash-stat-card">
+      <div class="stat-label">Membership ID</div>
+      <div class="stat-value" id="stat-membership">—</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="stat-label">Miles Balance</div>
+      <div class="stat-value" id="stat-miles">—</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="stat-label">Total Bookings</div>
+      <div class="stat-value" id="stat-bookings">—</div>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="dash-actions">
+    <a href="book.html" class="dash-action-btn"><i class="fas fa-plane"></i> Book a Flight</a>
+    <a href="online_check.html" class="dash-action-btn secondary"><i class="fas fa-clipboard-check"></i> Check In</a>
+    <a href="track.html" class="dash-action-btn secondary"><i class="fas fa-location-arrow"></i> Track a Flight</a>
+    <a href="profile.html" class="dash-action-btn secondary"><i class="fas fa-user-pen"></i> Edit Profile</a>
+  </div>
+
+  <!-- BOOKINGS -->
+  <h2 class="dash-section-title">My Bookings</h2>
+  <div id="bookings-list">
+    <div class="empty-state"><i class="fas fa-circle-notch fa-spin"></i> Loading your bookings...</div>
+  </div>
+
+</div>
+
+<!-- COPYRIGHT BAR -->
+<div class="copyright-bar" style="text-align:center; padding: 20px;">
+  <span>Copyright &copy; 2026 Blackcess Airlines. All Rights Reserved.</span>
+</div>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-helper.js"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger-btn");
+const navMenu = document.getElementById("navMenu");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("is-active");
+  navMenu.classList.toggle("menu-open");
+});
+
+const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+
+// This page only makes sense for a logged-in user — bounce guests to login.
+if (!activeUser) {
+  window.location.href = "login.html";
+}
+
+document.getElementById("welcome-heading").textContent = `Welcome back, ${activeUser.name?.split(' ')[0] || 'Traveler'}`;
+document.getElementById("stat-membership").textContent = activeUser.membership_id || "—";
+document.getElementById("stat-miles").textContent = (activeUser.miles || 0).toLocaleString();
+
+loadDashboardBookings();
+scheduleDashboardBookingRefresh();
+setupDashboardRealtime();
+
+function safeParseDate(dateStr) {
+  if (!dateStr) return null;
+  if (dateStr instanceof Date) return dateStr;
+  let normalized = dateStr.trim();
+  if (!normalized.includes('T') && !normalized.endsWith('Z')) {
+    normalized = normalized.replace(' ', 'T');
+    if (!normalized.includes('+') && !normalized.includes('-')) {
+      normalized += 'Z';
+    }
+  }
+  const d = new Date(normalized);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function getBookingArrivalTime(booking) {
+  const flight = booking.flights || booking.flight || {};
+  return flight.arrival_time || booking.arrival_time || booking.arrival;
+}
+
+function hasBookingArrived(booking) {
+  const rawStatus = (booking.status || '').trim();
+  const arrivalTime = getBookingArrivalTime(booking);
+  const now = new Date();
+  const arrivalDate = safeParseDate(arrivalTime);
+  if (arrivalDate && now >= arrivalDate) {
+    return true;
+  }
+  return /arrived|landed/i.test(rawStatus);
+}
+
+function getBookingDisplayStatus(booking) {
+  const rawStatus = (booking.status || 'Confirmed').trim();
+  const hasArrived = hasBookingArrived(booking);
+
+  if (hasArrived) {
+    return { label: 'Arrived Successfully', className: 'status-arrived' };
+  }
+
+  if (/checked[- ]?in/i.test(rawStatus)) {
+    return { label: 'Checked-In', className: 'status-checked-in' };
+  }
+
+  return { label: rawStatus || 'Confirmed', className: 'status-confirmed' };
+}
+
+function scheduleDashboardBookingRefresh() {
+  if (window.dashboardBookingRefreshTimer) {
+    clearInterval(window.dashboardBookingRefreshTimer);
+  }
+  window.dashboardBookingRefreshTimer = setInterval(() => {
+    if (document.visibilityState === 'visible') {
+      loadDashboardBookings();
+    }
+  }, 30000);
+}
+
+function setupDashboardRealtime() {
+  if (!window.supabase || !activeUser) return;
+
+  try {
+    window.supabase
+      .channel(`dashboard-bookings-${activeUser.uid}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'bookings',
+        filter: `user_id=eq.${activeUser.uid}`
+      }, payload => {
+        console.log('Realtime dashboard booking update:', payload);
+        loadDashboardBookings();
+      })
+      .subscribe();
+  } catch (err) {
+    console.warn('Could not subscribe to dashboard realtime updates:', err);
+  }
+}
+
+async function loadDashboardBookings() {
+  const listEl = document.getElementById("bookings-list");
+
+  try {
+    const bookings = await BlackcessDB.getBookings({ uid: activeUser.uid });
+    const activeBookings = [];
+    const arrivedBookings = [];
+    const esc = BlackcessDB.escapeHtml;
+
+    bookings.forEach(booking => {
+      if (hasBookingArrived(booking)) {
+        arrivedBookings.push(booking);
+      } else {
+        activeBookings.push(booking);
+      }
+    });
+
+    document.getElementById("stat-bookings").textContent = activeBookings.length;
+
+    if (activeBookings.length === 0) {
+      if (arrivedBookings.length === 0) {
+        listEl.innerHTML = `<div class="empty-state"><i class="fas fa-suitcase-rolling" style="font-size:1.5rem; margin-bottom:10px; display:block;"></i>No bookings yet — time to plan your next trip.</div>`;
+      } else {
+        listEl.innerHTML = `<div class="empty-state"><i class="fas fa-plane-arrival" style="font-size:1.5rem; margin-bottom:10px; display:block;"></i>All your booked flights have arrived. Completed flights are shown below.</div>`;
+      }
+    } else {
+      listEl.innerHTML = '';
+      activeBookings.forEach(booking => {
+        const flight = booking.flights || booking.flight || {};
+        const route = flight.flight_number ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+        const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '';
+        const status = getBookingDisplayStatus(booking);
+
+        const row = document.createElement('div');
+        row.className = 'booking-row';
+        row.innerHTML = `
+          <div>
+            <div class="booking-route">${route}</div>
+            <div class="booking-meta">${departTime} • <span class="status-pill ${status.className}">${esc(status.label)}</span></div>
+          </div>
+          <div class="booking-pnr">${esc(booking.pnr)}</div>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    if (arrivedBookings.length > 0) {
+      const arrivedSection = document.createElement('div');
+      arrivedSection.style.marginTop = '24px';
+      arrivedSection.innerHTML = `<h2 class="dash-section-title" style="margin-bottom: 18px;">Arrived Flights</h2>`;
+      arrivedBookings.forEach(booking => {
+        const flight = booking.flights || booking.flight || {};
+        const route = flight.flight_number ? `${esc(flight.flight_number)}: ${esc(flight.departure_city)} → ${esc(flight.arrival_city)}` : 'Flight details unavailable';
+        const arriveTime = getBookingArrivalTime(booking) ? new Date(getBookingArrivalTime(booking)).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : 'Arrived';
+        const status = getBookingDisplayStatus(booking);
+        const row = document.createElement('div');
+        row.className = 'booking-row';
+        row.style.background = '#f8fafc';
+        row.style.borderColor = '#d1fae5';
+        row.innerHTML = `
+          <div>
+            <div class="booking-route">${route}</div>
+            <div class="booking-meta">${arriveTime} • <span class="status-pill ${status.className}">${esc(status.label)}</span></div>
+          </div>
+          <div class="booking-pnr">${esc(booking.pnr)}</div>
+        `;
+        arrivedSection.appendChild(row);
+      });
+      listEl.appendChild(arrivedSection);
+    }
+
+  } catch (e) {
+    console.error(e);
+    listEl.innerHTML = `<div class="empty-state" style="color:#b91c1c;">Could not load your bookings right now.</div>`;
+  }
+}</script>
+
+</body>
+</html>
