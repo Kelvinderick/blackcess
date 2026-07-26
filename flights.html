@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackcess Admin - Flights</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        /* Flight form, scoped additions on top of admin.css */
+        .flight-form-box {
+            background: #111827;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .flight-form-box h2 { margin-bottom: 20px; }
+        .flight-form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .flight-form-grid .full { grid-column: 1 / -1; }
+        .flight-form-grid label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+        .flight-form-grid input, .flight-form-grid select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,.12);
+            background: #1f2937;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        .flight-form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .flight-form-actions button {
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.88rem;
+        }
+        #flight-submit-btn { background: #d4af37; color: #000; }
+        #flight-cancel-btn { background: #374151; color: #fff; display: none; }
+        @media (max-width: 900px) {
+            .flight-form-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>BLACKCESS</h2>
+    <ul>
+        <li onclick="location.href='admin.html'">
+            <i class="fas fa-chart-line"></i>
+            Dashboard
+        </li>
+        <li onclick="location.href='booking.html'">
+            <i class="fas fa-ticket"></i>
+            Bookings
+        </li>
+        <li onclick="location.href='user.html'">
+            <i class="fas fa-users"></i>
+            Users
+        </li>
+        <li class="active">
+            <i class="fas fa-plane"></i>
+            Flights
+        </li>
+    </ul>
+</div>
+
+<div class="main">
+
+<header>
+    <h1>Flight Management</h1>
+    <button id="logoutBtn">Logout</button>
+</header>
+
+<section class="flight-form-box">
+    <h2 id="flight-form-title">Add New Flight</h2>
+    <form id="flight-form">
+        <div class="flight-form-grid">
+            <div>
+                <label for="fl-number">Flight Number</label>
+                <input type="text" id="fl-number" placeholder="BC204" required>
+            </div>
+            <div>
+                <label for="fl-dep-city">Departure City</label>
+                <input type="text" id="fl-dep-city" placeholder="Lagos" required>
+            </div>
+            <div>
+                <label for="fl-dep-code">Departure Code</label>
+                <input type="text" id="fl-dep-code" placeholder="LOS" maxlength="4" required>
+            </div>
+            <div>
+                <label for="fl-cabin">Cabin Class</label>
+                <select id="fl-cabin">
+                    <option value="economy">Economy</option>
+                    <option value="premium_economy">Premium Economy</option>
+                    <option value="business">Business</option>
+                    <option value="first">First</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="fl-arr-city">Arrival City</label>
+                <input type="text" id="fl-arr-city" placeholder="Abuja" required>
+            </div>
+            <div>
+                <label for="fl-arr-code">Arrival Code</label>
+                <input type="text" id="fl-arr-code" placeholder="ABV" maxlength="4" required>
+            </div>
+            <div>
+                <label for="fl-dep-time">Departure Time</label>
+                <input type="datetime-local" id="fl-dep-time" required>
+            </div>
+            <div>
+                <label for="fl-arr-time">Arrival Time</label>
+                <input type="datetime-local" id="fl-arr-time" required>
+            </div>
+
+            <div>
+                <label for="fl-price">Price</label>
+                <input type="number" id="fl-price" min="0" step="0.01" placeholder="150000" required>
+            </div>
+            <div>
+                <label for="fl-currency">Currency</label>
+                <input type="text" id="fl-currency" value="NGN" maxlength="3" required>
+            </div>
+            <div>
+                <label for="fl-seats">Seats Available</label>
+                <input type="number" id="fl-seats" min="0" placeholder="180" required>
+            </div>
+            <div>
+                <label for="fl-status">Status</label>
+                <select id="fl-status">
+                    <option value="scheduled">Scheduled</option>
+                    <option value="delayed">Delayed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            <div class="flight-form-actions">
+                <button type="submit" id="flight-submit-btn"><i class="fas fa-plus"></i> Add Flight</button>
+                <button type="button" id="flight-cancel-btn">Cancel Edit</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<section class="table-box">
+    <h2>All Flights</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Flight #</th>
+                <th>Route</th>
+                <th>Departs</th>
+                <th>Price</th>
+                <th>Seats</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="flightsTable"></tbody>
+    </table>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<script src="../auth-helper.js"></script>
+<script src="../blackcess-ui.js"></script>
+<script src="flights.js"></script>
+
+</body>
+</html>
