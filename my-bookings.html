@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Bookings - Blackcess Airlines</title>
+    <link rel="icon" type="image/png" href="./images/Untitled design.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_responsiveness.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="booking-flow.css">
+    <style>
+        .copyright-bar {
+            align-items: center;
+            text-align: center;
+        }
+
+        .flight-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            border: 1px solid transparent;
+        }
+
+        .status-confirmed {
+            background: rgba(253, 245, 224, 0.9);
+            color: #92670a;
+            border-color: rgba(253, 245, 224, 0.95);
+        }
+
+        .status-checked-in {
+            background: rgba(231, 245, 236, 0.95);
+            color: #15803d;
+            border-color: rgba(231, 245, 236, 0.95);
+        }
+
+        .status-arrived {
+            background: rgba(212, 248, 241, 0.95);
+            color: #0f766e;
+            border-color: rgba(212, 248, 241, 0.95);
+        }
+
+        .booking-card {
+            background: rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:12px;
+            padding:16px 18px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .booking-card h4 {
+            margin: 0 0 6px 0;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .booking-card span {
+            color: #94a3b8;
+            font-size: 0.86rem;
+        }
+
+        .section-subheading {
+            color: #94a3b8;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <div class="logo-design">
+                    <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+                </div>
+            </a>
+            <label for="menu-toggle" class="hamburger" id="hamburger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+                <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+                <li class="nav-item"><a href="Routes.html" class="nav-link">ROUTES</a></li>
+                <li class="nav-item"><a href="career.html" class="nav-link">CAREERS</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- DEDICATED CONTENT SECTION -->
+    <section class="booking-section" style="padding: 120px 20px 80px 20px;">
+        <div class="booking-container" style="max-width: 800px; margin: 0 auto;">
+            <div class="booking-form">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <img src="./images/Untitled design.png" alt="Blackcess Logo" style="height: 60px; width: auto; margin-bottom: 15px;">
+                    <h3>Manage Your Booking</h3>
+                    <p style="color: #64748b; margin-bottom: 15px;">View or modify your itinerary, select seats, or add extra baggage.</p>
+                </div>
+                
+                <div id="member-bookings-list" style="margin-bottom: 25px;"></div>
+
+                <div class="form-row" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="form-group" style="position: relative; width: 100%;">
+                        <label for="booking-ref" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b;"><i class="fas fa-ticket"></i></label>
+                        <input type="text" id="booking-ref" class="form-input" placeholder="Booking Reference / PNR (e.g., BKC123)" style="width: 100%; padding: 15px 15px 15px 45px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    </div>
+                    
+                    <div class="form-group" style="position: relative; width: 100%;">
+                        <label for="booking-lastname" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b;"><i class="fas fa-user"></i></label>
+                        <input type="text" id="booking-lastname" class="form-input" placeholder="Passenger Last Name" style="width: 100%; padding: 15px 15px 15px 45px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    </div>
+                    
+                    <button class="search-btn" style="width: 100%; padding: 15px; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="retrieveBookingManual()">Retrieve Flight</button>
+                </div>
+            </div>
+            
+            <div id="retrieved-ticket-target"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="copyright-bar">
+        <span>Copyright &copy; 2026 Blackcess Limited. All Rights Reserved.</span>
+    </div>
+
+    <!-- Supabase SDKs -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth-helper.js"></script>
+    <script src="blackcess-ui.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(loadMemberBookingsList, 1000);
+            scheduleMemberBookingsRefresh();
+            
+            // Set up real-time listener for bookings changes
+            if (window.supabase) {
+                window.supabase
+                    .channel('public:bookings')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, payload => {
+                        console.log("Realtime booking update received:", payload);
+                        
+                        // Refresh the bookings dashboard list
+                        loadMemberBookingsList();
+                        
+                        // If ticket detail card is currently showing for the updated booking, refresh it
+                        const currentPnrVal = document.getElementById("retrieved-ticket-target")?.querySelector(".bp-val")?.innerText;
+                        if (currentPnrVal && payload.new && payload.new.pnr === currentPnrVal) {
+                            showTicketDetailDirect(payload.new.pnr, payload.new.passenger_lastname);
+                        }
+                    })
+                    .subscribe();
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    loadMemberBookingsList();
+                }
+            });
+        });
+
+        function safeParseDate(dateStr) {
+            if (!dateStr) return null;
+            if (dateStr instanceof Date) return dateStr;
+            let normalized = dateStr.trim();
+            if (!normalized.includes('T') && !normalized.endsWith('Z')) {
+                normalized = normalized.replace(' ', 'T');
+                if (!normalized.includes('+') && !normalized.includes('-')) {
+                    normalized += 'Z';
+                }
+            }
+            const d = new Date(normalized);
+            return isNaN(d.getTime()) ? null : d;
+        }
+
+        function getBookingArrivalTime(booking) {
+            const flight = booking.flights || booking.flight || {};
+            return flight.arrival_time || booking.arrival_time || booking.arrival;
+        }
+
+        function hasBookingArrived(booking) {
+            const rawStatus = (booking.status || '').trim();
+            const arrivalTime = getBookingArrivalTime(booking);
+            const now = new Date();
+            const arrivalDate = safeParseDate(arrivalTime);
+
+            if (arrivalDate && now >= arrivalDate) {
+                return true;
+            }
+
+            return /arrived|landed/i.test(rawStatus);
+        }
+
+        function getBookingDisplayStatus(booking) {
+            const rawStatus = (booking.status || 'Confirmed').trim();
+            const hasArrived = hasBookingArrived(booking);
+
+            if (hasArrived) {
+                return { label: 'Arrived Successfully', className: 'status-arrived' };
+            }
+
+            if (/checked[- ]?in/i.test(rawStatus)) {
+                return { label: 'Checked-In', className: 'status-checked-in' };
+            }
+
+            return { label: rawStatus || 'Confirmed', className: 'status-confirmed' };
+        }
+
+                function scheduleMemberBookingsRefresh() {
+                    if (window.memberBookingsRefreshTimer) {
+                        clearInterval(window.memberBookingsRefreshTimer);
+                    }
+                    window.memberBookingsRefreshTimer = setInterval(() => {
+                        if (document.visibilityState === 'visible') {
+                            loadMemberBookingsList();
+                        }
+                    }, 30000);
+                }
+
+                // Load logged in user bookings from database
+                async function loadMemberBookingsList() {
+            const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
+            const bookingsListDiv = document.getElementById("member-bookings-list");
+            if (!bookingsListDiv) return;
+
+            if (!activeUser) {
+                bookingsListDiv.innerHTML = "";
+                return;
+            }
+
+            bookingsListDiv.innerHTML = `<p style="color:#fff; font-size:0.9rem; margin-bottom:10px;"><i class="fas fa-circle-notch fa-spin"></i> Checking cloud bookings registry...</p>`;
+
+            try {
+                const list = await BlackcessDB.getBookings({ uid: activeUser.uid });
+                if (list.length === 0) {
+                    bookingsListDiv.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;"><i class="fas fa-circle-info"></i> You have no cloud booking histories registered under this membership profile.</p>`;
+                    return;
+                }
+
+                const esc = BlackcessDB.escapeHtml;
+                const activeBookings = [];
+                const arrivedBookings = [];
+
+                list.forEach(b => {
+                    const flight = b.flights || b.flight || {};
+                    const arrived = hasBookingArrived(b);
+                    if (arrived) {
+                        arrivedBookings.push(b);
+                    } else {
+                        activeBookings.push(b);
+                    }
+                });
+
+                let html = '';
+
+                if (activeBookings.length > 0) {
+                    html += `<h4 style="color:#fff; margin-bottom:12px;">Stored Cloud Bookings (${activeBookings.length})</h4><div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">`;
+                    activeBookings.forEach(b => {
+                        const flight = b.flights || b.flight || {};
+                        const route = (flight.departure_city || b.departure_city) ? `${esc(flight.departure_city || b.departure_city)} → ${esc(flight.arrival_city || b.arrival_city)}` : 'Flight details unavailable';
+                        const departDate = flight.departure_time ? new Date(flight.departure_time).toLocaleDateString([], { dateStyle: 'medium' }) : '';
+                        const displayStatus = getBookingDisplayStatus(b);
+                        html += `
+                            <div class="booking-card">
+                                <div>
+                                    <h4>${route}</h4>
+                                    <span><i class="fas fa-calendar"></i> ${departDate}</span>
+                                    <span style="margin-left:15px;"><i class="fas fa-ticket"></i> <span class="flight-status-pill ${displayStatus.className}">${displayStatus.label}</span></span>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
+                                    <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
+                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                } else {
+                    html += `<p class="section-subheading">No active bookings at the moment. Completed flights are listed below.</p>`;
+                }
+
+                if (arrivedBookings.length > 0) {
+                    html += `<h4 style="color:#fff; margin-top:16px; margin-bottom:12px;">Arrived Flights (${arrivedBookings.length})</h4><div style="display:flex; flex-direction:column; gap:10px;">`;
+                    arrivedBookings.forEach(b => {
+                        const flight = b.flights || b.flight || {};
+                        const route = (flight.departure_city || b.departure_city) ? `${esc(flight.departure_city || b.departure_city)} → ${esc(flight.arrival_city || b.arrival_city)}` : 'Flight details unavailable';
+                        const arriveDate = getBookingArrivalTime(b) ? new Date(getBookingArrivalTime(b)).toLocaleDateString([], { dateStyle: 'medium' }) : '';
+                        const displayStatus = getBookingDisplayStatus(b);
+                        html += `
+                            <div class="booking-card" style="background: rgba(15, 25, 40, 0.9); border-color: rgba(34, 197, 94, 0.2);">
+                                <div>
+                                    <h4>${route}</h4>
+                                    <span><i class="fas fa-calendar"></i> Arrived ${arriveDate}</span>
+                                    <span style="margin-left:15px;"><i class="fas fa-plane-arrival"></i> <span class="flight-status-pill ${displayStatus.className}">${displayStatus.label}</span></span>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
+                                    <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
+                                    <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                bookingsListDiv.innerHTML = html;
+            } catch(e) {
+                bookingsListDiv.innerHTML = `<p style="color:#ff5722; font-size:0.85rem;"><i class="fas fa-circle-exclamation"></i> Error loading cloud database.</p>`;
+            }
+        }
+
+        // Show ticket card details
+        async function showTicketDetailDirect(pnr, lastname) {
+            const resultsTarget = document.getElementById("retrieved-ticket-target");
+            resultsTarget.innerHTML = `<p style="color:#fff; margin-top:20px;"><i class="fas fa-circle-notch fa-spin"></i> Retrieving ticket...</p>`;
+            
+            try {
+                const records = await BlackcessDB.getBookings({ pnr, lastname });
+                if (records.length > 0) {
+                    const booking = records[0];
+                    const flight = booking.flights || booking.flight || {};
+                    const esc = BlackcessDB.escapeHtml;
+                    const departTime = flight.departure_time ? new Date(flight.departure_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '\u2014';
+                    resultsTarget.innerHTML = `
+                        <div class="boarding-pass" id="boarding-pass-capture" style="margin-top:30px; margin-left: auto; margin-right: auto; background:#fff;">
+                            <div class="boarding-pass-header">
+                                <img src="./images/Untitled design.png" alt="Blackcess Logo" crossorigin="anonymous">
+                                <span style="font-weight:800; letter-spacing:1px; color:#BA8B02;">BOARDING TICKET</span>
+                            </div>
+                            <div class="boarding-pass-body">
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">Passenger (Last Name)</div>
+                                        <div class="bp-val">${esc(booking.passenger_lastname)}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">PNR / Reference</div>
+                                        <div class="bp-val" style="color:#BA8B02; font-size:1.25rem;">${esc(booking.pnr)}</div>
+                                    </div>
+                                </div>
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">From</div>
+                                        <div class="bp-val">${esc(flight.departure_city) || '\u2014'}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">To</div>
+                                        <div class="bp-val">${esc(flight.arrival_city) || '\u2014'}</div>
+                                    </div>
+                                </div>
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">Flight</div>
+                                        <div class="bp-val">${esc(flight.flight_number) || '\u2014'}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">Departure</div>
+                                        <div class="bp-val">${departTime}</div>
+                                    </div>
+                                </div>
+                                <div class="bp-row">
+                                    <div class="bp-col">
+                                        <div class="bp-label">Status</div>
+                                        <div class="bp-val" style="color:${getBookingDisplayStatus(booking).className === 'status-arrived' ? '#0f766e' : booking.status === 'Checked-In' ? '#37b878' : '#BA8B02'};"><i class="fas fa-circle-check"></i> ${esc(getBookingDisplayStatus(booking).label)}</div>
+                                    </div>
+                                    <div class="bp-col" style="text-align:right;">
+                                        <div class="bp-label">Gate</div>
+                                        <div class="bp-val">Terminal 1, Gate C</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="barcode-area">
+                                <div class="barcode-lines"></div>
+                                <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${esc(booking.pnr)}*</div>
+                            </div>
+                        </div>
+                        <div style="text-align:center; margin-top:18px;">
+                            <button id="download-pdf-btn" class="tool-btn" style="max-width:280px; margin:0 auto; cursor:pointer;">
+                                <i class="fas fa-download"></i> Download PDF Ticket
+                            </button>
+                        </div>
+                    `;
+                    resultsTarget.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('download-pdf-btn').addEventListener('click', () => downloadTicketPDF(booking.pnr));
+                } else {
+                    resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;"><i class="fas fa-triangle-exclamation"></i> No ticket found matching code and last name.</p>`;
+                }
+            } catch(e) {
+                resultsTarget.innerHTML = `<p style="color:#ff5722; margin-top:20px; text-align:center;">Retrieval error.</p>`;
+            }
+        }
+
+        async function downloadTicketPDF(pnr) {
+            const btn = document.getElementById('download-pdf-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Generating...';
+            btn.disabled = true;
+
+            try {
+                const element = document.getElementById('boarding-pass-capture');
+                const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+                const imgData = canvas.toDataURL('image/png');
+
+                const { jsPDF } = window.jspdf;
+                const pxToMm = 0.264583;
+                const widthMm = canvas.width * pxToMm / 2;
+                const heightMm = canvas.height * pxToMm / 2;
+                const doc = new jsPDF({
+                    orientation: widthMm > heightMm ? 'landscape' : 'portrait',
+                    unit: 'mm',
+                    format: [widthMm, heightMm]
+                });
+                doc.addImage(imgData, 'PNG', 0, 0, widthMm, heightMm);
+                doc.save(`Blackcess-Ticket-${pnr}.pdf`);
+            } catch (err) {
+                console.error('PDF generation error:', err);
+                BlackcessUI.toast('Could not generate the PDF right now. You can also just screenshot this page as a backup.', 'error', 7000);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Manual retrieve booking trigger
+        async function retrieveBookingManual() {
+            const pnr = document.getElementById("booking-ref").value;
+            const lastname = document.getElementById("booking-lastname").value;
+            
+            if (!pnr || !lastname) {
+                BlackcessUI.toast("Please provide PNR reference code and Passenger Last Name.", "error");
+                return;
+            }
+
+            await showTicketDetailDirect(pnr, lastname);
+        }
+    </script>
+</body>
+</html>
