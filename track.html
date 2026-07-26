@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track a Flight | Blackcess Airlines</title>
+<link rel="icon" type="image/png" href="./images/Untitled design.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_responsiveness.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bc-navy: #0f172a;
+  --bc-navy-light: #1e293b;
+  --bc-gold: #BA8B02;
+  --bc-cream: #faf8f4;
+  --bc-text: #1e293b;
+  --bc-text-muted: #64748b;
+  --bc-border: #e8e3d8;
+  --bc-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  --bc-shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+  --bc-green: #15803d;
+}
+body { background: var(--bc-cream); }
+
+.trk-hero {
+  background: linear-gradient(135deg, var(--bc-navy), var(--bc-navy-light));
+  color: #fff;
+  padding: 120px 20px 50px;
+  text-align: center;
+}
+.trk-hero h1 { font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 8px; }
+.trk-hero p { opacity: 0.78; font-size: 0.95rem; }
+
+.trk-wrap { max-width: 720px; margin: -34px auto 60px; padding: 0 20px; }
+
+.trk-search-card {
+  background: #fff;
+  border: 1px solid var(--bc-border);
+  border-top: 3px solid var(--bc-gold);
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: var(--bc-shadow-lg);
+  margin-bottom: 24px;
+}
+.trk-search-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.trk-search-row .field { flex: 1; min-width: 160px; }
+.trk-search-row label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--bc-text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.trk-search-row input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--bc-border);
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-family: inherit;
+}
+.trk-search-btn {
+  background: var(--bc-navy);
+  color: #fff;
+  border: none;
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  align-self: flex-end;
+}
+.trk-search-btn:hover { background: var(--bc-navy-light); }
+
+.trk-result-card {
+  background: #fff;
+  border: 1px solid var(--bc-border);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: var(--bc-shadow);
+  margin-bottom: 16px;
+}
+
+.trk-status-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 10px; }
+.trk-flight-title { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--bc-navy); font-size: 1.15rem; }
+.trk-status-pill { padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3px; }
+.trk-status-pill.scheduled { background: #eff6ff; color: #1d4ed8; }
+.trk-status-pill.active,
+.trk-status-pill.en-route { background: #fdf5e0; color: #92670a; }
+.trk-status-pill.landed { background: #d1fae5; color: #0f766e; }
+.trk-status-pill.cancelled,
+.trk-status-pill.diverted { background: #fee2e2; color: #b91c1c; }
+.trk-status-pill.unknown { background: #f1f5f9; color: #475569; }
+
+/* Progress track */
+.trk-progress-wrap { margin-bottom: 26px; }
+.trk-progress-endpoints { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.trk-progress-endpoints .code { font-size: 1.3rem; font-weight: 800; color: var(--bc-navy); }
+.trk-progress-endpoints .city { font-size: 0.75rem; color: var(--bc-text-muted); display: block; }
+.trk-progress-track {
+  position: relative;
+  height: 6px;
+  background: var(--bc-border);
+  border-radius: 3px;
+  margin: 18px 0;
+}
+.trk-progress-fill {
+  position: absolute;
+  top: 0; left: 0; height: 100%;
+  background: var(--bc-gold);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.trk-progress-plane {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--bc-navy);
+  font-size: 1.1rem;
+  transition: left 0.4s ease;
+}
+.trk-progress-note { text-align: center; font-size: 0.8rem; color: var(--bc-text-muted); }
+
+.trk-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.trk-detail-col h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--bc-gold); margin-bottom: 10px; font-weight: 700; }
+.trk-detail-col p { font-size: 0.88rem; color: var(--bc-text); margin-bottom: 6px; }
+.trk-detail-col p strong { color: var(--bc-navy); }
+
+.trk-empty { text-align: center; padding: 40px 20px; color: var(--bc-text-muted); }
+.trk-empty i { font-size: 1.8rem; color: var(--bc-gold); margin-bottom: 12px; display: block; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="index.html" class="navbar-logo">
+      <div class="logo-design">
+        <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="blackcess-royal-logo">
+      </div>
+    </a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+      <li class="nav-item"><a href="book.html" class="nav-link">BOOK</a></li>
+      <li class="nav-item"><a href="my-bookings.html" class="nav-link">MY BOOKINGS</a></li>
+      <li class="nav-item"><a href="contact.html" class="nav-link">CONTACT</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="trk-hero">
+  <h1>Track a Flight</h1>
+  <p>Live status for any flight number, powered by our flight data feed.</p>
+</header>
+
+<div class="trk-wrap">
+  <div class="trk-search-card">
+    <div class="trk-search-row">
+      <div class="field">
+        <label for="trk-flight-number">Flight Number</label>
+        <input type="text" id="trk-flight-number" placeholder="e.g. BC204">
+      </div>
+      <div class="field">
+        <label for="trk-flight-date">Date (optional)</label>
+        <input type="date" id="trk-flight-date">
+      </div>
+      <button class="trk-search-btn" id="trk-search-btn">Track</button>
+    </div>
+  </div>
+
+  <div id="trk-results">
+    <div class="trk-result-card">
+      <div class="trk-empty">
+        <i class="fas fa-plane"></i>
+        Enter a flight number above to see its current status.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="copyright-bar" style="text-align:center; padding: 20px;">
+  <span>Copyright &copy; 2026 Blackcess Airlines. All Rights Reserved.</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth-helper.js"></script>
+<script src="blackcess-ui.js"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger-btn");
+const navMenu = document.getElementById("navMenu");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("is-active");
+  navMenu.classList.toggle("menu-open");
+});
+
+const esc = BlackcessDB.escapeHtml;
+const resultsEl = document.getElementById("trk-results");
+
+// Deep-link support: track.html?flight=BC204 (used by the booking
+// confirmation page's "Track This Flight" button).
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const flightParam = params.get("flight");
+  if (flightParam) {
+    document.getElementById("trk-flight-number").value = flightParam;
+    runTrackSearch();
+  }
+});
+
+document.getElementById("trk-search-btn").addEventListener("click", runTrackSearch);
+document.getElementById("trk-flight-number").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") runTrackSearch();
+});
+
+function normalizeStatus(raw) {
+  const s = (raw || "").toLowerCase();
+  if (s.includes("land") || s.includes("arriv")) return "landed";
+  if (s.includes("cancel")) return "cancelled";
+  if (s.includes("divert")) return "diverted";
+  if (s.includes("active") || s.includes("en-route") || s.includes("en route") || s.includes("air")) return "active";
+  if (s.includes("sched")) return "scheduled";
+  return "unknown";
+}
+
+function fmtTime(dt) {
+  if (!dt) return "\u2014";
+  const d = new Date(dt);
+  return isNaN(d.getTime()) ? String(dt) : d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+}
+
+// Since the underlying flight-status feed gives scheduled/actual times
+// rather than live GPS coordinates for every flight, "where it is now" is
+// shown as a time-based progress estimate along the route, with a note
+// that this is an estimate. If the API response does include a `live`
+// block (lat/lng/altitude/speed — some providers return this for aircraft
+// currently airborne), that's shown too as the more precise reading.
+function computeProgress(dep, arr, status) {
+  if (status === "landed") return 100;
+  if (status === "scheduled") return 0;
+  const depDate = new Date(dep);
+  const arrDate = new Date(arr);
+  const now = new Date();
+  if (isNaN(depDate.getTime()) || isNaN(arrDate.getTime())) return status === "active" ? 50 : 0;
+  const total = arrDate - depDate;
+  const elapsed = now - depDate;
+  if (total <= 0) return 0;
+  return Math.max(0, Math.min(100, Math.round((elapsed / total) * 100)));
+}
+
+async function runTrackSearch() {
+  const flightNumber = document.getElementById("trk-flight-number").value.trim();
+  const flightDate = document.getElementById("trk-flight-date").value;
+
+  if (!flightNumber) {
+    BlackcessUI.toast("Enter a flight number first.", "error");
+    return;
+  }
+
+  resultsEl.innerHTML = `<div class="trk-result-card"><div class="trk-empty"><i class="fas fa-circle-notch fa-spin"></i> Looking up flight...</div></div>`;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/flight-status`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ flight_number: flightNumber, date: flightDate || undefined })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || "Lookup failed.");
+
+    if (!json.flights || json.flights.length === 0) {
+      resultsEl.innerHTML = `
+        <div class="trk-result-card">
+          <div class="trk-empty">
+            <i class="fas fa-magnifying-glass"></i>
+            No flight found for "${esc(flightNumber)}"${flightDate ? " on that date" : ""}.
+            Try including the date, or double-check the flight number.
+          </div>
+        </div>`;
+      return;
+    }
+
+    resultsEl.innerHTML = json.flights.map(renderFlightCard).join("");
+  } catch (err) {
+    console.error("Flight tracking error:", err);
+    resultsEl.innerHTML = `
+      <div class="trk-result-card">
+        <div class="trk-empty">
+          <i class="fas fa-triangle-exclamation" style="color:#dc2626;"></i>
+          Could not look up this flight: ${esc(err.message)}
+        </div>
+      </div>`;
+    BlackcessUI.toast("Flight lookup failed. Please try again.", "error");
+  }
+}
+
+function renderFlightCard(f) {
+  const status = normalizeStatus(f.status);
+  const depTime = f.departure?.actual || f.departure?.scheduled;
+  const arrTime = f.arrival?.actual || f.arrival?.scheduled;
+  const progress = computeProgress(f.departure?.scheduled, f.arrival?.scheduled, status);
+
+  const hasLive = f.live && (f.live.latitude || f.live.longitude);
+
+  return `
+    <div class="trk-result-card">
+      <div class="trk-status-row">
+        <div class="trk-flight-title">${esc(f.airline || "")} ${esc(f.number || "")}</div>
+        <span class="trk-status-pill ${status}">${esc(f.status || "Unknown")}</span>
+      </div>
+
+      <div class="trk-progress-wrap">
+        <div class="trk-progress-endpoints">
+          <div><span class="code">${esc(f.departure?.iata || "?")}</span><span class="city">${esc(f.departure?.airport || "")}</span></div>
+          <div style="text-align:right;"><span class="code">${esc(f.arrival?.iata || "?")}</span><span class="city">${esc(f.arrival?.airport || "")}</span></div>
+        </div>
+        <div class="trk-progress-track">
+          <div class="trk-progress-fill" style="width:${progress}%;"></div>
+          <div class="trk-progress-plane" style="left:${progress}%;"><i class="fas fa-plane"></i></div>
+        </div>
+        <div class="trk-progress-note">
+          ${status === "landed" ? "Arrived" : status === "scheduled" ? "Not yet departed" : `Estimated ${progress}% of the way there`}
+          ${hasLive ? ` &bull; Live position: ${f.live.latitude.toFixed(2)}, ${f.live.longitude.toFixed(2)}${f.live.altitude ? ` at ${Math.round(f.live.altitude)}m` : ""}${f.live.speed_horizontal ? ` &bull; ${Math.round(f.live.speed_horizontal)} km/h` : ""}` : ""}
+        </div>
+      </div>
+
+      <div class="trk-detail-grid">
+        <div class="trk-detail-col">
+          <h4>Departure</h4>
+          <p><strong>${esc(f.departure?.iata || "?")}</strong> &mdash; ${esc(f.departure?.airport || "\u2014")}</p>
+          <p>Time: ${fmtTime(depTime)}</p>
+          ${f.departure?.terminal ? `<p>Terminal: ${esc(f.departure.terminal)}</p>` : ""}
+          ${f.departure?.gate ? `<p>Gate: ${esc(f.departure.gate)}</p>` : ""}
+        </div>
+        <div class="trk-detail-col">
+          <h4>Arrival</h4>
+          <p><strong>${esc(f.arrival?.iata || "?")}</strong> &mdash; ${esc(f.arrival?.airport || "\u2014")}</p>
+          <p>Time: ${fmtTime(arrTime)}</p>
+          ${f.arrival?.terminal ? `<p>Terminal: ${esc(f.arrival.terminal)}</p>` : ""}
+          ${f.arrival?.gate ? `<p>Gate: ${esc(f.arrival.gate)}</p>` : ""}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+document.querySelectorAll(".dropdown > .nav-link").forEach(link => {
+  link.addEventListener("click", function (e) {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      this.parentElement.classList.toggle("open");
+    }
+  });
+});
+</script>
+
+</body>
+</html>
