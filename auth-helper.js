@@ -171,7 +171,7 @@ const BlackcessDB = {
        }
        localStorage.removeItem("activeUser");
        if (redirect) {
-           window.location.href = "index.html";
+           window.location.href = "./admin-login.html";
        }
     },
 
