@@ -2,21 +2,6 @@
 // prices, seats). Operates on the internal `flights` table — this is the
 // inventory used as a fallback for bookings that don't come through the
 // live Duffel search (see admin/booking.js's comment on Duffel bookings).
-//
-// SCHEMA NOTE: this assumes `flights` has the columns referenced below.
-// flight_number, departure_city, arrival_city, departure_time, and
-// arrival_time already exist (used elsewhere in the app). If price,
-// currency, seats_available, cabin_class, departure_code, arrival_code,
-// or status don't exist yet, run this once in the Supabase SQL editor:
-//
-//   ALTER TABLE flights
-//     ADD COLUMN IF NOT EXISTS departure_code text,
-//     ADD COLUMN IF NOT EXISTS arrival_code text,
-//     ADD COLUMN IF NOT EXISTS price numeric,
-//     ADD COLUMN IF NOT EXISTS currency text DEFAULT 'NGN',
-//     ADD COLUMN IF NOT EXISTS seats_available integer,
-//     ADD COLUMN IF NOT EXISTS cabin_class text DEFAULT 'economy',
-//     ADD COLUMN IF NOT EXISTS status text DEFAULT 'scheduled';
 
 const activeUser = JSON.parse(localStorage.getItem("activeUser"));
 

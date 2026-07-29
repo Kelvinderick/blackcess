@@ -101,7 +101,7 @@
 .flight-info p { margin: 0; color: #64748b; font-size: 0.9rem; }
 .flight-info .seats-left { color: #b45309; font-size: 0.8rem; font-weight: 600; }
 
-/* Visually-hidden helper for accessible icon-only labels */
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -666,10 +666,7 @@ tabButtons.forEach(button => {
   }
 })();
 
-// Deep-link support: book.html#my-bookings, #check-in, #loyalty all work,
-// plus book.html?from=LOS&to=LHR pre-fills and runs a search immediately —
-// used by the Routes.html "Book Flight" buttons so clicking one doesn't
-// dump you on a blank search form.
+
 window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const fromCode = params.get('from');
@@ -703,7 +700,7 @@ const PAYSTACK_PUBLIC_KEY = 'pk_test_ec747fe1262edf30f447fc2e87f982b920392299';
 
 let selectedFlight = null;
 let lastOffers = [];       // full unfiltered result set from the last search
-let lastSearchMeta = {};   // { depCode, arrCode } for empty-state messaging
+let lastSearchMeta = {};   
 
 document.getElementById('search-flights-trigger').addEventListener('click', async function(e) {
   e.preventDefault();

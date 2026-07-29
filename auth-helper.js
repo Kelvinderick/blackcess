@@ -5,10 +5,7 @@ const BlackcessDB = {
         return "BC" + Math.floor(100000 + Math.random() * 900000);
     },
 
-    // Escape user-supplied text before it goes into innerHTML anywhere.
-    // Booking/profile fields (names, PNRs, etc.) come from user input and
-    // are rendered in admin tables and dashboards, so they must never be
-    // inserted raw or a passenger could stash a script tag in their name.
+
     escapeHtml(str) {
         if (str === null || str === undefined) return "";
         return String(str)
@@ -19,12 +16,7 @@ const BlackcessDB = {
             .replace(/'/g, "&#39;");
     },
 
-    // Fire-and-forget call to the send-notification-email Edge Function.
-    // Email delivery should never block or break the user-facing flow it's
-    // attached to, so failures are logged, not thrown — signup, booking,
-    // payment, and check-in all still succeed even if the email doesn't
-    // send. See supabase/functions/send-notification-email for the
-    // function source and setup instructions.
+
     async sendNotificationEmail(type, to, data) {
         if (!to) return;
         try {
@@ -39,15 +31,7 @@ const BlackcessDB = {
 
     // Sign Up a new passenger and create their Royal Club profile
     async signUp(name, email, password, passport) {
-        // Profile creation now happens server-side via a database trigger
-        // (on_auth_user_created -> handle_new_user) that fires the moment
-        // the auth.users row is created — that runs with elevated
-        // privileges, so it works whether or not "Confirm email" is turned
-        // on. We just pass the profile details as signup metadata for the
-        // trigger to read; we don't insert into `profiles` from the client
-        // at all anymore, since a client-side insert immediately after
-        // signUp() can run before there's an active session (if email
-        // confirmation is required), which RLS correctly rejects.
+
         const membershipId = this.generateMembershipId();
 
         const { data: authData, error: authError } = await window.supabase.auth.signUp({
@@ -68,13 +52,8 @@ const BlackcessDB = {
         }
 
         const user = authData.user;
-        if (!user) throw new Error("Failed to retrieve user registry context.");
+        if (!user) throw new Error("Failed to retrieve your data.");
 
-        // If there's no session yet, "Confirm email" is turned on for this
-        // project — the user has to click the link in their inbox before
-        // they can actually log in. The profile row will already exist
-        // (the trigger fired when auth.users got the row), but there's
-        // nothing to log them into yet.
         if (!authData.session) {
             this.sendNotificationEmail("signup", email, { name, membership_id: membershipId });
             return {
@@ -102,7 +81,6 @@ const BlackcessDB = {
 
     // Log In existing passenger
     async logIn(email, password) {
-        // 1. Sign in via Supabase Auth
         const { data: authData, error: authError } = await window.supabase.auth.signInWithPassword({
             email: email,
             password: password
@@ -116,7 +94,6 @@ const BlackcessDB = {
         const user = authData.user;
         if (!user) throw new Error("Passenger credentials not found.");
 
-        // 2. Fetch profile from database
         const { data: profileData, error: profileError } = await window.supabase
             .from('profiles')
             .select('*')
@@ -178,10 +155,6 @@ const BlackcessDB = {
     // Retrieve bookings: either by user UID or by PNR & Lastname (for guest retrieval)
     async getBookings({ uid, pnr, lastname }) {
         if (uid) {
-            // Embed the related flight row (requires the bookings.flight_id ->
-            // flights.id foreign key from the migration) so callers get real
-            // flight fields under booking.flights instead of having to do a
-            // second manual lookup.
             const { data, error } = await window.supabase
                 .from('bookings')
                 .select('*, flights(flight_number, departure_city, arrival_city, departure_time, arrival_time)')
@@ -193,10 +166,6 @@ const BlackcessDB = {
                 throw new Error(error.message);
             }
 
-            // Bookings made through Duffel have no flight_id (that table is
-            // no longer the source of flight data), so the join above comes
-            // back null for them — fall back to the flight details stored
-            // directly on the booking row instead.
             return data.map(b => ({
                 ...b,
                 flights: b.flights || {
@@ -237,11 +206,7 @@ const BlackcessDB = {
         throw new Error("Missing parameters for query filter.");
     },
 
-    // Check-in passenger by updating booking status and awarding miles.
-    // This runs entirely inside the checkin_booking() Postgres function
-    // (SECURITY DEFINER) so it works under RLS even for guests who have no
-    // direct write access to bookings/profiles — the old version updated
-    // both tables straight from the client, which RLS now blocks.
+
     async checkInBooking(pnr, lastname) {
         const { data, error } = await window.supabase
             .rpc('checkin_booking', { p_pnr: pnr.trim(), p_lastname: lastname.trim() })
@@ -267,12 +232,11 @@ const BlackcessDB = {
     }
 };
 
-// Auto-run: Initialize navbar status based on current session
+
 function updateNavbarUI() {
     const navMenu = document.getElementById("navMenu");
     if (!navMenu) return;
 
-    // Remove any existing user menu or login buttons to prevent duplication
     const oldUserMenu = navMenu.querySelector(".user-menu");
     if (oldUserMenu) oldUserMenu.remove();
     const oldLoginBtn = navMenu.querySelector(".login-nav-item");
@@ -281,7 +245,6 @@ function updateNavbarUI() {
     const activeUser = JSON.parse(localStorage.getItem("activeUser") || "null");
 
     if (activeUser) {
-        // Logged In: link straight to the real dashboard, with a small dropdown
         const userLi = document.createElement("li");
         userLi.className = "nav-item dropdown user-menu";
         userLi.innerHTML = `
@@ -295,7 +258,7 @@ function updateNavbarUI() {
         `;
         navMenu.appendChild(userLi);
 
-        // Add dropdown interaction click handlers for responsive layout compatibility
+
         const dropdownLink = userLi.querySelector(".nav-link");
         dropdownLink.addEventListener("click", function(e) {
             if(window.innerWidth <= 768){
@@ -310,7 +273,6 @@ function updateNavbarUI() {
             BlackcessDB.logOut();
         });
     } else {
-        // Logged Out: Create Sign In nav item
         const loginLi = document.createElement("li");
         loginLi.className = "nav-item login-nav-item";
         loginLi.innerHTML = `
@@ -320,7 +282,7 @@ function updateNavbarUI() {
     }
 }
 
-// Attach event listeners
+
 document.addEventListener("DOMContentLoaded", () => {
     updateNavbarUI();
     window.addEventListener("authChange", updateNavbarUI);

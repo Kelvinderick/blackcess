@@ -341,10 +341,10 @@
         <div class="login-logo-wrap">
             <img src="./images/Untitled design.png" alt="Blackcess Royal Aviation Logo" class="login-logo">
         </div>
-
+<!-- 
         <div class="db-status-banner" id="db-status-banner">
             <i class="fas fa-circle-notch fa-spin"></i> Initializing secure access gate...
-        </div>
+        </div> -->
 
         <!-- Panel 1: SIGN IN -->
         <div id="login-form-panel">
@@ -480,22 +480,22 @@
     <script src="blackcess-ui.js"></script>
     
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const banner = document.getElementById("db-status-banner");
-            if (!window.supabase) {
-                banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color: #ff5722;"></i> Supabase Configuration Missing.`;
-                return;
-            }
+        // document.addEventListener("DOMContentLoaded", async () => {
+        //     const banner = document.getElementById("db-status-banner");
+        //     if (!window.supabase) {
+        //         banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color: #ff5722;"></i> Supabase Configuration Missing.`;
+        //         return;
+        //     }
 
-            try {
-                const { error } = await window.supabase.from("flights").select("id").limit(1);
-                if (error) throw error;
-                banner.innerHTML = `<i class="fas fa-cloud" style="color: #37b878;"></i> Linked to Live Supabase Cloud.`;
-            } catch (e) {
-                console.error("Supabase connectivity check failed:", e);
-                banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color: #ff5722;"></i> Could not reach Supabase — check your credentials.`;
-            }
-        });
+        //     try {
+        //         const { error } = await window.supabase.from("flights").select("id").limit(1);
+        //         if (error) throw error;
+        //         banner.innerHTML = `<i class="fas fa-cloud" style="color: #37b878;"></i> Linked to Live Supabase Cloud.`;
+        //     } catch (e) {
+        //         console.error("Supabase connectivity check failed:", e);
+        //         banner.innerHTML = `<i class="fas fa-triangle-exclamation" style="color: #ff5722;"></i> Could not reach Supabase — check your credentials.`;
+        //     }
+        // });
 
         // Switch panels with simple fade animation
         function togglePanels(panel) {

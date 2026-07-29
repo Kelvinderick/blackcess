@@ -1,11 +1,4 @@
-// Blackcess shared error/notice UI — replaces raw alert()/confirm() popups
-// with styled, dismissible toasts and a reusable confirm dialog.
-//
-// Usage (after including this script):
-//   BlackcessUI.toast('Could not load bookings.', 'error');
-//   BlackcessUI.toast('Booking updated.', 'success');
-//   const ok = await BlackcessUI.confirm('Delete this flight?', 'This cannot be undone.');
-
+// Blackcess shared error/notice UI — 
 (function () {
   const STYLE_ID = 'blackcess-ui-styles';
 
@@ -16,83 +9,156 @@
     style.textContent = `
       #bc-toast-stack {
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 24px;
+        right: 24px;
         z-index: 9999;
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        max-width: 360px;
-      }
-      .bc-toast {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 14px 16px;
-        border-radius: 10px;
-        font-size: 0.88rem;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
-        background: #1e293b;
-        color: #fff;
-        border-left: 4px solid #64748b;
-        animation: bc-toast-in 0.25s ease;
-      }
-      .bc-toast.error { border-left-color: #ef4444; }
-      .bc-toast.success { border-left-color: #22c55e; }
-      .bc-toast.info { border-left-color: #3b82f6; }
-      .bc-toast i { margin-top: 2px; }
-      .bc-toast .bc-toast-close {
-        margin-left: auto;
-        cursor: pointer;
-        opacity: 0.6;
-        background: none;
-        border: none;
-        color: inherit;
-        font-size: 1rem;
-        line-height: 1;
-      }
-      .bc-toast .bc-toast-close:hover { opacity: 1; }
-      @keyframes bc-toast-in {
-        from { opacity: 0; transform: translateX(20px); }
-        to { opacity: 1; transform: translateX(0); }
-      }
-      @keyframes bc-toast-out {
-        from { opacity: 1; }
-        to { opacity: 0; transform: translateX(20px); }
+        gap: 12px;
+        max-width: 380px;
+        width: calc(100% - 48px);
+        pointer-events: none;
       }
 
+      .bc-toast {
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        background: #ffffff;
+        color: #0f172a;
+        border: 1px solid #e2e8f0;
+        animation: bc-toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* Icons & Status Colors */
+      .bc-toast i {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .bc-toast.error i { color: #f43f5e; }
+      .bc-toast.success i { color: #10b981; }
+      .bc-toast.info i { color: #0284c7; }
+
+      .bc-toast span {
+        flex-grow: 1;
+        line-height: 1.4;
+      }
+
+      .bc-toast .bc-toast-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        margin-left: 4px;
+        cursor: pointer;
+        color: #94a3b8;
+        background: transparent;
+        border: none;
+        font-size: 1.1rem;
+        transition: all 0.15s ease;
+      }
+      .bc-toast .bc-toast-close:hover {
+        background: #f1f5f9;
+        color: #475569;
+      }
+
+      @keyframes bc-toast-in {
+        from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      @keyframes bc-toast-out {
+        from { opacity: 1; transform: translateY(0) scale(1); }
+        to { opacity: 0; transform: translateY(-8px) scale(0.96); }
+      }
+
+      /* Confirm Modal */
       #bc-confirm-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(15, 23, 42, 0.55);
+        background: rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(4px);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 10000;
+        animation: bc-fade-in 0.2s ease;
       }
+
       #bc-confirm-card {
-        background: #fff;
-        border-radius: 12px;
-        max-width: 380px;
+        background: #ffffff;
+        border-radius: 16px;
+        max-width: 400px;
         width: 90%;
-        padding: 26px;
-        box-shadow: 0 20px 48px rgba(0,0,0,0.25);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 24px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f1f5f9;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        animation: bc-toast-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      #bc-confirm-card h3 { margin-bottom: 8px; color: #0f172a; font-size: 1.05rem; }
-      #bc-confirm-card p { color: #64748b; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
-      #bc-confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+      #bc-confirm-card h3 {
+        margin: 0 0 8px 0;
+        color: #0f172a;
+        font-size: 1.125rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      #bc-confirm-card p {
+        color: #64748b;
+        font-size: 0.925rem;
+        margin: 0 0 24px 0;
+        line-height: 1.5;
+      }
+
+      #bc-confirm-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
       #bc-confirm-actions button {
-        padding: 9px 18px;
+        padding: 10px 18px;
         border-radius: 8px;
-        font-size: 0.88rem;
+        font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
         border: none;
+        transition: all 0.15s ease;
       }
-      #bc-confirm-cancel { background: #f1f5f9; color: #334155; }
-      #bc-confirm-ok { background: #ef4444; color: #fff; }
+
+      #bc-confirm-cancel {
+        background: #f8fafc;
+        color: #475569;
+        border: 1px solid #e2e8f0 !important;
+      }
+      #bc-confirm-cancel:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+      }
+
+      #bc-confirm-ok {
+        background: #0f172a;
+        color: #ffffff;
+      }
+      #bc-confirm-ok:hover {
+        background: #1e293b;
+        transform: translateY(-1px);
+      }
+
+      @keyframes bc-fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
     `;
     document.head.appendChild(style);
   }

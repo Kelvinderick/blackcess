@@ -40,21 +40,19 @@
             position: relative;
         }
 
-        /* High-Quality Jet/Aviation Background with Motion Blur Effect */
         .bg-image-container {
             position: absolute;
-            inset: -20px; /* Slight overflow to hide blur edges */
+            inset: -20px; 
             background-image: linear-gradient(
                 135deg, 
                 rgba(3, 7, 18, 0.75) 0%, 
                 rgba(15, 23, 42, 0.6) 100%
             ), 
-            url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1920&auto=format&fit=crop'); /* Replace with your own image path e.g., './images/hero-jet.jpg' */
+            url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1920&auto=format&fit=crop'); 
             background-size: cover;
             background-position: center;
-            /* Motion blur simulation */
             filter: blur(10px) contrast(105%);
-            transform: scale(1.08); /* Scales up to prevent white edges from filter blur */
+            transform: scale(1.08); 
             z-index: 0;
             animation: subtlePan 20s infinite alternate ease-in-out;
         }
@@ -64,7 +62,6 @@
             100% { transform: scale(1.12) translate(-10px, -5px); }
         }
 
-        /* Glassmorphism Container */
         .login-container {
             position: relative;
             z-index: 10;
@@ -92,7 +89,6 @@
             }
         }
 
-        /* Brand & Header Section */
         .brand-badge {
             display: inline-flex;
             align-items: center;
@@ -260,7 +256,6 @@
 </head>
 <body>
 
-    <!-- Background Aviation Image with Motion Blur -->
     <div class="bg-image-container"></div>
 
     <div class="login-container">
@@ -306,7 +301,7 @@
         </p>
     </div>
 
-    <!-- Scripts preserved from original setup -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-helper.js"></script>
