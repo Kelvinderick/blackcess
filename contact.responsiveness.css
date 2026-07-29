@@ -1,0 +1,39 @@
+/* ============ CONTACT PAGE RESPONSIVENESS ============ */
+
+@media (max-width: 992px) {
+  .contact-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-contact-section {
+    margin-top: -32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-hero {
+    padding: 80px 20px 56px;
+  }
+
+  .contact-hero h1 {
+    font-size: 1.9rem;
+  }
+
+  .cf-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .contact-form-card,
+  .airport-offices-card {
+    padding: 22px;
+  }
+
+  .contact-main-section {
+    padding: 48px 16px 64px;
+  }
+}

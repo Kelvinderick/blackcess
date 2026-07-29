@@ -427,7 +427,7 @@
                     <label for="signup-name">Full Passenger Name</label>
                     <div class="input-wrapper">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="signup-name" class="form-input" placeholder="e.g. Johnathan Doe" required>
+                        <input type="text" id="signup-name" class="form-input" placeholder="e.g. Johnathan Doe" pattern="^[A-Za-z]+(?:[\s'\-][A-Za-z]+)+$" title="Enter your full name using letters only (first and last name)." required>
                     </div>
                 </div>
 
@@ -547,7 +547,7 @@
         // Signup Submission
         async function handleSignupSubmit(e) {
             e.preventDefault();
-            const name = document.getElementById("signup-name").value;
+            const name = document.getElementById("signup-name").value.trim();
             const email = document.getElementById("signup-email").value;
             const passport = document.getElementById("signup-passport").value;
             const password = document.getElementById("signup-password").value;
@@ -555,6 +555,18 @@
             const errorDiv = document.getElementById("signup-error");
 
             errorDiv.classList.remove("visible");
+
+            // Belt-and-suspenders alongside the input's pattern attribute —
+            // catches names with digits/symbols even if validation is
+            // bypassed some other way, and gives a clearer message than
+            // the browser's default tooltip.
+            const namePattern = /^[A-Za-z]+(?:[\s'\-][A-Za-z]+)+$/;
+            if (!namePattern.test(name)) {
+                errorDiv.textContent = "Enter your full name using letters only (first and last name, e.g. \"John Doe\").";
+                errorDiv.classList.add("visible");
+                return;
+            }
+
             submitBtn.classList.add("loading");
             submitBtn.disabled = true;
             submitBtn.querySelector(".btn-text").innerText = "Creating profile...";

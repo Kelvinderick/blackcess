@@ -114,7 +114,10 @@
                         <i class="fas fa-circle-check" style="font-size:2.5rem; color:#37b878; margin-bottom:10px;"></i>
                         <h4>Check-In Complete!</h4>
                         <p style="color:#94a3b8; font-size:0.85rem; margin-top:5px; margin-bottom:15px;">Boarding confirmation generated for PNR reference <strong>${pnr.toUpperCase()}</strong>.</p>
-                        <button class="flight-select-btn" style="margin-top:0;" onclick="showTicketDetailDirect('${pnr}', '${lastname}')">Display Boarding Pass</button>
+                        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                            <button class="flight-select-btn" style="margin-top:0;" onclick="showTicketDetailDirect('${pnr}', '${lastname}')">Display Boarding Pass</button>
+                            ${res && res.flight_number ? `<a href="track.html?flight=${encodeURIComponent(res.flight_number)}" class="flight-select-btn" style="margin-top:0; text-decoration:none; display:inline-flex; align-items:center; gap:8px;"><i class="fas fa-location-arrow"></i> Track This Flight</a>` : ''}
+                        </div>
                     </div>
                 `;
             } catch(err) {
@@ -261,8 +264,7 @@
                 const imgData = canvas.toDataURL('image/png');
 
                 const { jsPDF } = window.jspdf;
-                // Match the PDF page to the ticket's own proportions rather
-                // than forcing it onto a generic A4 sheet.
+               
                 const pxToMm = 0.264583;
                 const widthMm = canvas.width * pxToMm / 2;
                 const heightMm = canvas.height * pxToMm / 2;

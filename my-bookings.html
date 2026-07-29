@@ -284,6 +284,7 @@
                                 </div>
                                 <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
                                     <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
+                                    ${flight.flight_number ? `<a href="track.html?flight=${encodeURIComponent(flight.flight_number)}" class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-location-arrow"></i> Track</a>` : ''}
                                     <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
                                 </div>
                             </div>
@@ -310,6 +311,7 @@
                                 </div>
                                 <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:flex-end;">
                                     <span style="font-weight:bold; color:var(--gold); font-family:monospace;">${esc(b.pnr)}</span>
+                                    ${flight.flight_number ? `<a href="track.html?flight=${encodeURIComponent(flight.flight_number)}" class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-location-arrow"></i> Track</a>` : ''}
                                     <button class="flight-select-btn" style="margin-top:0; padding:5px 12px; font-size:0.75rem;" onclick="showTicketDetailDirect('${esc(b.pnr)}', '${esc(b.passenger_lastname)}')">View Ticket</button>
                                 </div>
                             </div>
@@ -389,10 +391,11 @@
                                 <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; font-family: monospace;">*${esc(booking.pnr)}*</div>
                             </div>
                         </div>
-                        <div style="text-align:center; margin-top:18px;">
-                            <button id="download-pdf-btn" class="tool-btn" style="max-width:280px; margin:0 auto; cursor:pointer;">
+                        <div style="text-align:center; margin-top:18px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                            <button id="download-pdf-btn" class="tool-btn" style="max-width:280px; margin:0; cursor:pointer;">
                                 <i class="fas fa-download"></i> Download PDF Ticket
                             </button>
+                            ${flight.flight_number ? `<a href="track.html?flight=${esc(encodeURIComponent(flight.flight_number))}" class="tool-btn" style="max-width:280px; margin:0; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;"><i class="fas fa-location-arrow"></i> Track This Flight</a>` : ''}
                         </div>
                     `;
                     resultsTarget.scrollIntoView({ behavior: 'smooth' });
